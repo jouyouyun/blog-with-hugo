@@ -1,0 +1,14 @@
+# if export md failed, try to exec: 'for dir in "$HOME/.emacs.d/elpa/org-"*/; find $dir -name "*.elc" -delete'
+# and restart emacs
+
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: post
+#+SEQ_TODO: TODO NEXT DRAFT DONE
+#+FILETAGS: post
+#+OPTIONS:   *:t <:nil timestamp:nil toc:nil ^:{}
+#+HUGO_AUTO_SET_LASTMOD: t
+#+TITLE:
+#+DATE:
+#+HUGO_TAGS:
+#+HUGO_CATEGORIES:
+#+HUGO_DRAFT: false
