@@ -1,0 +1,146 @@
++++
+title = "xsetwacom 选项说明"
+author = ["Wen"]
+date = 2016-02-03T14:58:21+08:00
+lastmod = 2019-02-09T22:29:11+08:00
+tags = ["xsetwacom", "wacom"]
+categories = ["NOTE"]
+draft = false
++++
+
+`xsetwacom` 是一个设置数位板的命令行工具, 在 `Debian/Ubuntu/deepin` 上可以通过安装 `xserver-xorg-input-wacom` 来获取它.
+
+可以通过 `man xsetwacom` 看到它的帮助文档, 下面就简单说明下它的部份选项:
+
+---
+
+
+## Options {#options}
+
+
+### Area {#area}
+
+-   args: x1 y1 x2 y2
+
+-   default: 0 0 x2 y2,
+
+-   description: 设置数位板可使用的区域
+
+
+### Button {#button}
+
+-   args: button-number [mapping]
+
+-   description: 设置数位笔按钮的功能，可自定义为组合键，详细使用方法见文档
+
+
+### MapToOutput {#maptooutput}
+
+-   args: output
+
+-   description: 设置数位板与显示屏的映射，可以使用 `output`, `Head Number`, `X11 geometry` 三种方式设置
+    -   output: 如 `VGA1`
+
+    -   Head Number: 通过 `XRandR extension` 得到的
+
+    -   X11 geometry: 格式如 `WIDTHxHEIGHT+X+Y`
+
+
+### Mode {#mode}
+
+-   args: Absolute|Relative
+
+-   default: Absolute
+
+-   description: 设置笔模式。
+    -   Absolute: 模式时数位笔对应的是数位板或屏幕的真实位置
+
+    -   Relative: 模式时数位笔就像是一个鼠标
+
+
+### PressureCurve {#pressurecurve}
+
+-   args: x1 y1 x2 y2
+
+-   default: 0 0 100 100
+
+-   description: 压力曲线，(x1<y1 x2<y2) to "soften"，(x1>y1 x2>y2) to "firmer"
+
+
+### RawSample {#rawsample}
+
+-   args: level(0 ~ 20)
+
+-   default: 4
+
+-   description: 设置数位笔原始采样率对应的窗口大小，不太清楚有什么用
+
+
+### Rotate {#rotate}
+
+-   args: none|half|cw|ccw
+
+-   default: none
+
+-   description: 设置旋转度
+    -   none: 不旋转
+
+    -   half: 上下翻转
+
+    -   cw: 顺时针旋转 90 度
+
+    -   ccw: 逆时针旋转 90 度
+
+
+### Suppress {#suppress}
+
+-   args: level(0 ~ 100)
+
+-   default: 2
+
+-   description: 设置移动灵敏度，值越大灵敏度越低
+
+
+### Touch {#touch}
+
+-   args: on|off
+
+-   default: on
+
+-   description: 是否允许触摸
+
+
+### HWTouchSwitchState {#hwtouchswitchstate}
+
+-   args: on|off
+
+-   default: on
+
+-   description: 是否允许调节 `Touch` 选项
+
+
+### Threshold {#threshold}
+
+-   args: level(0 ~ 2047)
+
+-   default: 27
+
+-   description: 设置产生按键事件的最小力度
+
+---
+
+
+## 其他 {#其他}
+
+对于压力曲线，这里给出了一些测试值，从 `soften` 到 `firmer` :
+
+-   0 100 0 100
+-   20 80 20 80
+-   30 70 30 70
+-   0 0 100 100
+-   60 40 60 40
+-   70 30 70 30
+-   75 25 75 25
+-   80 20 80 20
+-   90 10 90 10
+-   100 0 100 0

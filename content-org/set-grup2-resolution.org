@@ -1,0 +1,42 @@
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: post
+#+SEQ_TODO: TODO NEXT DRAFT DONE
+#+FILETAGS: post
+#+OPTIONS:   *:t <:nil timestamp:nil toc:nil ^:{}
+#+HUGO_AUTO_SET_LASTMOD: t
+#+TITLE: 设置 Grub2 分辨率
+#+DATE: 2017-07-29T21:38:21+08:00
+#+HUGO_TAGS: grub2 resolution
+#+HUGO_CATEGORIES: BLOG
+#+HUGO_DRAFT: false
+
+** 背景
+
+平时经常用显示器的分辨率去设置 =Grub= 的分辨率，虽然大部分都没有问题，但有时却没有用。所以就把 =Grub= 分辨率的设置方法详细说明一下，留档记录。
+
+** 查询支持的分辨率
+
+在设置 =Grub= 分辨率之前，需要先知道支持的分辨率列表，而幸运的是可以到 =Grub= 命令行查询。
+
+1. 进入 =Grub= 命令行
+
+  在 =Grub= 启动界面，按下 =c= 键就可以进入命令行界面了。
+
+2. 查询支持的分辨率
+
+  在命令行界面输入 =videoinfo= 就可以得到支持的分辨率列表。
+
+3. 测试效果
+
+  可以在命令行下输入 =terminal_output console= 进入终端模式，然后输入 =set gfxmode=<分辨率>= 设置要测试的分辨率，然后查看效果。
+
+  测试完后输入 =terminal_output gfxterm= 回到图形模式
+
+
+找到合适的分辨率后，重启进入系统，然后开始设置分辨率。
+
+** 设置分辨率
+
+启动菜单是在 =/boot/grub/grub.cfg=，而这个文件是根据 =/etc/default/grub= 里的配置生成的，所以修改分辨率时只需修改 =/etc/default/grub= 这个文件。
+
+=GRUB_GFXMODE= 这个字段控制着分辨率，只需将它的值指定为上面找到的分辨率，然后用命令 =sudo grub-mkconfig -o /boot/grub/grub.cfg= 重新生成启动菜单即可。

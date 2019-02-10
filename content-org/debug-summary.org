@@ -1,0 +1,51 @@
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: post
+#+SEQ_TODO: TODO NEXT DRAFT DONE
+#+FILETAGS: post
+#+OPTIONS:   *:t <:nil timestamp:nil toc:nil ^:{}
+#+HUGO_AUTO_SET_LASTMOD: t
+#+TITLE: Debug 小结
+#+DATE: 2016-02-03T15:06:21+08:00
+#+HUGO_TAGS: debug
+#+HUGO_CATEGORIES: NOTE
+#+HUGO_DRAFT: false
+
+调试 =bug= 的时候要有耐心, 要不断测试, 直到找到问题原因.
+
+
+** 确定 =bug= 出现的方式
+
+-   一定要找到稳定重现的方式, 这样才能方便下面的调试
+-   如果找不到稳定重现的方法就只能根据上次出现的情形, 去查看相关的代码, 猜测可能出问题的地方, 然后针对那一块进行调试, 直到找到稳定重现方式
+
+** 定位出问题的代码
+
+-   再找到稳定重现方式后, 开始定位出问题的函数, 然后加入调试信息, 不断尝试, 直到找到有问题的代码
+-   找到有问题的代码后, 如果发现是第三方库里的函数,可以打印出每次调用的输入输出参数, 看看是否有迹可循, 可以单独写个小程序, 传入问题的参数, 进行不断测试, 来确定第三方库有没有问题
+-   如果自己程序的代码, 就一行一行的慢慢测试, 确定问题的原因, 原因找到了就可以开始思考解决方法了
+
+** 修复 =bug=
+
+修复 =bug= 时一定要仔细检查新添加的代码, 看看会不会造成其它的 =bug=, 一定要不断测试, 把函数输入输出状态都打印出来, 以免出现界面是对的, 但函数的数据有误.
+
+对于开源的第三方库有问题时, 就把它的代码下下来, 加上调试信息后, 然后安装, 让你的程序使用自己编译的第三方库, 这样方便查找问题.
+因为有时可能第三方库再使用时需要初始化一些资源, 而你使用的接口并没有做或少做了一点, 这样就导致你的程序出了问题.
+这时就可以在程序中添加相关的初始化代码, 来处理这类问题, 这类问题一般第三方库升级时可能出现.
+
+若知道问题的原因后(这个原因一定要是相关低层的, 不能说是由于 A 调了 B , B 出问题了, 就把问题原因归与 A 的头上, 一定要是相当精确的), 不知道怎么修改, 这时就可以向组内成员求助, 或者去了解这方面的知识.
+
+** 性能调试工具
+
+对于 =C/C++= 代码, 可以使用 =Google Proftools= 工具来调试. 它以程序调用的方式生成每次调用的性能消耗图, 方便定位占用资源多的函数.
+
+文档见: [[http://google-perftools.googlecode.com/svn/trunk/doc/][Google Proftools Documents]] , 使用方法自行 =google= .
+
+** 网站推荐
+
+还可以去一些开发者网站提问:
+
++ [[http://stackoverflow.com/][StackOverflow]]
++ [[https://www.quora.com/][国外的知乎: Quora]]
++ [[http://segmentfault.com/][SegmentFault]]
+
+或者到 [[http://www.ibm.com/developerworks/cn/][IBM Developer]] 看写相关的技术文章, 前端的话还可以去 [[https://developer.mozilla.org/][Mozilla Developer]] .

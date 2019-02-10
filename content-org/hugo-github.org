@@ -10,7 +10,7 @@
 #+TITLE: 使用 hugo 写博客
 #+DATE: 2019-02-02T17:31:21+08:00
 #+HUGO_TAGS: hugo
-#+HUGO_CATEGORIES: blog
+#+HUGO_CATEGORIES: BLOG
 #+HUGO_DRAFT: false
 
 [[https://github.com/gohugoio/hugo][hugo]] 是由 =Go= 语言实现的静态网站生成器, 简单、易用、高效、易扩展、快速部署。
