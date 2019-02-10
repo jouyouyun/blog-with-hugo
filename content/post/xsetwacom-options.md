@@ -1,8 +1,7 @@
 +++
 title = "xsetwacom 选项说明"
-author = ["Wen"]
 date = 2016-02-03T14:58:21+08:00
-lastmod = 2019-02-09T22:29:11+08:00
+lastmod = 2019-02-10T17:57:48+08:00
 tags = ["xsetwacom", "wacom"]
 categories = ["NOTE"]
 draft = false

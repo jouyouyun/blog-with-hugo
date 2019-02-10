@@ -1,8 +1,7 @@
 +++
 title = "Git Rebase 回退"
-author = ["Wen"]
 date = 2018-04-12T21:38:21+08:00
-lastmod = 2019-02-09T23:08:22+08:00
+lastmod = 2019-02-10T18:19:21+08:00
 tags = ["git", "rebase", "reflog", "recovery"]
 categories = ["BLOG"]
 draft = false
@@ -10,12 +9,12 @@ draft = false
 
 在开发新功能或修复 `bug` 时，一般需要新建一个分支，然后在它之上进行开发。在多人协同开发时，经常会同时修改相同的分支或相同的文件，这时就需要进行 `rebase` 操作在提交你的代码之前。
 
-但有时 `rebase` 会带来不想要的提交，或处理冲突时误操作执行了 `git rebase --skip` 。此时就想要回退到之前的提交，恢复自己的数据，=reflog= 就可以帮助你完成数据恢复。
+但有时 `rebase` 会带来不想要的提交，或处理冲突时误操作执行了 `git rebase --skip` 。此时就想要回退到之前的提交，恢复自己的数据， `reflog` 就可以帮助你完成数据恢复。
 
 
 ## reflog {#reflog}
 
-当你工作时，=Git= 会在你每次修改了 `HEAD` 时悄悄地将改动记录下来。当你提交或修改分支时，=reflog= 就会更新。通过 `git reflog` 命令可以查看当前的状态：
+当你工作时，=Git= 会在你每次修改了 `HEAD` 时悄悄地将改动记录下来。当你提交或修改分支时， `reflog` 就会更新。通过 `git reflog` 命令可以查看当前的状态：
 
 ```shell
 7115aff (HEAD -> master, tag: 3.1.21, origin/master, origin/HEAD) HEAD@{0}: pull: Fast-forward

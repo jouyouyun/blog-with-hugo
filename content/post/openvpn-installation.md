@@ -1,8 +1,7 @@
 +++
 title = "OpenVPN Installation"
-author = ["Wen"]
 date = 2016-12-27T21:38:21+08:00
-lastmod = 2019-02-09T22:38:53+08:00
+lastmod = 2019-02-10T17:55:11+08:00
 tags = ["openvpn"]
 categories = ["BLOG"]
 draft = false

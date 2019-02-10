@@ -1,8 +1,7 @@
 +++
 title = "Auto Hidden Cursor"
-author = ["Wen"]
 date = 2016-04-22T21:38:21+08:00
-lastmod = 2019-02-09T22:29:52+08:00
+lastmod = 2019-02-10T17:52:03+08:00
 tags = ["cursor"]
 categories = ["BLOG"]
 draft = false

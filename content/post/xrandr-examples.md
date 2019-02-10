@@ -1,8 +1,7 @@
 +++
 title = "XRandr Examples"
-author = ["Wen"]
 date = 2016-06-06T16:52:30+08:00
-lastmod = 2019-02-09T22:27:35+08:00
+lastmod = 2019-02-10T17:57:35+08:00
 tags = ["xrandr"]
 categories = ["NOTE"]
 draft = false

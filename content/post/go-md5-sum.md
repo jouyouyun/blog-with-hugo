@@ -1,8 +1,7 @@
 +++
 title = "Go 笔记: md5 sum"
-author = ["Wen"]
 date = 2014-06-22T22:54:38+08:00
-lastmod = 2019-02-09T21:39:06+08:00
+lastmod = 2019-02-10T17:53:32+08:00
 tags = ["go", "md5"]
 categories = ["NOTE"]
 draft = false

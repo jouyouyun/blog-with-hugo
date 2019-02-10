@@ -1,8 +1,7 @@
 +++
 title = "Bluetooth FAQ"
-author = ["Wen"]
 date = 2017-11-20T21:38:21+08:00
-lastmod = 2019-02-09T23:00:09+08:00
+lastmod = 2019-02-10T18:22:34+08:00
 tags = ["bluetooth"]
 categories = ["BLOG"]
 draft = false
@@ -23,7 +22,7 @@ draft = false
         此时再用 `systemctl status bluetooth.service` 看下服务有没有正常启动，错误信息是什么，然后根据错误去网上搜索答案。
 
         如果蓝牙是由网卡提供的，此时可以试着开关一下网卡的硬件开关。因为内核在初始化网卡之前初始化蓝牙，就会导致蓝牙设备不可用，重新初始化一次就好了。
-        如果还是无效那就重启进入 `window=，再 =window` 里开关一次蓝牙再重启到 `linux` 。
+        如果还是无效那就重启进入 `window` ，再 `window` 里开关一次蓝牙再重启到 `linux` 。
 
     -   输出里无 `timeout`
 
@@ -34,7 +33,7 @@ draft = false
 1.  执行 `sudo hciconfig` 查看设备当前的状态
     -   状态为 `DOWN`
 
-        则执行 =sudo hciconfig hci<number> up=，其中 **number** 为前面输出显示的。
+        则执行 `sudo hciconfig hci<number> up` ，其中 **number** 为前面输出显示的。
         如果命令执行失败，参照第一步。
 
     -   状态为 `UP`

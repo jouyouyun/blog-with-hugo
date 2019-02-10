@@ -1,8 +1,7 @@
 +++
 title = "python3 学习笔记"
-author = ["Wen"]
 date = 2018-12-02T21:38:21+08:00
-lastmod = 2019-02-10T17:01:27+08:00
+lastmod = 2019-02-10T17:55:18+08:00
 tags = ["python"]
 categories = ["NOTE"]
 draft = false

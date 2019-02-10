@@ -1,8 +1,7 @@
 +++
 title = "Go 笔记: 简单的 TCP Socket 示例"
-author = ["Wen"]
 date = 2014-07-20T00:54:21+08:00
-lastmod = 2019-02-09T22:27:54+08:00
+lastmod = 2019-02-10T17:53:51+08:00
 tags = ["go", "tcp", "socket"]
 categories = ["NOTE"]
 draft = false

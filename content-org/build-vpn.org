@@ -16,7 +16,7 @@
 
 注意：下面所有的操作都是以 =root= 用户进行的，非 =root= 用户请在命令前加上 =sudo=
 
-*安装 =pptp= *
+*安装 =pptp=*
 
 =apt-get install pptpd=
 
@@ -42,7 +42,7 @@ remoteip 192.168.0.234-238,192.168.0.245
 
 密码需要用英文双引号，最后的星号(*)代表允许接入的 =IP= 可以是任意 =IP=
 
-*设置 =DNS= *
+*设置 =DNS=*
 
 =vi /etc/ppp/pptpd-options=
 

@@ -1,8 +1,7 @@
 +++
 title = "Enable Coredump"
-author = ["Wen"]
 date = 2016-04-25T19:04:21+08:00
-lastmod = 2019-02-09T22:31:24+08:00
+lastmod = 2019-02-10T17:52:48+08:00
 tags = ["coredump"]
 categories = ["BLOG"]
 draft = false

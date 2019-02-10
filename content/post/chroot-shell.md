@@ -1,8 +1,7 @@
 +++
 title = "chroot 脚本"
-author = ["Wen"]
 date = 2014-07-05T21:38:21+08:00
-lastmod = 2019-02-09T22:26:34+08:00
+lastmod = 2019-02-10T17:52:29+08:00
 tags = ["chroot"]
 categories = ["NOTE"]
 draft = false

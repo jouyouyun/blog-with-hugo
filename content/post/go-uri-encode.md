@@ -1,8 +1,7 @@
 +++
 title = "Go 笔记: URI Encode/Decode"
-author = ["Wen"]
 date = 2014-06-20T21:20:12+08:00
-lastmod = 2019-02-09T21:39:18+08:00
+lastmod = 2019-02-10T17:54:00+08:00
 tags = ["go", "uri"]
 categories = ["NOTE"]
 draft = false

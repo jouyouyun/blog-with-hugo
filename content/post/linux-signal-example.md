@@ -1,8 +1,7 @@
 +++
 title = "Linux Signal Examples"
-author = ["Wen"]
 date = 2018-11-13T21:38:21+08:00
-lastmod = 2019-02-10T13:46:59+08:00
+lastmod = 2019-02-10T18:00:35+08:00
 tags = ["signal", "sigaction", "alarm", "kill", "raise"]
 categories = ["NOTE"]
 draft = false
@@ -183,15 +182,15 @@ int sigprocmask(int how, const sigset_t *restrict set,
 
 `sigprocmask` 中 `set` 为需要设置的屏蔽字集， `oset` 为之前的屏蔽字集， `how` 控制着 `set` 如何生效，可设置为以下值：
 
--   SIG\\\_BLOCK
+-   SIG\_BLOCK
 
     该进程的屏蔽字集将为当期屏蔽字集与 `set` 的并集， `set` 中包含了需要屏蔽的信号集
 
--   SIG\\\_UNBLOCK
+-   SIG\_UNBLOCK
 
     该进程的屏蔽字集将为当期屏蔽字集与 `set` 的补集的交集， `set` 中包含了需要解除屏蔽的信号集
 
--   SIG\\\_SETMASK
+-   SIG\_SETMASK
 
     该进程的屏蔽字集将设置为 `set` 的值
 

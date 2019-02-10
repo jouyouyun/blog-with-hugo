@@ -1,8 +1,7 @@
 +++
 title = "Leanote Installation"
-author = ["Wen"]
 date = 2017-07-17T21:38:21+08:00
-lastmod = 2019-02-09T22:46:53+08:00
+lastmod = 2019-02-10T17:54:29+08:00
 tags = ["leanote"]
 categories = ["BLOG"]
 draft = false

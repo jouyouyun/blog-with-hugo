@@ -87,7 +87,7 @@
 另外在 =GET= 的信息中加入 =DELETE, PUT, PATCH= 的 =URI=，应用就可以根据这些 =URI= 显示可以进行的操作，动态的生成页面。
 此种方法也减少了耦合，避免了 =URI= 变更时大量的修改。
 
------------------------
+-----
 
 尽管上面的描述很简单，但也能发现采用 =RESTfull= 来设计 =Web API= 是一种简洁明了的方案，通过与 =HTTP= 动词结合，避免了在 =URI= 中设置大量动词的问题，需要关注的只是对资源的抽象和划分。
 
@@ -96,7 +96,7 @@
 
 
 ** 参考文档
-+ [[ttp://www.infoq.com/cn/articles/rest-introduction][深入浅出REST]]
-+ [[ttp://www.ruanyifeng.com/blog/2011/09/restful.html][理解RESTful架构]]
-+ [[ttp://www.ruanyifeng.com/blog/2014/05/restful_api.html][RESTful API 设计指南]]
-+ [[ttp://novoland.github.io/%E8%AE%BE%E8%AE%A1/2015/08/17/Restful%20API%20%E7%9A%84%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83.html][Restful API 的设计规范]]
++ [[http://www.infoq.com/cn/articles/rest-introduction][深入浅出REST]]
++ [[http://www.ruanyifeng.com/blog/2011/09/restful.html][理解RESTful架构]]
++ [[http://www.ruanyifeng.com/blog/2014/05/restful_api.html][RESTful API 设计指南]]
++ [[http://novoland.github.io/%E8%AE%BE%E8%AE%A1/2015/08/17/Restful%20API%20%E7%9A%84%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83.html][Restful API 的设计规范]]

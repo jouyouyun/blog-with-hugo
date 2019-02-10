@@ -1,8 +1,7 @@
 +++
 title = "使用 hugo 写博客"
-author = ["Wen"]
 date = 2019-02-02T17:31:21+08:00
-lastmod = 2019-02-09T21:39:30+08:00
+lastmod = 2019-02-10T17:54:23+08:00
 tags = ["hugo"]
 categories = ["BLOG"]
 draft = false

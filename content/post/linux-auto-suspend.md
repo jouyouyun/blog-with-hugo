@@ -1,8 +1,7 @@
 +++
 title = "Linux 休眠自动唤醒"
-author = ["Wen"]
 date = 2018-10-21T21:38:21+08:00
-lastmod = 2019-02-09T23:38:23+08:00
+lastmod = 2019-02-10T17:54:36+08:00
 tags = ["suspend", "wakeup", "rtc"]
 categories = ["BLOG"]
 draft = false

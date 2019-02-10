@@ -1,8 +1,7 @@
 +++
 title = "Go 笔记: Gob Write/Read File"
-author = ["Wen"]
 date = 2014-07-07T13:06:21+08:00
-lastmod = 2019-02-09T22:01:06+08:00
+lastmod = 2019-02-10T17:53:25+08:00
 tags = ["go", "gob"]
 categories = ["NOTE"]
 draft = false

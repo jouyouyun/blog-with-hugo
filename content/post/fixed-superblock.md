@@ -1,8 +1,7 @@
 +++
 title = "修复 superblock"
-author = ["Wen"]
 date = 2018-07-27T21:38:21+08:00
-lastmod = 2019-02-09T23:18:33+08:00
+lastmod = 2019-02-10T18:18:05+08:00
 tags = ["superblock"]
 categories = ["BLOG"]
 draft = false
@@ -17,7 +16,7 @@ draft = false
 
 ## 修复方法 {#修复方法}
 
-下面的命令都是在=initramfs shell=中执行的。
+下面的命令都是在 `initramfs shell` 中执行的。
 
 
 ### 先确定你系统所在的分区 {#先确定你系统所在的分区}
@@ -25,9 +24,9 @@ draft = false
 可以执行 `lsblk` 来查看分区信息，然后确定，假如是 `/dev/sdaX`
 
 
-### 列出分区的=superblock=备份信息 {#列出分区的-superblock-备份信息}
+### 列出分区的 `superblock` 备份信息 {#列出分区的-superblock-备份信息}
 
-执行命令 =mke2fs -n /dev/sdaX=，将会看到以下输出：
+执行命令 `mke2fs -n /dev/sdaX` ，将会看到以下输出：
 
 ```shell
 mke2fs 1.44.2 (14-May-2018)
@@ -52,6 +51,6 @@ Proceed anyway? (y,N) y
 
 ### 从备份中恢复 {#从备份中恢复}
 
-先使用备份中列块的第一个 `number` 进行恢复，命令：=e2fsck -b 32768 /dev/sdaX -y=, 执行完成后重启。
+先使用备份中列块的第一个 `number` 进行恢复，命令： `e2fsck -b 32768 /dev/sdaX -y` , 执行完成后重启。
 
 如果重启还是进不了系统，就换一个 `列块 number` 继续恢复，然后重启，直至成功。

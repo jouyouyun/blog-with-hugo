@@ -1,8 +1,7 @@
 +++
 title = "Linux 时间标准"
-author = ["Wen"]
 date = 2018-08-27T21:38:21+08:00
-lastmod = 2019-02-09T23:32:42+08:00
+lastmod = 2019-02-10T17:54:51+08:00
 tags = ["timezone", "localtime", "rtc", "utc"]
 categories = ["BLOG"]
 draft = false

@@ -12,7 +12,7 @@
 
 ** 基本使用
 
-使用到的工具为: xdg-mime, gvfs-mime
+使用到的工具为: =xdg-mime, gvfs-mime=
 
 - 查询文件的类型
 

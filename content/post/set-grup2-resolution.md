@@ -1,8 +1,7 @@
 +++
 title = "设置 Grub2 分辨率"
-author = ["Wen"]
 date = 2017-07-29T21:38:21+08:00
-lastmod = 2019-02-09T22:55:21+08:00
+lastmod = 2019-02-10T17:57:23+08:00
 tags = ["grub2", "resolution"]
 categories = ["BLOG"]
 draft = false

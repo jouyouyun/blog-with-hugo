@@ -1,8 +1,7 @@
 +++
 title = "怎么处理 'Origin'值从'Google, Inc.'修改到了'Google LLC' 的 APT 错误"
-author = ["Wen"]
 date = 2018-11-07T21:38:21+08:00
-lastmod = 2019-02-09T23:47:31+08:00
+lastmod = 2019-02-10T17:54:14+08:00
 tags = ["google", "apt", "origin"]
 categories = ["BLOG"]
 draft = false

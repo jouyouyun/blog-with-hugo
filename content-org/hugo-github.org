@@ -9,7 +9,7 @@
 #+HUGO_AUTO_SET_LASTMOD: t
 #+TITLE: 使用 hugo 写博客
 #+DATE: 2019-02-02T17:31:21+08:00
-#+HUGO_TAGS: hugo
+#+HUGO_TAGS: hugo even
 #+HUGO_CATEGORIES: BLOG
 #+HUGO_DRAFT: false
 

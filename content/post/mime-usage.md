@@ -1,8 +1,7 @@
 +++
 title = "MIME Usage"
-author = ["Wen"]
 date = 2016-12-14T21:38:21+08:00
-lastmod = 2019-02-09T22:25:38+08:00
+lastmod = 2019-02-10T18:24:30+08:00
 tags = ["mime"]
 categories = ["BLOG"]
 draft = false
@@ -10,7 +9,7 @@ draft = false
 
 ## 基本使用 {#基本使用}
 
-使用到的工具为: xdg-mime, gvfs-mime
+使用到的工具为: `xdg-mime, gvfs-mime`
 
 -   查询文件的类型
 

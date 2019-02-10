@@ -1,8 +1,7 @@
 +++
 title = "Debug 小结"
-author = ["Wen"]
 date = 2016-02-03T15:06:21+08:00
-lastmod = 2019-02-09T22:30:46+08:00
+lastmod = 2019-02-10T17:52:42+08:00
 tags = ["debug"]
 categories = ["NOTE"]
 draft = false

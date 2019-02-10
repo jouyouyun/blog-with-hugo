@@ -1,8 +1,7 @@
 +++
 title = "XRecord 示例"
-author = ["Wen"]
 date = 2014-04-18T17:42:15+08:00
-lastmod = 2019-02-09T21:40:00+08:00
+lastmod = 2019-02-10T17:57:41+08:00
 tags = ["xtst", "xrecord"]
 categories = ["NOTE"]
 draft = false

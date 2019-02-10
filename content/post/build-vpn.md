@@ -1,8 +1,7 @@
 +++
 title = "在 VPS 中搭建 VPN 服务器"
-author = ["Wen"]
 date = 2014-07-04T21:38:21+08:00
-lastmod = 2019-02-09T22:26:26+08:00
+lastmod = 2019-02-10T18:26:29+08:00
 tags = ["vps", "vpn", "ssh"]
 categories = ["BLOG"]
 draft = false
@@ -14,7 +13,7 @@ draft = false
 
 注意：下面所有的操作都是以 `root` 用户进行的，非 `root` 用户请在命令前加上 `sudo`
 
-\*安装 `pptp` \*
+**安装 `pptp`**
 
 `apt-get install pptpd`
 
@@ -40,7 +39,7 @@ remoteip 192.168.0.234-238,192.168.0.245
 
 密码需要用英文双引号，最后的星号(\*)代表允许接入的 `IP` 可以是任意 `IP`
 
-\*设置 `DNS` \*
+**设置 `DNS`**
 
 `vi /etc/ppp/pptpd-options`
 

@@ -1,8 +1,7 @@
 +++
 title = "gorm 关联查询"
-author = ["Wen"]
 date = 2018-12-05T21:38:21+08:00
-lastmod = 2019-02-10T17:05:50+08:00
+lastmod = 2019-02-10T17:54:07+08:00
 tags = ["gorm", "association"]
 categories = ["BLOG"]
 draft = false
