@@ -1,7 +1,7 @@
 +++
 title = "linux 下 deepin 和 gnome 桌面的外观设置"
 date = 2018-10-23T21:38:21+08:00
-lastmod = 2019-02-10T18:16:19+08:00
+lastmod = 2019-02-12T14:36:19+08:00
 tags = ["deepin", "gnome", "theme", "gtk", "icon", "cursor", "font"]
 categories = ["BLOG"]
 draft = false
@@ -17,6 +17,8 @@ draft = false
 
 
 ## `GSettings` {#gsettings}
+
+<!--more-->
 
 -   获取 `key`
 

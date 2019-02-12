@@ -1,7 +1,7 @@
 +++
 title = "Linux Signal Examples"
 date = 2018-11-13T21:38:21+08:00
-lastmod = 2019-02-10T18:00:35+08:00
+lastmod = 2019-02-12T14:35:03+08:00
 tags = ["signal", "sigaction", "alarm", "kill", "raise"]
 categories = ["NOTE"]
 draft = false
@@ -18,6 +18,8 @@ draft = false
 
 
 ### `signal` 函数 {#signal-函数}
+
+<!--more-->
 
 **原型：**
 

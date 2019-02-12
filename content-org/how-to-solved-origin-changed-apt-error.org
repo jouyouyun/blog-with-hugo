@@ -23,6 +23,8 @@ N: This must be accepted explicitly before updates for this repository can be ap
 
 这个错误导致无法升级系统，错误说明了原因：是由于 =Google Chrome= 的 =Origin= 改变引起的，也给出了解决思路：手动接受这个改变。
 
+<!--more-->
+
 所以修复这个错误就很容易了，只需执行：
 
 #+BEGIN_SRC shell

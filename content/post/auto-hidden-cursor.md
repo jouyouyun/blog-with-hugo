@@ -1,7 +1,7 @@
 +++
 title = "Auto Hidden Cursor"
 date = 2016-04-22T21:38:21+08:00
-lastmod = 2019-02-10T17:52:03+08:00
+lastmod = 2019-02-12T14:29:40+08:00
 tags = ["cursor"]
 categories = ["BLOG"]
 draft = false
@@ -18,6 +18,8 @@ draft = false
 ### 设置光标 {#设置光标}
 
 设置光标主要需要调用下面两个函数:
+
+<!--more-->
 
 ```c
 int XDefineCursor(Display *display, Window w, Cursor cursor);

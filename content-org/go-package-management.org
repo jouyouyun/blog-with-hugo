@@ -16,6 +16,8 @@
 
 =go mod help= 可以查看其帮助文档:
 
+<!--more-->
+
 #+BEGIN_SRC shell
 $ go help mod
 Go mod provides access to operations on modules.

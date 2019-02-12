@@ -1,13 +1,15 @@
 +++
 title = "Go 笔记: Gob Write/Read File"
 date = 2014-07-07T13:06:21+08:00
-lastmod = 2019-02-10T17:53:25+08:00
+lastmod = 2019-02-12T14:33:20+08:00
 tags = ["go", "gob"]
 categories = ["NOTE"]
 draft = false
 +++
 
 `Gob` 使用实例，将结构体写入文件里，在需要的时候再从文件中读取出来。
+
+<!--more-->
 
 ```go
 package main

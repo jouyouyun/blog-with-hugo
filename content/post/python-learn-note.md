@@ -1,7 +1,7 @@
 +++
 title = "python3 学习笔记"
 date = 2018-12-02T21:38:21+08:00
-lastmod = 2019-02-10T17:55:18+08:00
+lastmod = 2019-02-12T14:35:53+08:00
 tags = ["python"]
 categories = ["NOTE"]
 draft = false
@@ -22,6 +22,8 @@ draft = false
 -   对于面向对象语言还需要了解类的声明, 继承, 多态等的用法
 
 还有一些就是此语言的一些特性, `python` 就还需要了解以下特性:
+
+<!--more-->
 
 -   模块的使用
 

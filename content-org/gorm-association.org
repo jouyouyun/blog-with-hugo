@@ -31,6 +31,8 @@ type Company struct {
 }
 #+END_SRC
 
+<!--more-->
+
 在查询 =User= 时希望把 =Company= 的信息也一并查询, 有以下三种方法:
 
 

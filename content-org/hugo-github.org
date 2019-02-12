@@ -25,6 +25,8 @@
 
 使用命令 =hugo new site <dir>= 来创建站点, 创建后的结构如下:
 
+<!--more-->
+
 #+BEGIN_SRC shell
 .
 ├── archetypes
@@ -111,4 +113,4 @@ git commit -am "Update submodule url."
 
 ** 自动发布到 =Github Page=
 
-在 =github= 创建一个以 =<username>.github.io= 命令的仓库, 然后将 =public= 中的文件 =push= 到刚才的 =repo= 中.
+在 =github= 创建一个以 =<username>.github.io= 命名的仓库, 然后将 =public= 中的文件 =push= 到刚才的 =repo= 中.

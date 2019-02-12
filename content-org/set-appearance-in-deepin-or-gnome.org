@@ -20,6 +20,8 @@
 
 ** =GSettings=
 
+<!--more-->
+
 - 获取 =key=
 
     =gsettings get <schema_id> <key>=

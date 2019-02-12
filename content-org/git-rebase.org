@@ -20,6 +20,8 @@
 
 当你工作时，=Git= 会在你每次修改了 =HEAD= 时悄悄地将改动记录下来。当你提交或修改分支时， =reflog= 就会更新。通过 =git reflog= 命令可以查看当前的状态：
 
+<!--more-->
+
 #+BEGIN_SRC shell
 7115aff (HEAD -> master, tag: 3.1.21, origin/master, origin/HEAD) HEAD@{0}: pull: Fast-forward
 c0a16ee HEAD@{1}: pull: Fast-forward

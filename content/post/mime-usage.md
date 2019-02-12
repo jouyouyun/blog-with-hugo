@@ -1,7 +1,7 @@
 +++
 title = "MIME Usage"
 date = 2016-12-14T21:38:21+08:00
-lastmod = 2019-02-10T18:24:30+08:00
+lastmod = 2019-02-12T14:35:27+08:00
 tags = ["mime"]
 categories = ["BLOG"]
 draft = false
@@ -22,6 +22,8 @@ draft = false
 -   设置默认程序
 
     如将 `text/plain` 的默认打开程序设置为 `gvim.desktop`, 可以执行 `xdg-mime default gvim.desktop text/plain` 或 `gvfs-mime --set text/plain gvim.desktop`
+
+<!--more-->
 
 
 ## 根据文件扩展名指定类型 {#根据文件扩展名指定类型}

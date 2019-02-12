@@ -1,7 +1,7 @@
 +++
 title = "Enable Coredump"
 date = 2016-04-25T19:04:21+08:00
-lastmod = 2019-02-10T17:52:48+08:00
+lastmod = 2019-02-12T14:32:12+08:00
 tags = ["coredump"]
 categories = ["BLOG"]
 draft = false
@@ -26,6 +26,8 @@ draft = false
 通过可以修改 `/proc/sys/kernel/core_uses_pid` 文件内容为 `1` 来生成以 `pid` 作为扩展名的 `core` 文件.
 
 通过修改 `/proc/sys/kernel/core_pattern` 可以修改 `core` 文件的保存位置和格式. 如把内容改为 `/tmp/core-%e-%p-%t`, 就表示把 `core` 文件保存到 `/tmp` 目录下, 文件名的格式为 `core-命令名-pid-时间戳` .
+
+<!--more-->
 
 
 ### 永久开启 {#永久开启}

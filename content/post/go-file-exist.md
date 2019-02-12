@@ -1,7 +1,7 @@
 +++
 title = "Go 笔记: 判断文件是否存在"
 date = 2014-06-20T21:38:21+08:00
-lastmod = 2019-02-10T17:53:19+08:00
+lastmod = 2019-02-12T14:33:04+08:00
 tags = ["go", "file"]
 categories = ["NOTE"]
 draft = false
@@ -26,3 +26,5 @@ func isFileExist(filename string) bool {
         return err == nil || os.IsExist(err)
 }
 ```
+
+<!--more-->

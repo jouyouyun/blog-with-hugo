@@ -12,6 +12,8 @@
 
 使用 Go 语言实现字符串与文件的 MD5 值计算，但是大文件不要使用此方法。
 
+<!--more-->
+
 
 #+BEGIN_SRC go
 package utils

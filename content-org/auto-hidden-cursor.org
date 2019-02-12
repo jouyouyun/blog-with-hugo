@@ -21,6 +21,8 @@
 
 设置光标主要需要调用下面两个函数:
 
+<!--more-->
+
 #+BEGIN_SRC c
 int XDefineCursor(Display *display, Window w, Cursor cursor);
 void XFixesChangeCursorByName (Display *dpy, Cursor source, const char *name);

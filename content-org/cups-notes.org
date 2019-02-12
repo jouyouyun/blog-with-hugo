@@ -28,6 +28,8 @@
 
   安装包: =foomatic-db foomatic-db-engine foomatic-db-compressed-ppds foomatic-db-gutenprint foomatic-filters= 以及 =foomatic-db-nonfree=
 
+<!--more-->
+
 + foo2zjs
 
   =Drivers for ZjStream protocol printers such as the HP Laserjet 1018.=

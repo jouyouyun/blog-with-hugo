@@ -1,7 +1,7 @@
 +++
 title = "CUPS 资料"
 date = 2018-04-08T21:38:21+08:00
-lastmod = 2019-02-10T18:21:51+08:00
+lastmod = 2019-02-12T14:31:34+08:00
 tags = ["cups"]
 categories = ["NOTE"]
 draft = false
@@ -25,6 +25,8 @@ draft = false
     `Foomatic` 是一个基于数据库的，集成自由软件打印机驱动和脱机打印程序的系统。
 
     安装包: `foomatic-db foomatic-db-engine foomatic-db-compressed-ppds foomatic-db-gutenprint foomatic-filters` 以及 `foomatic-db-nonfree`
+
+<!--more-->
 
 -   foo2zjs
 

@@ -22,6 +22,8 @@
 
 *** =signal= 函数
 
+<!--more-->
+
 *原型：*
 
 #+BEGIN_SRC c

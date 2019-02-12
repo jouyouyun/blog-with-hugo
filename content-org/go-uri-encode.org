@@ -12,6 +12,8 @@
 
 最近在处理路径时，要求统一用 =URI= (通用资源标识符) 的格式来表示。偶尔会遇到 URI 被编码的情况，这就需要解码了，故在此把 =Encode/Decode URI= 的方法记录在此，以备后用。
 
+<!--more-->
+
 #+BEGIN_SRC go
 package utils
 

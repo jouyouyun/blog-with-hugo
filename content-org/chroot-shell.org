@@ -23,6 +23,8 @@
 /dev/sda8	Swap
 #+END_SRC
 
+<!--more-->
+
 ** =chroot= 挂载脚本
 
 #+BEGIN_SRC shell

@@ -13,6 +13,8 @@
 =Gob= 使用实例，将结构体写入文件里，在需要的时候再从文件中读取出来。
 
 
+<!--more-->
+
 #+BEGIN_SRC go
 package main
 

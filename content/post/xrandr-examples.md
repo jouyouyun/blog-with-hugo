@@ -1,7 +1,7 @@
 +++
 title = "XRandr Examples"
 date = 2016-06-06T16:52:30+08:00
-lastmod = 2019-02-10T17:57:35+08:00
+lastmod = 2019-02-12T14:36:53+08:00
 tags = ["xrandr"]
 categories = ["NOTE"]
 draft = false
@@ -21,6 +21,8 @@ draft = false
 设置分辨率时需要指定设置的 `ouput` 以及 `mode`, 如将 `eDP1` 的分辨率改为 `1920x1080`, 命令就是 `xrandr --output eDP1 --mode 1920x1080`.
 
 但是单屏时不用这么麻烦, 可以直接使用命令 `xrandr -s 1920x1080` 来更改.
+
+<!--more-->
 
 
 ## 添加分辨率 {#添加分辨率}

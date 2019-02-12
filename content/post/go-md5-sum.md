@@ -1,13 +1,15 @@
 +++
 title = "Go 笔记: md5 sum"
 date = 2014-06-22T22:54:38+08:00
-lastmod = 2019-02-10T17:53:32+08:00
+lastmod = 2019-02-12T14:33:29+08:00
 tags = ["go", "md5"]
 categories = ["NOTE"]
 draft = false
 +++
 
 使用 Go 语言实现字符串与文件的 MD5 值计算，但是大文件不要使用此方法。
+
+<!--more-->
 
 ```go
 package utils

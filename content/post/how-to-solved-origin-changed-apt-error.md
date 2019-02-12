@@ -1,7 +1,7 @@
 +++
 title = "怎么处理 'Origin'值从'Google, Inc.'修改到了'Google LLC' 的 APT 错误"
 date = 2018-11-07T21:38:21+08:00
-lastmod = 2019-02-10T17:54:14+08:00
+lastmod = 2019-02-12T14:34:23+08:00
 tags = ["google", "apt", "origin"]
 categories = ["BLOG"]
 draft = false
@@ -19,6 +19,8 @@ N: This must be accepted explicitly before updates for this repository can be ap
 ```
 
 这个错误导致无法升级系统，错误说明了原因：是由于 `Google Chrome` 的 `Origin` 改变引起的，也给出了解决思路：手动接受这个改变。
+
+<!--more-->
 
 所以修复这个错误就很容易了，只需执行：
 

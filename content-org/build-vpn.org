@@ -26,6 +26,8 @@
 
 取消下面内容的注释
 
+<!--more-->
+
 #+BEGIN_SRC shell
 option /etc/ppp/pptpd-options
 localip 192.168.0.1

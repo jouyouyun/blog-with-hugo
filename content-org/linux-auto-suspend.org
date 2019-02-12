@@ -18,6 +18,8 @@
 
 =RTC= 子系统在目录 =/sys/class/rtc/= 下，会根据设备创建对应的目录，需要在内核中开启支持，配置如下：
 
+<!--more-->
+
 #+BEGIN_SRC shell
 CONFIG_HPET_EMULATE_RTC=y
 CONFIG_PM_TRACE_RTC=y

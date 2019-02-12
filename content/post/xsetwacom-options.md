@@ -1,7 +1,7 @@
 +++
 title = "xsetwacom 选项说明"
 date = 2016-02-03T14:58:21+08:00
-lastmod = 2019-02-10T17:57:48+08:00
+lastmod = 2019-02-12T14:37:12+08:00
 tags = ["xsetwacom", "wacom"]
 categories = ["NOTE"]
 draft = false
@@ -15,6 +15,8 @@ draft = false
 
 
 ## Options {#options}
+
+<!--more-->
 
 
 ### Area {#area}

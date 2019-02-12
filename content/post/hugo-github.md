@@ -1,8 +1,8 @@
 +++
 title = "使用 hugo 写博客"
 date = 2019-02-02T17:31:21+08:00
-lastmod = 2019-02-10T17:54:23+08:00
-tags = ["hugo"]
+lastmod = 2019-02-12T14:22:14+08:00
+tags = ["hugo", "even"]
 categories = ["BLOG"]
 draft = false
 +++
@@ -21,6 +21,8 @@ draft = false
 ### 创建一个站点 {#创建一个站点}
 
 使用命令 `hugo new site <dir>` 来创建站点, 创建后的结构如下:
+
+<!--more-->
 
 ```shell
 .
@@ -109,4 +111,4 @@ git commit -am "Update submodule url."
 
 ## 自动发布到 `Github Page` {#自动发布到-github-page}
 
-在 `github` 创建一个以 `<username>.github.io` 命令的仓库, 然后将 `public` 中的文件 `push` 到刚才的 `repo` 中.
+在 `github` 创建一个以 `<username>.github.io` 命名的仓库, 然后将 `public` 中的文件 `push` 到刚才的 `repo` 中.

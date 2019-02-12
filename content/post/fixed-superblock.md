@@ -1,7 +1,7 @@
 +++
 title = "修复 superblock"
 date = 2018-07-27T21:38:21+08:00
-lastmod = 2019-02-10T18:18:05+08:00
+lastmod = 2019-02-12T14:38:17+08:00
 tags = ["superblock"]
 categories = ["BLOG"]
 draft = false
@@ -9,9 +9,7 @@ draft = false
 
 本周去某公司调试系统，他们硬件测试部分送来了一台系统无法进入的机器，他们也不知道怎么弄得，让我看下是系统原因还是 `SSD` 硬件有问题。
 
-拿到机器开机后，没有正常的进入系统，直接进入了=initramfs mode= 并有=filesystem invalid superblock checksum error = 的错误提示，遂告诉他们是系统的 `filesystem` 挂了，然后开始查找修复方法，最后找到了方法并修复了机器，在此记录一下。
-
----
+拿到机器开机后，没有正常的进入系统，直接进入了 `initramfs mode` 并有 `filesystem invalid superblock checksum error` 的错误提示，遂告诉他们是系统的 `filesystem` 挂了，然后开始查找修复方法，最后找到了方法并修复了机器，在此记录一下。
 
 
 ## 修复方法 {#修复方法}
@@ -22,6 +20,8 @@ draft = false
 ### 先确定你系统所在的分区 {#先确定你系统所在的分区}
 
 可以执行 `lsblk` 来查看分区信息，然后确定，假如是 `/dev/sdaX`
+
+<!--more-->
 
 
 ### 列出分区的 `superblock` 备份信息 {#列出分区的-superblock-备份信息}

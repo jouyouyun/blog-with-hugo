@@ -1,7 +1,7 @@
 +++
 title = "Leanote Installation"
 date = 2017-07-17T21:38:21+08:00
-lastmod = 2019-02-10T17:54:29+08:00
+lastmod = 2019-02-12T14:34:41+08:00
 tags = ["leanote"]
 categories = ["BLOG"]
 draft = false
@@ -19,6 +19,8 @@ draft = false
 -   `Leanote` 下载地址: [见这里](http://leanote.org/#download)
 
 -   `mongodb` 下载地址: [见这里](https://www.mongodb.com/download-center)
+
+<!--more-->
 
 
 ## 配置 {#配置}

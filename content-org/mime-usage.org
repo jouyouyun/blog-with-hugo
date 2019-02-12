@@ -26,6 +26,8 @@
 
   如将 =text/plain= 的默认打开程序设置为 =gvim.desktop=, 可以执行 =xdg-mime default gvim.desktop text/plain= 或 =gvfs-mime --set text/plain gvim.desktop=
 
+<!--more-->
+
 ** 根据文件扩展名指定类型
 
 1.  创建 =xml= 文件, 指定类型, 如将 =*.org= 指定为 =text/org-mode=, 文件内容如下:

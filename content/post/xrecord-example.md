@@ -1,7 +1,7 @@
 +++
 title = "XRecord 示例"
 date = 2014-04-18T17:42:15+08:00
-lastmod = 2019-02-10T17:57:41+08:00
+lastmod = 2019-02-12T14:37:01+08:00
 tags = ["xtst", "xrecord"]
 categories = ["NOTE"]
 draft = false
@@ -9,6 +9,8 @@ draft = false
 
 最近在做快捷键绑定的项目，但在绑定单按键时发现 `XGrabKey` 无法处理。遂请教组长，得知 `XRecord` 可以处理，于是就去查找 `XRecord` 的相关资料，但却很少。
 所以在此记录一下整理的示例代码，以便日后查看，其功能在代码注释中写出。
+
+<!--more-->
 
 ```c
 /*

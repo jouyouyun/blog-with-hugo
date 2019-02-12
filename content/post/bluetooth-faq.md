@@ -1,15 +1,13 @@
 +++
 title = "Bluetooth FAQ"
 date = 2017-11-20T21:38:21+08:00
-lastmod = 2019-02-10T18:22:34+08:00
+lastmod = 2019-02-12T14:30:09+08:00
 tags = ["bluetooth"]
 categories = ["BLOG"]
 draft = false
 +++
 
 收集遇到的 `bluetooth` 问题，使用的是 `deepin` 。
-
----
 
 
 ## 控制中心不显示蓝牙模块 {#控制中心不显示蓝牙模块}
@@ -29,6 +27,8 @@ draft = false
         这就表明初始化没问题，继续下一步
 
 ---
+
+<!--more-->
 
 1.  执行 `sudo hciconfig` 查看设备当前的状态
     -   状态为 `DOWN`

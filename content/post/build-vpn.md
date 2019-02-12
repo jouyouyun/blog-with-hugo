@@ -1,7 +1,7 @@
 +++
 title = "在 VPS 中搭建 VPN 服务器"
 date = 2014-07-04T21:38:21+08:00
-lastmod = 2019-02-10T18:26:29+08:00
+lastmod = 2019-02-12T14:30:30+08:00
 tags = ["vps", "vpn", "ssh"]
 categories = ["BLOG"]
 draft = false
@@ -22,6 +22,8 @@ draft = false
 `vi /etc/pptpd.conf`
 
 取消下面内容的注释
+
+<!--more-->
 
 ```shell
 option /etc/ppp/pptpd-options

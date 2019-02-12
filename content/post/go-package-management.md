@@ -1,7 +1,7 @@
 +++
 title = "Go 包管理之gom"
 date = 2018-11-27T21:38:21+08:00
-lastmod = 2019-02-10T17:53:40+08:00
+lastmod = 2019-02-12T14:33:42+08:00
 tags = ["go", "module", "package", "gom"]
 categories = ["NOTE"]
 draft = false
@@ -12,6 +12,8 @@ draft = false
 `Go Module` 是官方用来管理 `package` 依赖的工具, `1.11` 新加的, 使用时需要设置变量: `GO111MODULE=on` .
 
 `go mod help` 可以查看其帮助文档:
+
+<!--more-->
 
 ```shell
 $ go help mod

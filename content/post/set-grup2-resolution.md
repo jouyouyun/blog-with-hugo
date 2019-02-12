@@ -1,7 +1,7 @@
 +++
 title = "设置 Grub2 分辨率"
 date = 2017-07-29T21:38:21+08:00
-lastmod = 2019-02-10T17:57:23+08:00
+lastmod = 2019-02-12T14:36:30+08:00
 tags = ["grub2", "resolution"]
 categories = ["BLOG"]
 draft = false
@@ -15,6 +15,8 @@ draft = false
 ## 查询支持的分辨率 {#查询支持的分辨率}
 
 在设置 `Grub` 分辨率之前，需要先知道支持的分辨率列表，而幸运的是可以到 `Grub` 命令行查询。
+
+<!--more-->
 
 1.  进入 `Grub` 命令行
 

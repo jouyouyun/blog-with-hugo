@@ -1,7 +1,7 @@
 +++
 title = "gorm 关联查询"
 date = 2018-12-05T21:38:21+08:00
-lastmod = 2019-02-10T17:54:07+08:00
+lastmod = 2019-02-12T14:34:13+08:00
 tags = ["gorm", "association"]
 categories = ["BLOG"]
 draft = false
@@ -27,6 +27,8 @@ type Company struct {
         UserId   int    `gorm:"TYPE:int(11);NOT NULL;INDEX"`
 }
 ```
+
+<!--more-->
 
 在查询 `User` 时希望把 `Company` 的信息也一并查询, 有以下三种方法:
 

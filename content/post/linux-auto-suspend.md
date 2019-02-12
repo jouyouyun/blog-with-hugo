@@ -1,7 +1,7 @@
 +++
 title = "Linux 休眠自动唤醒"
 date = 2018-10-21T21:38:21+08:00
-lastmod = 2019-02-10T17:54:36+08:00
+lastmod = 2019-02-12T14:34:50+08:00
 tags = ["suspend", "wakeup", "rtc"]
 categories = ["BLOG"]
 draft = false
@@ -15,6 +15,8 @@ draft = false
 ## `RTC` 子系统 {#rtc-子系统}
 
 `RTC` 子系统在目录 `/sys/class/rtc/` 下，会根据设备创建对应的目录，需要在内核中开启支持，配置如下：
+
+<!--more-->
 
 ```shell
 CONFIG_HPET_EMULATE_RTC=y

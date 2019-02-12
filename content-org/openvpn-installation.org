@@ -27,6 +27,8 @@ sudo cp -R /etc/easy-rsa /etc/openvpn
 + Config vars
 取消并修改以下项:
 
+<!--more-->
+
 #+BEGIN_SRC shell
 set_var EASYRSA_REQ_COUNTRY     "CN"
 set_var EASYRSA_REQ_PROVINCE    "Hongkong"

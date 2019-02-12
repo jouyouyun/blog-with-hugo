@@ -1,7 +1,7 @@
 +++
 title = "chroot 脚本"
 date = 2014-07-05T21:38:21+08:00
-lastmod = 2019-02-10T17:52:29+08:00
+lastmod = 2019-02-12T14:30:40+08:00
 tags = ["chroot"]
 categories = ["NOTE"]
 draft = false
@@ -19,6 +19,8 @@ draft = false
 /dev/sda6	/home
 /dev/sda8	Swap
 ```
+
+<!--more-->
 
 
 ## `chroot` 挂载脚本 {#chroot-挂载脚本}

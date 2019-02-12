@@ -29,3 +29,6 @@ func isFileExist(filename string) bool {
 	return err == nil || os.IsExist(err)
 }
 #+END_SRC
+
+
+<!--more-->

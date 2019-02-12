@@ -1,7 +1,7 @@
 +++
 title = "OpenVPN Installation"
 date = 2016-12-27T21:38:21+08:00
-lastmod = 2019-02-10T17:55:11+08:00
+lastmod = 2019-02-12T14:35:40+08:00
 tags = ["openvpn"]
 categories = ["BLOG"]
 draft = false
@@ -27,6 +27,8 @@ sudo cp -R /etc/easy-rsa /etc/openvpn
 -   Config vars
 
 取消并修改以下项:
+
+<!--more-->
 
 ```shell
 set_var EASYRSA_REQ_COUNTRY     "CN"

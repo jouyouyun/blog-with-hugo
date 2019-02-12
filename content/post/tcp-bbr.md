@@ -1,7 +1,7 @@
 +++
 title = "TCP BBR"
 date = 2017-07-20T21:38:21+08:00
-lastmod = 2019-02-10T17:57:28+08:00
+lastmod = 2019-02-12T14:36:39+08:00
 tags = ["bbr"]
 categories = ["BLOG"]
 draft = false
@@ -20,6 +20,8 @@ net.ipv4.tcp_congestion_control = bbr
 
 如果这个模块不会自动加载, 需要把 `tcp_bbr_powered` 添加到 `/etc/modules-load.d/modules.conf` 中.
 另外测试发现, 有时 `sysctl.conf` 里的设置并不会应用, 需要手动执行一下, 因此便写了 `reload-sysctl.service` 来做这个, `systemctl enable` 这个服务后, 一切就 OK 了.
+
+<!--more-->
 
 
 ## 使用增强版 {#使用增强版}

@@ -1,7 +1,7 @@
 +++
 title = "Git Rebase 回退"
 date = 2018-04-12T21:38:21+08:00
-lastmod = 2019-02-10T18:19:21+08:00
+lastmod = 2019-02-12T14:32:41+08:00
 tags = ["git", "rebase", "reflog", "recovery"]
 categories = ["BLOG"]
 draft = false
@@ -15,6 +15,8 @@ draft = false
 ## reflog {#reflog}
 
 当你工作时，=Git= 会在你每次修改了 `HEAD` 时悄悄地将改动记录下来。当你提交或修改分支时， `reflog` 就会更新。通过 `git reflog` 命令可以查看当前的状态：
+
+<!--more-->
 
 ```shell
 7115aff (HEAD -> master, tag: 3.1.21, origin/master, origin/HEAD) HEAD@{0}: pull: Fast-forward
