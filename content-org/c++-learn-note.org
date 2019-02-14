@@ -1,0 +1,565 @@
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: post
+#+SEQ_TODO: TODO NEXT DRAFT DONE
+#+FILETAGS: post
+#+OPTIONS:   *:t <:nil timestamp:nil toc:nil ^:{}
+#+HUGO_AUTO_SET_LASTMOD: t
+#+TITLE: C++ 基础笔记
+#+DATE: 2019-02-14T10:28:21+08:00
+#+HUGO_TAGS: c++ class
+#+HUGO_CATEGORIES: NOTE
+#+HUGO_DRAFT: true
+
+最近做的一个项目需要用 =C++= 来编写, 于是回顾了一番 =C++= 的基础知识, 遂整理如下, 以便后用.
+
+** 编码风格
+
+*** 头文件
+
+一般一个 =.cc= 文件对于一个 =.h= 文件, =.h= 文件应该使用 =#define= 保护, 如 =hello/src/info.h=, 就应如下:
+
+#+BEGIN_SRC c++
+#ifndef _HELLO_INFO_H_
+#define _HELLO_INFO_H_
+...
+#endif // _HELLO_INFO_H
+#+END_SRC
+
+<!--more-->
+
+*** 命名
+
+- 文件名应小写, 以 =_= 连接单词
+- 尽量使用描述性的命名, 让变量更易理解
+- 变量名保持小写, 单词之间使用 =_= 连接
+- 类名应单词首字母大写, 单词之间不用分开
+- 类成员名保持小写, 使用 =_= 连接
+- 结构体名单词首字母要大写, 单词之间不分开
+- 结构体成员名保持小写, 使用 =_= 连接
+- 常量名首个单词小写, 后面的单词首字母大写
+- 常规函数首字母应大写, 取值和设值函数应与变量名相同, 如有一成员 =my_member=, 其取值和设值函数就是: =my_member()= 和 =set_my_member()=
+- 枚举变量应与常量一致
+- 宏应全部大写, 单词用 =_= 分割
+
+
+*** 注释
+
+- 单行使用 =//=, 多行使用 =/* */=
+- 每个文件的头部应加入版权公告
+- 每个类的定义都要有注释, 使用 =//=
+- 函数的注释与类相同, 但不要写一些显而易见的注释
+- =TODO= 注释风格如: =TODO(author): something=
+- 使用 =DEPRECATED= 标记弃用的接口
+
+
+*** 缩进
+- 使用空格代替 =tab=, 默认为 =4= 个空格
+
+-----
+
+更详细的请参见 [[https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents/][Google C++ 风格指南]]
+
+** 变量
+
+=C++= 内置了 =bool, char, int, float, double, void, wchar_t(typedef wchar_t short int)= 这些类型.
+声明时用 =<var_type> <var_name>;= 的方式, 如: =int i;= 或 =int i,j;=
+
+*** 引用
+
+=C++= 引用 =VS= 指针:
+
+- 不存在空引用, 引用必须连接到一块合法的内存
+- 一旦引用被初始化为一个对象, 就不能被指向到另一个对象, 指针可以在任何时候指向到另一个对象
+- 引用必须在创建时被初始化, 指针可以在任何时间被初始化
+
+语法:
+
+#+BEGIN_SRC c++
+int i = 10;
+int& s = i;
+#+END_SRC
+
+** 输入/输出
+
+语法:
+
+#+BEGIN_SRC c++
+char name[1024];
+cout << name << endl; // 标准输出
+
+cin << name; // 标准输入
+
+cerr << "Error: " << name << endl; // 标准错误
+
+clog << "Info:" << name << endl; // 标准日志流
+#+END_SRC
+
+** 控制语句
+
+*** WHILE
+
+语法:
+
+#+BEGIN_SRC c++
+while (condition) {
+}
+
+do {
+} while (condition)
+#+END_SRC
+
+=while= 与 =do ... while= 的区别是: =do ... while= 会在 =condition= 判断前先执行一次
+
+
+*** IF
+
+语法:
+
+#+BEGIN_SRC c++
+if (condition) {
+} else if (condition) {
+} else {
+}
+#+END_SRC
+
+*** FOR
+
+语法:
+
+#+BEGIN_SRC c++
+for (init;condition;increment) {
+}
+#+END_SRC
+
+-----
+
+=break, continue= 可以在 =while, do ... while, for= 中使用, =goto= 则在上面的语句中都可以使用
+
+** 函数
+
+语法:
+
+#+BEGIN_SRC c++
+<type> FuncName (args...) {}
+#+END_SRC
+
+参数声明时可以指定默认值, 如: =int sum(int a, int b=5){}=
+
+参数可用的传递方式如下:
+
+- 传值调用
+  把参数的实际值复制给函数的形式参数, 在这种情况下, 修改函数内的形式参数对实际参数没有影响
+- 指针调用
+  把参数的地址复制给形式参数, 在函数内, 该地址用于访问调用中要用到的实际参数. 这意味着, 修改形式参数会影响实际参数
+- 引用调用
+  把参数的引用复制给形式参数, 在函数内, 该引用用于访问调用中要用到的实际参数. 这意味着, 修改形式参数会影响实际参数
+
+
+*** Lambda
+
+=Lambda= 表达式把函数看作对象, =Lambda= 表达式可以像对象一样使用, 比如可以将它们赋给变量和作为参数传递, 还可以像函数一样对其求值
+
+语法:
+
+#+BEGIN_SRC c++
+[capture](parameters)->return-type{body}
+
+// example:
+[](int x, int y){ return x < y ; }
+
+// none return
+[]{ ++global_x; }
+#+END_SRC
+
+在 =Lambda= 表达式内可以访问当前作用域的变量, 这是 =Lambda= 表达式的闭包 =(Closure)= 行为. C++变量传递有传值和传引用的区别, 可以通过前面的[]来指定：
+
+#+BEGIN_SRC shell
+[]      // 沒有定义任何变量, 使用未定义变量会引发错误
+[x, &y] // x以传值方式传入 (默认), y以引用方式传入
+[&]     // 任何被使用到的外部变量都隐式地以引用方式加以引用
+[=]     // 任何被使用到的外部变量都隐式地以传值方式加以引用
+[&, x]  // x显式地以传值方式加以引用, 其余变量以引用方式加以引用
+[=, &z] // z显式地以引用方式加以引用, 其余变量以传值方式加以引用
+
+另外有一点需要注意: 对于 [=] 或 [&] 的形式, lambda 表达式可以直接使用 this 指针, 但是, 对于 [] 的形式, 如果要使用 this 指针, 必须显式传入:
+[this]() { this->someFunc(); }();
+#+END_SRC
+
+** 类
+
+语法:
+
+#+BEGIN_SRC c++
+class <Name> {
+   public:
+   // 公有成员
+   // 成员在程序中类的外部是可访问的
+   <var_type> <var_member>;
+
+   <func_type> FuncName(args);
+
+   protected:
+   // 受保护成员
+   // 成员变量或函数在类的外部是不可访问的, 甚至是不可查看的, 只有类和友元函数可以访问私有成员
+
+   private:
+   // 私有成员
+   // 成员变量或函数与私有成员十分相似, 但有一点不同, 保护成员在派生类（即子类）中是可访问的
+};
+#+END_SRC
+
+类里面不写是什么类型, 默认是 =private= 的
+
+**** 构造函数
+
+类的构造函数是类的一种特殊的成员函数, 它会在每次创建类的新对象时执行.
+构造函数的名称与类的名称是完全相同的, 并且不会返回任何类型, 也不会返回 =void=, 构造函数可用于为某些成员变量设置初始值
+
+默认的构造函数没有任何参数, 但如果需要, 构造函数也可以带有参数, 这样在创建对象时就会给对象赋初始值
+
+**** 析构函数
+
+类的析构函数是类的一种特殊的成员函数, 它会在每次删除所创建的对象时执行.
+析构函数的名称与类的名称是完全相同的, 只是在前面加了个波浪号 =(~)= 作为前缀, 它不会返回任何值, 也不能带有任何参数. 析构函数有助于在跳出程序 (比如关闭文件、释放内存等) 前释放资源
+
+**** 拷贝构造函数
+
+拷贝构造函数是一种特殊的构造函数, 它在创建对象时, 是使用同一类中之前创建的对象来初始化新创建的对象. 拷贝构造函数通常用于:
+
+- 通过使用另一个同类型的对象来初始化新创建的对象
+- 复制对象把它作为参数传递给函数
+- 复制对象, 并从函数返回这个对象
+
+**** 友元函数
+
+类的友元函数是定义在类外部, 但有权访问类的所有私有 =(private)= 成员和保护 =(protected)= 成员. 尽管友元函数的原型有在类的定义中出现过, 但是友元函数并不是成员函数.
+友元可以是一个函数, 该函数被称为友元函数; 友元也可以是一个类, 该类被称为友元类, 在这种情况下, 整个类及其所有成员都是友元.
+
+如果要声明函数为一个类的友元, 需要在类定义中该函数原型前使用关键字 =friend=, 如下所示:
+
+#+BEGIN_SRC c++
+class Box
+{
+   double width;
+public:
+   double length;
+   friend void printWidth( Box box );
+   void setWidth( double wid );
+};
+
+friend class ClassTwo;
+#+END_SRC
+
+友元函数没有 =this= 指针, 则参数要有三种情况:
+
+- 要访问非 =static= 成员时, 需要对象做参数
+- 要访问 =static= 成员或全局变量时, 则不需要对象做参数
+- 如果做参数的对象是全局对象, 则不需要对象做参数
+
+*注意:* 可以直接调用友元函数, 不需要通过对象或指针
+
+
+**** 静态成员
+
+使用 =static= 关键字来把类成员定义为静态的, 当我们声明类的成员为静态时, 这意味着无论创建多少个类的对象, 静态成员都只有一个副本.
+
+静态成员在类的所有对象中是共享的, 如果不存在其他的初始化语句, 在创建第一个对象时, 所有的静态数据都会被初始化为零.
+我们不能把静态成员的初始化放置在类的定义中, 但是可以在类的外部通过使用范围解析运算符 =::= 来重新声明静态变量从而对它进行初始化.
+
+#+BEGIN_SRC c++
+class A {
+public:
+    static int count;
+    A();
+};
+
+// 初始化静态成员
+int A::count = 1;
+#+END_SRC
+
+**** 静态成员函数
+
+如果把函数成员声明为静态的, 就可以把函数与类的任何特定对象独立开来. 静态成员函数即使在类对象不存在的情况下也能被调用, 静态函数只要使用类名加范围解析运算符 =::= 就可以访问.
+
+静态成员函数只能访问静态成员数据, 其他静态成员函数和类外部的其他函数
+
+静态成员函数有一个类范围, 他们不能访问类的 =this= 指针. 您可以使用静态成员函数来判断类的某些对象是否已被创建
+
+*静态成员函数与普通成员函数的区别:*
+
+- 静态成员函数没有 =this= 指针, 只能访问静态成员 (包括静态成员变量和静态成员函数)
+- 普通成员函数有 =this= 指针, 可以访问类中的任意成员; 而静态成员函数没有 =this= 指针
+
+*** 继承
+
+语法:
+
+#+BEGIN_SRC c++
+class A {};
+
+class B: public A {};
+
+class C: private A {};
+
+class D: protected A {};
+#+END_SRC
+
+如果继承时不显示声明是 =private, protected, public= 继承, 则默认是 =private= 继承
+
+类可以继承多个父类.
+
+
+*** 重载
+
+=C++= 允许在同一作用域中的某个函数和运算符指定多个定义, 分别称为函数重载和运算符重载.
+重载声明是指一个与之前已经在该作用域内声明过的函数或方法具有相同名称的声明, 但是它们的参数列表和定义 (实现) 不相同.
+当您调用一个重载函数或重载运算符时, 编译器通过把您所使用的参数类型与定义中的参数类型进行比较, 决定选用最合适的定义.
+选择最合适的重载函数或重载运算符的过程, 称为重载决策.
+
+**** 函数重载
+
+在同一个作用域内, 可以声明几个功能类似的同名函数, 但是这些同名函数的形式参数 (指参数的个数, 类型或者顺序) 必须不同, 您不能仅通过返回类型的不同来重载函数.
+如:
+
+#+BEGIN_SRC c++
+class A {
+public:
+    void print(int i) {
+        cout << "Integer: " << i << endl;
+    }
+
+    void print(char *s) {
+        cout << "String: " << s << endl;
+    }
+
+    void print(float f) {
+        cout << "Float: " << f << endl;
+    }
+
+}
+#+END_SRC
+
+**** 操作符重载
+
+重载的操作符是带有特殊名称的函数, 函数名是由关键字 =operator= 和其后要重载的运算符符号构成的. 与其他函数一样, 重载运算符有一个返回类型和一个参数列表.
+如重载 =Foo= 的加法运算符: =Box operator+(const Box &)=
+
+可重载的操作符:
+
+- 双目算术运算符
+  *+, -, *, /, %*
+- 关系运算符
+  *==, !=, <, >, <=, >=*
+- 逻辑运算符
+  *||, &&, !*
+- 单目运算符
+  *+(正)，-(负)，*(指针)，&(取地址)*
+- 自增自减运算符
+  *++, --*
+- 位运算符
+  *|, &, ~(按位取反)，^(按位异或),，<< (左移)，>>(右移)*
+- 赋值运算符
+  *=, +=, -=, *=, /= , %= , &=, |=, ^=, <<=, >>=*
+- 空间申请与释放
+  *new, delete, new[ ] , delete[]*
+- 其他运算符
+  *()(函数调用)，->(成员访问)，,(逗号)，[](下标)*
+
+*** 多态
+
+多态意味着调用成员函数时, 会根据调用函数的对象的类型来执行不同的函数, 如:
+
+#+BEGIN_SRC c++
+class Shape {
+protected:
+    int width, height;
+public:
+    Shape(int w, int h)
+    {
+        width = w;
+        height = h;
+    }
+    // 必须添加 virtual, 不然下面的多态无效, 因为 area 在编译时已设置好了, 叫早绑定, 也叫静态绑定
+    // virtual 指明使用动态绑定
+    virtual int area()
+    {
+        return 0;
+    }
+};
+class Rectangle: public Shape {
+public:
+    Rectangle(int w, int h): Shape(w,h){}
+    int area()
+    {
+        return width * height;
+    }
+};
+class Triangle: public Shape {
+public:
+    Triangle(int w, int h): Shape(w,h){}
+    int area()
+    {
+        return width * height;
+    }
+};
+
+int
+main()
+{
+    Shape *s;
+    Rectangle r(10, 7);
+    Triangle t(5, 5);
+
+   // 存储矩形的地址
+   s = &r;
+   // 调用矩形的求面积函数 area
+   s->area();
+
+   // 存储三角形的地址
+   s = &t;
+   // 调用三角形的求面积函数 area
+   s->area();
+
+   return 0;
+}
+#+END_SRC
+
+*虚函数:*
+
+虚函数是在基类中使用关键字 =virtual= 声明的函数, 在派生类中重新定义基类中定义的虚函数时, 会告诉编译器不要静态链接到该函数.
+我们想要的是在程序中任意点可以根据所调用的对象类型来选择调用的函数, 这种操作被称为动态链接, 或后期绑定.
+
+*纯虚函数:*
+
+您可能想要在基类中定义虚函数, 以便在派生类中重新定义该函数更好地适用于对象, 但是您在基类中又不能对虚函数给出有意义的实现, 这个时候就会用到纯虚函数.
+我们可以把基类中的虚函数 =area()= 改写如下:
+
+#+BEGIN_SRC c++
+class Shape {
+protected:
+    int width, height;
+public:
+    Shape(int w, int h)
+    {
+        width = w;
+        height = h;
+    }
+    // 纯虚函数
+    virtual int area() = 0;
+};
+#+END_SRC
+
+*** 接口(抽象类)
+
+接口描述了类的行为和功能, 而不需要完成类的特定实现.
+
+接口是使用抽象类来实现的, 抽象类与数据抽象互不混淆, 数据抽象是一个把实现细节与相关的数据分离开的概念.
+如果类中 *至少有一个函数被声明为纯虚函数* , 则这个类就是抽象类, 纯虚函数是通过在声明中使用 "= 0" 来指定的, 就如上面多态的示例.
+
+** 文件处理
+
+引用 =fstream= 头文件, 即可用其提供的函数对文件进行读写.
+
+部分函数声明:
+
+#+BEGIN_SRC c++
+void open(const char *filename, ios::openmode mode);
+void close();
+// 直接对文件对象进行 >> 和 << 操作即可读取写入文件内容
+#+END_SRC
+
+=openmode= 值如下:
+
+| 模式标志   | 描述                                                                 |
+|------------+----------------------------------------------------------------------|
+| ios::app   | 追加模式                                                             |
+| ios::ate   | 文件打开后定位到文件末尾                                             |
+| ios::in    | 打开文件用于读取                                                     |
+| ios::out   | 打开文件用于写入                                                     |
+| ios::trunc | 如果该文件已经存在, 其内容将在打开文件之前被截断, 即把文件长度设为 0 |
+
+上面的模式可以通过 =|= 组合使用
+
+** 异常处理
+
+异常是程序在执行期间产生的问题, 异常提供了一种转移程序控制权的方式. 异常处理涉及到三个关键字: =try、catch、throw:=
+
+- *throw*
+  当问题出现时, 程序会抛出一个异常
+- *catch*
+  在您想要处理问题的地方, 通过异常处理程序捕获异常
+- *try*
+  =try= 块中的代码标识将被激活的特定异常, 它后面通常跟着一个或多个 =catch= 块
+
+语法:
+
+#+BEGIN_SRC c++
+try
+{
+   // 保护代码
+}catch( ExceptionName e1 )
+{
+   // catch 块
+}catch( ExceptionName e2 )
+{
+   // catch 块
+}catch( ExceptionName eN )
+{
+   // catch 块
+}
+
+// 抛出异常
+double division(int a, int b)
+{
+   if( b == 0 )
+   {
+      throw "Division by zero condition!";
+   }
+   return (a/b);
+}
+#+END_SRC
+
+=C++= 提供了一系列标准的异常, 定义在 =<exception>= 中, 我们可以在程序中使用这些标准的异常
+
+*定义新的异常*
+
+可以通过继承和重载 =exception= 类来定义新的异常. 下面的实例演示了如何使用 =std::exception= 类来实现自己的异常:
+
+#+BEGIN_SRC c++
+#include <iostream>
+#include <exception>
+using namespace std;
+
+struct MyException : public exception
+{
+  const char * what () const throw ()
+  {
+    return "C++ Exception";
+  }
+};
+
+int main()
+{
+  try
+  {
+    throw MyException();
+  }
+  catch(MyException& e)
+  {
+    std::cout << "MyException caught" << std::endl;
+    std::cout << e.what() << std::endl;
+  }
+  catch(std::exception& e)
+  {
+    //其他的错误
+  }
+}
+#+END_SRC
+
+** 预处理
+
+
+** 多线程
+
+
+** 模板
