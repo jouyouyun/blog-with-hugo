@@ -1,0 +1,175 @@
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: post
+#+SEQ_TODO: TODO NEXT DRAFT DONE
+#+FILETAGS: post
+#+OPTIONS:   *:t <:nil timestamp:nil toc:nil ^:{}
+#+HUGO_AUTO_SET_LASTMOD: t
+#+TITLE: 校园招聘内容
+#+DATE: 2019-03-25T19:38:21+08:00
+#+HUGO_TAGS: cursor
+#+HUGO_CATEGORIES: BLOG
+#+HUGO_DRAFT: true
+
+整理下校园招聘需要问道的知识点.
+
+** 语言基础
+
+*** Python
+
+**** Lambda
+
+=Lambda= 的使用
+
+
+**** 装饰器
+
+使用装饰器记录函数执行的日志, 支持 =level=
+
+
+**** 变量的内存分配
+
+
+**** 元组与数据
+
+
+*** C/C++
+
+**** 关键字
+
+=static/extern/const=
+
+=const int *p= 与 =int* const p=
+
+**** 指针
+
+指针数组和数组指针, 如 int (*p)[5]; 和 int *p[5];
+
+**** typedef
+
+定义新的类型,如 typedfe int ARRAY[5]; 定义了一个有5个int元素的类型 ARRAY
+
+复杂类型简化及使用
+
+typedef int (*A) (char, char); A 可以怎么初始化
+
+
+**** Lambda
+
+=Lambda= 传递参数
+
+
+**** 智能指针
+
+几种指针之间的区别
+
+何时使用
+
+
+*** GoLang
+
+**** channel
+
+**** goroutine
+
+
+**** defer
+
+
+*** Web
+
+**** Flex
+
+=flex= 布局
+
+**** XSS
+
+举例说明, 一个具体的攻击例子
+
+**** CSRF
+
+举例说明, 一个具体的攻击例子
+
+**** CSS
+
+
+**** javascript
+
+
+**** typescript
+
+
+**** 前端框架
+
+=vue.js/angular=
+
+数据绑定
+
+父子通信
+
+=angular= 代码架构
+
+
+** 数据结构
+
+*** 链表
+
+反序, 环检测
+
+排序
+
+合并
+
+*** 栈
+
+实现
+
+*** 队列
+
+实现
+
+
+*** 树
+
+遍历: 先序, 中序和后序
+
+
+** 基本算法
+
+*** 排序
+
+冒泡排序, 快速排序, 堆排序
+
+
+*** 查找
+
+二分查找
+
+=Trie=
+
+
+*** 其他
+
+- 只遍历一次数据, 将奇偶分开, 奇数在左
+- 找出数组中第二大的数, 不进行排序
+- 自行实现 =strcpy=, 需要考虑那些
+
+
+** OS
+
+*** 启动过程
+
+- 参数修改
+- =module= 屏蔽, 参数设定
+
+*** 进程/线程
+
+相关概念及区别
+
+进程间通信
+
+线程间通信
+
+
+*** 命令行
+
+- 使用命令替换多个文件
