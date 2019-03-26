@@ -57,10 +57,23 @@ typedef int (*A) (char, char); A 可以怎么初始化
 
 =Lambda= 传递参数
 
+#+BEGIN_SRC shell
+[]      // 沒有定义任何变量, 使用未定义变量会引发错误
+[x, &y] // x以传值方式传入 (默认), y以引用方式传入
+[&]     // 任何被使用到的外部变量都隐式地以引用方式加以引用
+[=]     // 任何被使用到的外部变量都隐式地以传值方式加以引用
+[&, x]  // x显式地以传值方式加以引用, 其余变量以引用方式加以引用
+[=, &z] // z显式地以引用方式加以引用, 其余变量以传值方式加以引用
+
+另外有一点需要注意: 对于 [=] 或 [&] 的形式, lambda 表达式可以直接使用 this 指针, 但是, 对于 [] 的形式, 如果要使用 this 指针, 必须显式传入:
+[this]() { this->someFunc(); }();
+#+END_SRC
 
 **** 智能指针
 
 几种指针之间的区别
+
+``
 
 何时使用
 
@@ -246,13 +259,84 @@ func main() {
 
 **** XSS
 
+跨站脚本攻击是一种代码注入攻击.
+本质是：恶意代码未经过滤, 与网站正常的代码混在一起;
+浏览器无法分辨哪些脚本是可信的, 导致恶意脚本被执行.
+
+在处理输入时, 以下内容都不可信:
+
+- 来自用户的 UGC 信息
+- 来自第三方的链接
+- URL 参数
+- POST 参数
+- Referer (可能来自不可信的来源)
+- Cookie
+
 举例说明, 一个具体的攻击例子
 
 **** CSRF
 
 举例说明, 一个具体的攻击例子
 
+- =html= 中通过 =img/meta/iframe/script/audio/video/embed/background= 等标签或 =css= 属性来访问(=GET=)
+- =JSON HiJacking= 针对返回数据类型是 =JSON= 的请求, 通过 =js= 来实现
+
+如返回一个 =JSON Array=, 再请求返回前先劫持 =Array= 对象, 如下：
+
+#+BEGIN_SRC javascript
+<script>
+var JackObj;
+Array = function() {
+  JackObj = this;
+};
+</script>
+<script src="http://api.jouyouyun.top/user"></script>
+#+END_SRC
+
+**** 界面劫持
+
+- 点击劫持
+- 拖放劫持
+- 触摸劫持
+
+实现原理：
+
+透明层 + iframe
+
 **** CSS
+
+- display:none和visibility:hidden的区别
+
+  display:none  隐藏对应的元素，在文档布局中不再给它分配空间，它各边的元素会合拢，
+就当他从来不存在
+
+  visibility:hidden  隐藏对应的元素，但是在文档布局中仍保留原来的空间
+
+- 盒子模型
+
+  从中心向外： 内容 -> padding -> border -> margin
+
+- CSS 选择器
+
+  优先级就近原则，同权重情况下样式定义最近者为准.
+  =!important >  id > class > tag=,
+  important 比 内联优先级高,但内联比 id 要高
+
+  + id 选择器 #id
+  + 类选择器 .class
+  + 标签选择器 div
+  + 相邻选择器 div + span
+  + 子选择器 ul > li
+  + 后代选择器 li a
+  + 通配符选择器 *
+  + 属性选择器 a[rel == "external"]
+  + 伪类选择器 a:hover, li:nth-child
+
+**** Doctype作用
+
+<!DOCTYPE> 声明位于文档中的最前面，处于 <html> 标签之前。告知浏览器以何种模式来渲染文档.
+
+DOCTYPE不存在或格式不正确会导致文档以混杂模式呈现
 
 
 **** javascript
@@ -260,6 +344,32 @@ func main() {
 
 **** typescript
 
+
+**** 页面加载流程
+
+1. 当发送一个URL请求时，不管这个URL是Web页面的URL还是Web页面上每个资源的URL，
+浏览器都会开启一个线程来处理这个请求，同时在远程DNS服务器上启动一个DNS查询。
+这能使浏览器获得请求对应的IP地址
+
+2.  浏览器与远程Web服务器通过TCP三次握手协商来建立一个TCP/IP连接。
+该握手包括一个同步报文，一个同步-应答报文和一个应答报文，这三个报文在浏览器和服务器之间传递。
+该握手首先由客户端尝试建立起通信，而后服务器应答并接受客户端的请求，
+最后由客户端发出该请求已经被接受的报文
+
+3. 一旦TCP/IP连接建立，浏览器会通过该连接向远程服务器发送HTTP的GET请求。
+远程服务器找到资源并使用HTTP响应返回该资源，值为200的HTTP响应状态表示一个正确的响应
+
+4. 此时，Web服务器提供资源服务，客户端开始下载资源
+
+
+**** ajax过程
+
+1. 创建XMLHttpRequest对象,也就是创建一个异步调用对象
+2. 创建一个新的HTTP请求,并指定该HTTP请求的方法、URL及验证信息.
+3. 设置响应HTTP请求状态变化的函数
+4. 发送HTTP请求
+5. 获取异步调用返回的数据
+6. 使用JavaScript和DOM实现局部刷新
 
 **** 前端框架
 
@@ -271,6 +381,14 @@ func main() {
 
 =angular= 代码架构
 
+
+** 面向对象
+
+- 继承
+- 成员类型
+- 操作符重载
+- 方法重写
+- 多态
 
 ** 数据结构
 
@@ -293,7 +411,23 @@ func main() {
 
 *** 树
 
-遍历: 先序, 中序和后序
+遍历:
+
+- 先序
+
+  先访问根节点，然后前序遍历左子树，再前序遍历右子树
+
+- 中序
+
+  从根节点开始, 中序遍历根节点的左子树，然后是访问根节点，最后中序遍历根节点的右子树
+
+- 后序
+
+  从左到右先叶子后节点的方式遍历访问左右子树，最后访问根节点
+
+- 层序遍历:
+
+  从根节点开始访问，从上到下逐层遍历，在同一层中，按从左到右的顺序结点逐个访问
 
 
 ** 基本算法
@@ -348,7 +482,7 @@ func main() {
 若不相等, 再根据 =k= 与该中间结点关键字的比较结果确定下一步查找哪个子表,
 这样递归进行, 直到查找到或查找结束发现表中没有这样的结点.
 
-=Trie=
+*Trie*
 
 
 *** 其他
@@ -356,7 +490,40 @@ func main() {
 - 只遍历一次数据, 将奇偶分开, 奇数在左
 - 找出数组中第二大的数, 不进行排序
 - 自行实现 =strcpy=, 需要考虑那些
+- 数组去重, 统计重复者的个数
 
+#+BEGIN_SRC c
+#include <stdio.h>
+int
+main()
+{
+    int list[] = {3, 6, 7, 2, 4, 9, 5, 8, 11, 13, 15};
+    int i = 0;
+    int count = 0;
+    int length = 11;
+
+    for (; i < length; i++) {
+        if (list[i] % 2 == 0) {
+            continue;
+        }
+        if (i == count) {
+            count++;
+            continue;
+        }
+
+        int tmp = list[count];
+        list[count] = list[i];
+        list[i] = tmp;
+        count++;
+    }
+
+    for (i = 0; i < length; i++) {
+        printf("%d, ", list[i]);
+    }
+
+    return 0;
+}
+#+END_SRC
 
 ** OS
 
@@ -377,3 +544,15 @@ func main() {
 *** 命令行
 
 - 使用命令替换多个文件
+- 查看系统负载 =w=, =uptime= 及最后三个值的含义
+- 查看系统进程 =ps aux|ps -elf=, =stat= 中 =S, s, Z= 的含义(睡眠,主进程,僵尸)
+- 查看网络流量, 安装 =sysstat=, =sar= 命令
+- 查看系统开启的端口 =netstat -lnp=
+- 查看网络连接状态 =netstat -an=
+- 如何修改 =dns=
+- =iptables= IP为192.168.1.101访问本机80端口的包直接拒绝
+  iptables -I INPUT -s 192.168.1.101 -p tcp --dport 80 -j REJECT
+- dpkg/apt
+- 环境变量
+- 权限 =u+s=
+- linux 启动过程
