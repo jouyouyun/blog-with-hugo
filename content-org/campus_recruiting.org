@@ -67,12 +67,175 @@ typedef int (*A) (char, char); A 可以怎么初始化
 
 *** GoLang
 
-**** channel
+**** Structure
 
-**** goroutine
+#+BEGIN_SRC go
+type student struct {
+	Name string
+	Age  int
+}
 
+func pase_student() {
+	m := make(map[string]*student)
+	stus := []student{
+		{Name: "zhou", Age: 24},
+		{Name: "li", Age: 23},
+		{Name: "wang", Age: 22},
+	}
+	for _, stu := range stus {
+		m[stu.Name] = &stu
+	}
+	for k, v := range m {
+		fmt.Println(k, v)
+	}
+}
+#+END_SRC
+
+**** Params Pass
+
+=Go=  的参数传递是 *值传递*, 传递的是一个副本.
+但对于 =slice, map, channel, interface, func= 等类型的变量会在声明时创建标头(=header=).
+=header= 里包含一个指针, 执行底层的数据结构, 所以这些类型的元素修改会一同生效.
+
+在 =struct A= 中 =func(A)= 类型的方法对 =A= 的修改在外部并不会生效, =func(*A)= 的才会生效.
+
+#+BEGIN_SRC go
+func main() {
+	var list = []string{"hello", "world"}
+	var set = map[string]string{
+		"1": "test1",
+	}
+	modify(list, set)
+	fmt.Println(list)
+	fmt.Println(set)
+}
+
+func modify(list []string, set map[string]string) {
+	list[1] = "Jay"
+	list = append(list, "Test")
+	set["2"] = "test2"
+}
+#+END_SRC
 
 **** defer
+
+多个 =defer= 的执行顺序, 先进后出
+
+=defer= 在 =RTE= 之前执行
+
+匿名返回值是在 =RET= 执行时声明的, 有名返回值是函数创建时声明的, =defer= 只能访问有名返回值
+
+=return= 时分为二个步骤:
+
+1. 给返回值赋值
+2. 执行 =RET= 指令
+
+因此 =defer, return= 的执行顺序是:
+
+1. 返回值赋值
+2. =defer= 执行
+3. =RET= 执行
+
+=defer= 推迟的只是函数执行的时间, 函数参数的值在声明时就会计算(打印时间的例子)
+
+#+BEGIN_SRC go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	defer p(time.Now())
+	fmt.Println(test1())
+	fmt.Println(test2())
+	fmt.Println(*test3())
+	time.Sleep(time.Second * 10)
+	p(time.Now())
+}
+
+func test1() (x int) {
+	x = 1
+	defer func() {
+		x++
+	}()
+	return (x + 1)
+}
+
+func test2() int {
+	var x = 1
+	defer func() {
+		x++
+	}()
+	return (x + 1)
+}
+
+func test3() *int {
+	var x = 1
+	defer func() {
+		x++
+	}()
+	return &x
+}
+
+func p(t time.Time) {
+	fmt.Println(t)
+}
+#+END_SRC
+
+**** channel
+
+随机生成 =5= 个字符串并打印出来
+
+=chan= 不指定 =capacity= 与指定的区别, 不指定时发送值也会阻塞
+
+使用 =4= 个 =chan= 输出以下字符串, 长度为 =20= :
+
+#+BEGIN_SRC go
+// abcdabcdabc...
+// bcdabcdabcd...
+
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	var chs = make([]chan byte, 4)
+
+	var gen = func(i int) {
+		chs[i] <- byte('a' + i)
+	}
+
+	for i := 0; i < 4; i++ {
+		chs[i] = make(chan byte, 1)
+		gen(i)
+	}
+
+	var p = func(i int) string {
+		var ret string
+		var count = 0
+		for count < 20 {
+			count++
+			ret += fmt.Sprint(string([]byte{<-chs[i]}))
+			gen(i)
+			i++
+			if i == 4 {
+				i = 0
+			}
+		}
+		return ret
+	}
+
+	// print 'abcdabcdabc...'
+	fmt.Println(p(0))
+
+	// print 'bcdabcdabc...'
+	fmt.Println(p(1))
+}
+#+END_SRC
 
 
 *** Web
@@ -137,12 +300,53 @@ typedef int (*A) (char, char); A 可以怎么初始化
 
 *** 排序
 
-冒泡排序, 快速排序, 堆排序
+*冒泡排序*
+
+1. 从第一个元素开始, 比较相邻的 =2= 个元素, 如果第一个大于第二个, 就交换位置
+2. 这样一直执行到最后一个元素
+3. 再从第二个元素开始, 执行上面的步骤
+4. 接下来每一个元素都要重复上面的步骤, 直到排序完成
+
+
+*选择排序*
+
+1. 从 =[0, n)= 数组中找到最小或最大的元素, 将其放在起始或结束的位置(下面按最小数描述)
+2. 继续从 =[1, n)= 中找最小数, 放到此次遍历的起始位置
+3. 更改起始位置, 依次遍历所有元素, 直到排序完成
+
+
+*插入排序*
+
+它的工作原理是通过构建有序序列, 对于未排序数据, 在已排序序列中从后向前扫描, 找到相应位置并插入.
+
+1. 从第一个元素开始, 该元素已排序
+2. 取出下一个元素, 在已排序区从后向前扫描
+3. 如果新元素小于比较的元素, 将比较的元素后移, 然后插入新元素
+3. 重复上述步骤, 直到遍历结束
+
+
+*归并排序*
+
+分而治之的原理, 将数组等分, 然后分别归并排序, 最后合并
+
+*快速排序*
+
+快速排序使用分治法来把一个串 (list) 分为两个子串 (sub-lists), 如下:
+
+1. 先从数列中取出一个数作为 =key= 值
+2. 将比这个数小的数全部放在它的左边, 大于或等于它的数全部放在它的右边
+3. 对左右两个小数列重复第二步, 直至各区间只有 =1= 个数
 
 
 *** 查找
 
-二分查找
+*二分查找*
+
+元素必须是有序的, 如果是无序的则要先进行排序操作. 也称为是折半查找, 属于有序查找算法.
+
+用给定值 =k= 先与中间结点的关键字比较, 中间结点把线形表分成两个子表, 若相等则查找成功;
+若不相等, 再根据 =k= 与该中间结点关键字的比较结果确定下一步查找哪个子表,
+这样递归进行, 直到查找到或查找结束发现表中没有这样的结点.
 
 =Trie=
 
