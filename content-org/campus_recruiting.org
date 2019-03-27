@@ -16,6 +16,12 @@
 
 *** Python
 
+**** 三元运算子
+
+=[on true] if [expression] else [on false]=
+
+=print("Hi") if a<b else print("Bye")=
+
 **** Lambda
 
 =Lambda= 的使用
@@ -73,7 +79,17 @@ typedef int (*A) (char, char); A 可以怎么初始化
 
 几种指针之间的区别
 
-``
+`unique_ptr, shared_ptr, weak_ptr`
+
+unique_ptr不能共享, 可以通过 move 来传递
+
+shared_ptr使用计数机制来表明资源被几个指针共享, 可以通过成员函数use_count()来查看资源的所有者个数.
+调用release()时，当前指针会释放资源所有权，计数减一。当计数等于0时，资源会被释放。
+处了可以通过new来构造，还可以通过传入auto_ptr, unique_ptr,weak_ptr来构造。
+
+weak_ptr是用来解决shared_ptr相互引用时的死锁问题,如果说两个shared_ptr相互引用,那么这两个指针的引用计数永远不可能下降为0,资源永远不会释放
+。它是对对象的一种弱引用，不会增加对象的引用计数，和shared_ptr之间可以相互转化，shared_ptr可以直接赋值给它，它可以通过调用lock函数来获得shared_ptr
+
 
 何时使用
 
@@ -341,6 +357,56 @@ DOCTYPE不存在或格式不正确会导致文档以混杂模式呈现
 
 **** javascript
 
+- let 与 var 的区别
+- 闭包含义, 实现 =id= 自增
+- =cookie= 隔离或请求时不带上 =cookie=, 设置 =domain=
+- 判断变量原型 =instanceof= 或原型链 =__proto__=
+- 描述new一个对象的过程
+
+  1. 创建一个新对象
+  2. this指向这个新对象
+  3. 执行代码给this赋值
+  4. return this
+
+- 写一个能遍历对象和数组的通用forEach函数
+
+#+BEGIN_SRC js
+function forEach(obj, fn) {
+  if (obj instanceof Array) {
+    obj.forEach(function (item, index) {
+      fn(index, item);
+    })
+  } else {
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        fn(key, obj[key]);
+      }
+    }
+  }
+}
+
+var arr = [1, 2, 3, 4];
+forEach(arr, function (index, item) {
+  console.log(index + ',' + item);
+});
+
+var obj = {
+  x: 10,
+  y: 20
+};
+forEach(obj, function (index, item) {
+  console.log(index + ',' + item);
+});
+#+END_SRC
+
+- 实现一个判断 x 是否是整数的函数
+
+#+BEGIN_SRC js
+// 可以将 x 转换成10进制，判断和本身是不是相等即可
+function isInteger(x) {
+    return parseInt(x, 10) === x;
+}
+#+END_SRC
 
 **** typescript
 
@@ -399,6 +465,8 @@ DOCTYPE不存在或格式不正确会导致文档以混杂模式呈现
 排序
 
 合并
+
+交叉链表求交点: 两个链表相交则尾一定相同, 所以从尾部开始遍历
 
 *** 栈
 
@@ -487,6 +555,7 @@ DOCTYPE不存在或格式不正确会导致文档以混杂模式呈现
 
 *** 其他
 
+- 深拷贝与浅拷贝(python/js)
 - 只遍历一次数据, 将奇偶分开, 奇数在左
 - 找出数组中第二大的数, 不进行排序
 - 自行实现 =strcpy=, 需要考虑那些
