@@ -1,8 +1,8 @@
 +++
 title = "MySQL 常用命令"
 date = 2019-04-05T21:04:21+08:00
-lastmod = 2019-04-07T00:14:20+08:00
-tags = ["sql", "mysql", "alter", "charset", "charactor", "join"]
+lastmod = 2019-04-07T00:29:18+08:00
+tags = ["sql", "mysql", "alter", "charset", "character", "join"]
 categories = ["BLOG"]
 draft = false
 +++
@@ -119,7 +119,7 @@ draft = false
 
 -   创建
 
-    ``CREATE TABLE <name>(`id` INT(11) AUTO_INCREMENT),`name` VARCHAR(64) NOT NULL,...)CHARACTOR SET=utf8mb4;``
+    ``CREATE TABLE <name>(`id` INT(11) AUTO_INCREMENT),`name` VARCHAR(64) NOT NULL,...)CHARACTER SET=utf8mb4;``
 
 -   删除
 

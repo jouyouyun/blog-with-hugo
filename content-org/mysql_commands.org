@@ -6,7 +6,7 @@
 #+HUGO_AUTO_SET_LASTMOD: t
 #+TITLE: MySQL 常用命令
 #+DATE: 2019-04-05T21:04:21+08:00
-#+HUGO_TAGS: sql mysql alter charset charactor join
+#+HUGO_TAGS: sql mysql alter charset character join
 #+HUGO_CATEGORIES: BLOG
 #+HUGO_DRAFT: false
 
@@ -118,7 +118,7 @@
 
 - 创建
 
-  ~CREATE TABLE <name>(`id` INT(11) AUTO_INCREMENT),`name` VARCHAR(64) NOT NULL,...)CHARACTOR SET=utf8mb4;~
+  ~CREATE TABLE <name>(`id` INT(11) AUTO_INCREMENT),`name` VARCHAR(64) NOT NULL,...)CHARACTER SET=utf8mb4;~
 
 - 删除
 
