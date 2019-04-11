@@ -1,0 +1,136 @@
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: post
+#+SEQ_TODO: TODO NEXT DRAFT DONE
+#+FILETAGS: post
+#+OPTIONS:   *:t <:nil timestamp:nil toc:nil ^:{}
+#+HUGO_AUTO_SET_LASTMOD: t
+#+TITLE: Mirrors Management 测试环境搭建
+#+DATE: 2019-04-10 15:30:22+08:00
+#+HUGO_TAGS: mirror management test environment
+#+HUGO_CATEGORIES: NOTE
+#+HUGO_DRAFT: true
+
+镜像站管理系统(=Mirrors Management System=) 提供镜像站的编辑, 同步进度检查和发布等功能.
+使用 =GoLang + Vue.js= 开发, 使用 [[https://github.com/revel/revel][Revel]] =Web= 框架, 通过 [[https://github.com/golang/dep][Golang Dep]] 管理依赖包, 使用 =PostgreSQL= 数据库.
+
+镜像站同步进度数据存储在 [[https://www.influxdata.com][InfluxDB]] 中, 由 [[https://github.com/linuxdeepin/mirrors_status/][Mirrors Status]] 写入.
+
+测试环境搭建包含以下内容:
+
++ 运行服务
++ 自动打包与更新
+
+** 运行服务
+
+网络组的服务现在是通过在 =10.0.10.70:9000= 的 =Portainer= 部署的, 所以在其上面创建 =mirrors-management= 的 =stack=.
+
+=docker-compose.yml= 的内容如下:
+
+#+BEGIN_SRC Dockerfile
+version: '3.3'
+
+networks:
+  backend:
+
+services:
+  server:
+    image: hub.deepin.io/deepin/dmirror:latest
+    ports:
+      - 18900:9000
+    restart: always
+    volumes:
+      - /data/docker/mirrors-management/log/:/code/src/server/log/
+    networks:
+      - backend
+    configs:
+      - source: mirrors-management-app
+        target: /code/src/server/conf/app.conf
+
+  db:
+    image: hub.deepin.io/postgres:9.6-alpine
+    volumes:
+      - /data/docker/mirrors-management/postgresql:/var/lib/postgresql/data
+    ports:
+      - 18901:5432
+    networks:
+      - backend
+    restart: always
+
+  influxdb:
+    image: influxdb:1.5.4-alpine
+    restart: always
+    ports:
+      - 18902:8086
+      - 18903:8083
+      - 18904:2003
+    volumes:
+      - /data/docker/mirrors-management/influxdb:/var/lib/influxdb
+    networks:
+      - backend
+    environment:
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=deepinadmin
+      - INFLUXDB_DB=mirror_status
+      - INFLUXDB_HTTP_ENABLED=true
+      - INFLUXDB_HTTP_AUTH_ENABLED=true
+
+configs:
+  mirrors-management-app:
+    external:
+      name: mirrors-management-app
+#+END_SRC
+
+文件中的 =volume= 都在 =10.0.10.70= 的机器上.
+
+其中配置文件 =mirrors-management-app= 是在 =Configs= 中创建的.
+
+
+** 自动构建与更新
+
+=mirros-management= 是在不断开发的, 所以需要在代码 =push= 时自动构建镜像, 然后更新运行中的服务.
+
+*** 构建
+
+构建的前提是要写好 =Makefile= 和 =Dockerfile= 文件, 然后到 =jenkins= 中新建任务(=mirrors-management-app=).
+在 =Pipeline= 中任务动作, 如下:
+
+#+BEGIN_SRC pipeline
+node('10.0.10.70') {
+   stage('clone') {
+      git url: 'ssh://git@gitlab.deepin.io:12322/deepin-sites/mirrors-management-system.git', credentialsId: 'lihe-gitlab-wh-prikey'
+   }
+   gitlabBuilds(builds: ["build","docker"]) {
+        stage("build") {
+          gitlabCommitStatus("build") {
+            sh 'make docker'
+          }
+        }
+        stage("docker") {
+          gitlabCommitStatus("docker") {
+            if (gitlabBranch == "master"){
+                sh 'make docker'
+                withDockerRegistry([url:"https://hub.deepin.io", credentialsId:"hub-deepin-io"]){
+                    sh 'make docker-push'
+                }
+            }
+          }
+        }
+        stage("deplay") {
+            sh 'curl -f -v -X POST http://10.0.10.70:9000/api/webhooks/24592870-a01f-4295-a806-59a2f112c2d6'
+        }
+    }
+}
+#+END_SRC
+
+因为这是私有项目, 所以需要凭证, 上面的凭证是 =lihe-github-wh-prikey=, 没有则需要在 =jenkins= 中创建, 填上 =id_rsa.pub= 任务.
+然后再到 =mirros-management= 项目的 =设置-->仓库-->Deploy Keys= 中启用或添加同样的 =id_rsa.pub=, 凭证名也要相同.
+
+接着到项目的 =设置-->集成= 添加 =Webhook=, =URL= 是 =jenkins= 任务的构建触发器中的 =url=, =token= 在 *高级* 按钮里面.
+填完后勾选触发事件, 这里只需勾选 =Push events=.
+
+这样配置完成后每次合并都会触发 =jenkins= 自动构建.
+
+*** 自动更新
+
+自动更新需要到 =Portainer= 中的 =mirrors-management-server= 的服务中开启 =Service Webhook=, 在其服务的详情页中.
+然后使用 =curl= 发送 =POST= 请求去更新服务, 即 *自动构建* 脚本中的 =deplay= 部分.
