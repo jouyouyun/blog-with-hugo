@@ -1,0 +1,30 @@
++++
+title = "清理无用的 local branch"
+date = 2019-04-11T14:49:00+08:00
+lastmod = 2019-04-11T15:12:26+08:00
+tags = ["git", "branch", "remote", "local"]
+categories = ["BLOG"]
+draft = false
++++
+
+在开发新功能或修复 `bug` 时, 会从 `master` 上新建 `branch` 来处理, 当完成后会将这个 `branch` 推送到 `origin` 中, 如:
+`git push origin <branch name>:<branch name>`.
+
+`origin` 审核代码没有问题后就会 **合并分支并删除**, 但 **本地** 在 `git pull` 删除本地分支后, 仍能通过 `git branch -a` 看到这个 `branch` 的 `origin ref`.
+日积月累之下本地就会有很多这样无用的 `branch ref`, 很是让人厌烦, 遂在此记录清理的方法.
+
+<!--more-->
+
+
+## GIT REMOTE {#git-remote}
+
+使用 `git remote prune origin` 就可以清除无用的 `branch ref`, 如果在命令后面加上 `--dry-run` 则可以看到哪些 `branch` 将被清除, 不会做清除动作.
+在检查无误后就可以执行 `git remote prune origin` 清除了.
+
+
+## GIT FETCH {#git-fetch}
+
+`git fetch` 也提供了 `-p, --prune` 选项用来在 `fetch` 之前清除无用 `branch`, 同时提供了 `-P, --prune-tags` 选项用来清除无用的 `tag`.
+当然也支持 `--dry-run` 选项.
+
+更多详细内容请阅读 `git-fetch` 手册的 `PRUNING` 段.
