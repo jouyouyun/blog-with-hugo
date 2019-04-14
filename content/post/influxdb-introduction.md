@@ -1,7 +1,7 @@
 +++
 title = "InfluxDB 简介"
 date = 2019-04-13T16:55:00+08:00
-lastmod = 2019-04-14T01:13:09+08:00
+lastmod = 2019-04-14T13:01:09+08:00
 tags = ["influxdb", "tsdb", "series", "measurement"]
 categories = ["BLOG"]
 draft = false
@@ -244,13 +244,13 @@ END
     碎片持续时间子句确定碎片组覆盖的时间范围，是一个 `duration` 文字，不支持 `INF (infinite) duration` 。这个设置是可选的。
     默认情况下，碎片组的持续时间由保留策略的持续时间决定:
 
-| RP Duration               | Shard Duration |
-|---------------------------|----------------|
-| < 2 days                  | 1 hour         |
-| >= 2 days and <= 6 months | 1 day          |
-| > 6 months                | 7 days         |
+    | RP Duration               | Shard Duration |
+    |---------------------------|----------------|
+    | < 2 days                  | 1 hour         |
+    | >= 2 days and <= 6 months | 1 day          |
+    | > 6 months                | 7 days         |
 
-如果 `RP Duration` 大于 `0s` 小于 `1 hour` ， `Shard Duration` 仍将设置为 `1 hour` 。
+    如果 `RP Duration` 大于 `0s` 小于 `1 hour` ， `Shard Duration` 仍将设置为 `1 hour` 。
 
 -   删除
 
