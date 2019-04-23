@@ -1,7 +1,7 @@
 +++
 title = "Linux Signal Examples"
 date = 2018-11-13T21:38:21+08:00
-lastmod = 2019-02-12T14:35:03+08:00
+lastmod = 2019-04-23T16:13:41+08:00
 tags = ["signal", "sigaction", "alarm", "kill", "raise"]
 categories = ["NOTE"]
 draft = false
@@ -369,3 +369,21 @@ int raise(int sig);
 /* Biggest signal number + 1 (including real-time signals).  */
 #define _NSIG		(__SIGRTMAX + 1)
 ```
+
+使用 `kill -l` 命令也可查看信号列表.
+
+
+#### 可产生 `coredump` 的信号 {#可产生-coredump-的信号}
+
+| ID | Name    | Description |
+|----|---------|-------------|
+| 3  | SIGQUIT | 终止进程    |
+| 4  | SIGILL  | 非法指令    |
+| 5  | SIGTRAP | 自陷        |
+| 6  | SIGABRT | 异常终止    |
+| 7  | SIGBUS  | 总线错误    |
+| 8  | SIGFPE  | 浮点数异常  |
+| 11 | SIGSEGV | 段错误      |
+| 6  | SIGIOT  | I/O 自陷    |
+
+`SIGIOT` 在 `PDP-11` 上产生 `LOT` 指令, 同 `SIGABRT` .
