@@ -6,7 +6,7 @@
 #+HUGO_AUTO_SET_LASTMOD: t
 #+TITLE: Web Project Develop Specification
 #+DATE: 2019-04-28 21:37:23+08:00
-#+HUGO_TAGS: go web git
+#+HUGO_TAGS: go web git commit
 #+HUGO_CATEGORIES: NOTE
 #+HUGO_DRAFT: true
 
@@ -16,7 +16,7 @@
 
 *** 后端
 
-使用 =go= =+= [[https://github.com/gin-gonic/gin][gin]] 构建接口，=API= 接口目前应遵循 =RESTful= 风格
+使用 =go= =+= [[https://github.com/gin-gonic/gin][gin]] 构建接口， =API= 接口目前应遵循 =RESTful= 风格
 
 =go= 项目使用 =go module= 作为包管理工具
 
