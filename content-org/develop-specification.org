@@ -1,0 +1,87 @@
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: post
+#+SEQ_TODO: TODO NEXT DRAFT DONE
+#+FILETAGS: post
+#+OPTIONS:   *:t <:nil timestamp:nil toc:nil ^:{}
+#+HUGO_AUTO_SET_LASTMOD: t
+#+TITLE: Web Project Develop Specification
+#+DATE: 2019-04-28 21:37:23+08:00
+#+HUGO_TAGS: go web git
+#+HUGO_CATEGORIES: NOTE
+#+HUGO_DRAFT: true
+
+这是一份简单的 =Web= 项目开发规范，请认真阅读并遵守。
+
+** 主要技术
+
+*** 后端
+
+使用 =go= =+= [[https://github.com/gin-gonic/gin][gin]] 构建接口，=API= 接口目前应遵循 =RESTful= 风格
+
+=go= 项目使用 =go module= 作为包管理工具
+
+使用 [[http://gorm.io/zh_CN/docs/index.html][GORM]] 进行数据库操作，数据库一般使用 =mysql= ，但还是要根据数据选择
+
+=API= 文档使用 =swagger= 展示，按照 =openapi= 的标准编写
+
+*** 前端
+
+使用 [[https://angular.cn/][Angular]] 构建界面，过于简单的也可使用 [[https://cn.vuejs.org/][Vue.js]]
+
+优先使用 =Typescript= 进行开发。
+
+-----
+
+项目开发完成后，使用 =Docker= 进行部署
+
+
+** 项目结构
+
+    目录结构参见：[[https://github.com/golang-standards/project-layout][Project Layout]]
+
+** =commit= 规范
+
+    =commit= 规范参见：[[https://github.com/conventional-changelog/conventional-changelog/blob/a5505865ff3dd710cf757f50530e73ef0ca641da/conventions/angular.md][Commit Message Format]]，便于使用 =clog= 生成 =CHANGELOG=
+
+    另外一个 =commit= 应只处理一个 =bug= 或一个 =feature= ， *不要将多个功能的修改放到一个提交中* ，禁止 *憋大招*
+
+    对于 =commit= 的信息尽量写的有意义，与处理的问题相关，对于复杂的问题应多行描述清楚
+
+** =git commit=
+
+目前的项目分为私有项目和开源项目，一般使用 =gitlab= 的是私有项目，使用 =github= 的是开源项目。
+不管给哪种项目提交代码都需要先确定开发分支，如无特殊说明，一般 =master= 就是当前开发分支。
+
+两者提交代码的方式略有不同，下文将一一说明。
+
+*** github
+
+开源项目需要 =fork= 后进行开发，并将上游仓库命名为 =remote= 中的 =upstream= ，之后的流程如下：
+
+1. 使用 =git fetch upstream= 更新上游分支
+2. 在本地开发分支上执行 =git merge upstream/<develop branch>= 使用上游更新本地仓库
+3. 基于开发分支新建分支来处理分配的任务
+4. 开发完后进行 =commit= ，填写信息；若 =commit= 之后又需要修改，则在改完后使用 =git commit --amend= 继续提交，这样可以避免多个 =commit= 信息
+5. 再次第 =1= 步和第 =2= 步更新本地开发分支，然后切换到新建的分支执行 =git rebase master= 来合并上游的更新，若有冲突则按照提示处理
+6. 使用 =git push origin <new branch>:<develop branch>= 更新自己项目
+7. 进入项目中提交 =pull request= 到上游
+
+剩下的就是等待上游合并，上游合并后就更新下本地。
+
+*** gitlab
+
+私有项目无须 =fork= ，直接 =clone= 然后按以下流程进行开发：
+
+1. 切换到本地开发分支，使用 =git pull= 更新下上游
+2. 新建分支来处理任务
+3. 开发完后进行 =commit= ，填写信息；若 =commit= 之后又需要修改，则在改完后使用 =git commit --amend= 继续提交，这样可以避免多个 =commit= 信息
+4. 再次执行第 =1= 步更新本地开发分支；然后切换到新建的分支执行 =git rebase master= 来合并上游的更新，若有冲突则按照提示处理
+5. 使用 =git push origin <new branch>:<new branch>= 提交代码
+6. 根据提交后的 =merge= 信息创建 =pull request=
+
+然后就是等待合并。
+
+-----
+
+
+*另外每次提交时都要先执行检查下要提交的代码，确认无误，也需要保证本地代码能够正常运行。*
