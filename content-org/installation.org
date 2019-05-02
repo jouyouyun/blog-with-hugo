@@ -1,0 +1,138 @@
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: post
+#+SEQ_TODO: TODO NEXT DRAFT DONE
+#+FILETAGS: post
+#+OPTIONS:   *:t <:nil timestamp:nil toc:nil ^:{}
+#+HUGO_AUTO_SET_LASTMOD: t
+#+TITLE: 系统安装二三事
+#+DATE: 2019-05-02 11:27:23+08:00
+#+HUGO_TAGS: installation
+#+HUGO_CATEGORIES: NOTE
+#+HUGO_DRAFT: false
+
+
+在重装系统时, 需要考虑软件与数据的备份恢复, 遂记录下需要用到的软件, 自定义的配置和数据恢复.
+
+** 软件
+
+*** 换源
+
++ =Archlinux=
+
+  在 =/etc/pacman.d/mirrorlist= 只启用中国区的源, 另添加以下内容到 =/etc/pacman.conf= 中来启用 =yaourt aur= 源:
+
+  #+BEGIN_SRC shell
+  [archlinuxcn]
+  SigLevel = Optional TrustAll
+  Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch~
+  #+END_SRC
+
++ =Deepin=
+
+  这里使用 =163= 的源
+
+  #+BEGIN_SRC shell
+  http://mirrors.163.com/deepin stable main contrib non-free
+  #+END_SRC
+
+  具体的 =distribution=, =componments= 则根据安装后默认的源来填写.
+
+*** 输入法
+
++ =Archlinux=
+
+  #+BEGIN_SRC shell
+  yaourt -S fcitx fcitx-googlepinyin fcitx-frontend-gtk2 fcitx-frontend-gtk3 fcitx-frontend-qt4 fcitx-module-x11 fcitx-module-dbus fcitx-table fcitx-ui-classic
+  #+END_SRC
+
++ =Deepin=
+
+  #+BEGIN_SRC shell
+  sudo apt-get install fcitx-googlepinyin
+  # remove sogoupinyin
+  sudo apt-get purge sogoupinyin fcitx-sogoupinyin-uk
+  #+END_SRC
+
+
+*** 常用工具
+
++ =Archlinux=
+
+  #+BEGIN_SRC shell
+  yaourt -S zsh tmux gvim openssh most firefox albert parcellite the_silver_searcher wget xelatex wkhtmltopdf pandoc vlc zhcon terminator git emacs w3m curl \
+  dia inkscape wireshark wps-office aria2 mpv htop gpicview deepin-screenshot foxitreader python-pip
+  #+END_SRC
+
++ =Deepin=
+
+  #+BEGIN_SRC shell
+  sudo apt-get install zsh tmux vim-gtk3 openssh-server firefox albert parcellite silversearcher-ag xelatex wkhtmltopdf pandoc vlc zhcon terminator git emacs w3m \
+  curl dia inkscape wireshark wps-office aria2 mpv htop gpicview deepin-screenshot foxitreader python-pip python3-pip
+  #+END_SRC
+
+
+*** 开发
+
++ =Archlinux=
+
+  #+BEGIN_SRC shell
+  yaourt -S valgrind ctags go hugo boost boost-libs nodejs d-feet devhelp cmake clang clang-format astyle
+  #+END_SRC
+
++ =Deepin=
+
+  #+BEGIN_SRC shell
+  sudo apt-get install valgrind exuberant-ctags golang-go golang-src hugo libboost-all-dev nodejs nodejs d-feet devhelp cmake clang clang-format libclang-dev astyle \
+  libpython-dev
+  sudo apt-get build-dep dde-daemon startdde dde-api
+  #+END_SRC
+
+** 配置
+
++ =nodjs=
+
+  设置 =npm= 加速镜像源与全局目录:
+
+  #+BEGIN_SRC shell
+  # ~/.npmrc
+  registry = http://registry.cnpmjs.org
+  prefix=/Data/npm-global
+  #+END_SRC
+
++ =pip=
+
+  设置 =pip= 加速镜像源:
+
+  #+BEGIN_SRC shell
+  # ~/.pip/pip.conf
+  [global]
+  index-url = https://pypi.douban.com/simple
+  #+END_SRC
+
++ =docker=
+
+  设置 =pip= 加速镜像源:
+
+  #+BEGIN_SRC shell
+  # /etc/docker/daemon.json
+  {
+    "registry-mirrors": ["https://registry.docker-cn.com"]
+  }
+  #+END_SRC
+
+  存储目录的设置参见: [[http://jouyouyun.github.io/post/docker-data-storage/][更改 Docker 数据的存储目录]]
+
++ 其它
+
+  =vim, tmux, git, ssh, ss-tproxy= 的配置在 [[https://gitee.com/jouyouyun/conf.d][conf.d]] 中, =emacs= 的配置在 [[https://github.com/jouyouyun/prelude][prelude]] 中.
+
+  =ss-tproxy= 执行 =git clone https://github.com/zfl9/ss-tproxy.git= 下载.
+
+
+** 数据
+
+由于将数据都单独保存在分区 =/Data= 中, 所以重装系统时只要不将其格式化就好, 装好后在修改 =/etc/fstab= 挂载上去, 如:
+
+#+BEGIN_SRC shell
+UUID=6f8f77fb-f8ca-43cb-bb40-4e8e7ca8e009   /Data           ext4        rw,relatime,data=ordered    0 1
+#+END_SRC
