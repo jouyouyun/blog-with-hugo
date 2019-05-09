@@ -66,9 +66,11 @@
 + =Deepin=
 
   #+BEGIN_SRC shell
-  sudo apt-get install zsh tmux vim-gtk3 openssh-server firefox albert parcellite silversearcher-ag xelatex wkhtmltopdf pandoc vlc zhcon terminator git emacs w3m \
+  sudo apt-get install zsh tmux vim-gtk3 openssh-server parcellite silversearcher-ag texlive-xetex wkhtmltopdf pandoc vlc zhcon terminator git emacs w3m \
   curl dia inkscape wireshark wps-office aria2 mpv htop gpicview deepin-screenshot foxitreader python-pip python3-pip
   #+END_SRC
+
+  =firefox, albert= 另外安装
 
 
 *** 开发
@@ -82,7 +84,7 @@
 + =Deepin=
 
   #+BEGIN_SRC shell
-  sudo apt-get install valgrind exuberant-ctags golang-go golang-src hugo libboost-all-dev nodejs nodejs d-feet devhelp cmake clang clang-format libclang-dev astyle \
+  sudo apt-get install valgrind exuberant-ctags golang-go golang-src hugo libboost-all-dev nodejs-bin d-feet devhelp cmake clang clang-format libclang-dev astyle \
   libpython-dev
   sudo apt-get build-dep dde-daemon startdde dde-api
   #+END_SRC
@@ -126,7 +128,7 @@
 
   =vim, tmux, git, ssh, ss-tproxy= 的配置在 [[https://gitee.com/jouyouyun/conf.d][conf.d]] 中, =emacs= 的配置在 [[https://github.com/jouyouyun/prelude][prelude]] 中.
 
-  =ss-tproxy= 执行 =git clone https://github.com/zfl9/ss-tproxy.git= 下载.
+  =ss-tproxy= 执行 =git clone https://github.com/zfl9/ss-tproxy.git= 下载，需要安装 =ipset, chinadns, dnsmasq= 等依赖。
 
 
 ** 数据

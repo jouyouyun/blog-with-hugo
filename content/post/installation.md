@@ -1,7 +1,7 @@
 +++
 title = "系统安装二三事"
 date = 2019-05-02T11:27:00+08:00
-lastmod = 2019-05-02T22:20:56+08:00
+lastmod = 2019-05-08T16:55:07+08:00
 tags = ["installation"]
 categories = ["NOTE"]
 draft = false
@@ -65,9 +65,11 @@ draft = false
 -   `Deepin`
 
     ```shell
-    sudo apt-get install zsh tmux vim-gtk3 openssh-server firefox albert parcellite silversearcher-ag xelatex wkhtmltopdf pandoc vlc zhcon terminator git emacs w3m \
+    sudo apt-get install zsh tmux vim-gtk3 openssh-server parcellite silversearcher-ag texlive-xetex wkhtmltopdf pandoc vlc zhcon terminator git emacs w3m \
     curl dia inkscape wireshark wps-office aria2 mpv htop gpicview deepin-screenshot foxitreader python-pip python3-pip
     ```
+
+    `firefox, albert` 另外安装
 
 
 ### 开发 {#开发}
@@ -81,7 +83,7 @@ draft = false
 -   `Deepin`
 
     ```shell
-    sudo apt-get install valgrind exuberant-ctags golang-go golang-src hugo libboost-all-dev nodejs nodejs d-feet devhelp cmake clang clang-format libclang-dev astyle \
+    sudo apt-get install valgrind exuberant-ctags golang-go golang-src hugo libboost-all-dev nodejs-bin d-feet devhelp cmake clang clang-format libclang-dev astyle \
     libpython-dev
     sudo apt-get build-dep dde-daemon startdde dde-api
     ```
@@ -126,7 +128,7 @@ draft = false
 
     `vim, tmux, git, ssh, ss-tproxy` 的配置在 [conf.d](https://gitee.com/jouyouyun/conf.d) 中, `emacs` 的配置在 [prelude](https://github.com/jouyouyun/prelude) 中.
 
-    `ss-tproxy` 执行 `git clone https://github.com/zfl9/ss-tproxy.git` 下载.
+    `ss-tproxy` 执行 `git clone https://github.com/zfl9/ss-tproxy.git` 下载，需要安装 `ipset, chinadns, dnsmasq` 等依赖。
 
 
 ## 数据 {#数据}
