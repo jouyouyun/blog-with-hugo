@@ -1,7 +1,7 @@
 +++
 title = "Linux 硬件信息获取"
 date = 2019-05-08T17:50:00+08:00
-lastmod = 2019-05-09T15:06:22+08:00
+lastmod = 2019-05-11T16:03:04+08:00
 tags = ["hardware", "cpu", "disk", "network", "wireless", "wired", "memory", "dmi", "bios", "board", "lsblk", "lspci", "lsusb", "lshw", "dmidecode"]
 categories = ["BLOG"]
 draft = false
@@ -18,51 +18,54 @@ draft = false
 
 <!--more-->
 
--   **Bios**
 
-    通过命令 `ls -l /sys/class/dmi/id/bios_*` 可以看到支持的 `bios` 字段，如下：
+### **Bios** {#bios}
 
-    ```shell
-    $ ls -l /sys/class/dmi/id/bios_*
-    -r--r--r-- 1 root root 4.0K 5月   8 17:18 /sys/class/dmi/id/bios_date
-    -r--r--r-- 1 root root 4.0K 5月   8 17:18 /sys/class/dmi/id/bios_vendor
-    -r--r--r-- 1 root root 4.0K 5月   8 17:18 /sys/class/dmi/id/bios_version
-    ```
+通过命令 `ls -l /sys/class/dmi/id/bios_*` 可以看到支持的 `bios` 字段，如下：
 
-    直接读文件即可获取对应值。
+```shell
+$ ls -l /sys/class/dmi/id/bios_*
+-r--r--r-- 1 root root 4.0K 5月   8 17:18 /sys/class/dmi/id/bios_date
+-r--r--r-- 1 root root 4.0K 5月   8 17:18 /sys/class/dmi/id/bios_vendor
+-r--r--r-- 1 root root 4.0K 5月   8 17:18 /sys/class/dmi/id/bios_version
+```
 
--   **Board**
+直接读文件即可获取对应值。
 
-    通过命令 `ls -l /sys/class/dmi/id/board_*` 可以看到支持的 `board` 字段，如下：
 
-    ```shell
-    $ ls -l /sys/class/dmi/id/board_*
-    -r--r--r-- 1 root root 4.0K 5月   8 08:45 /sys/class/dmi/id/board_asset_tag
-    -r--r--r-- 1 root root 4.0K 5月   8 08:45 /sys/class/dmi/id/board_name
-    -r-------- 1 root root 4.0K 5月   8 08:45 /sys/class/dmi/id/board_serial
-    -r--r--r-- 1 root root 4.0K 5月   8 08:43 /sys/class/dmi/id/board_vendor
-    -r--r--r-- 1 root root 4.0K 5月   8 08:45 /sys/class/dmi/id/board_version
-    ```
+### **Board** {#board}
 
-    直接读文件即可获取对应值，但有些文件需要 `root` 权限。
+通过命令 `ls -l /sys/class/dmi/id/board_*` 可以看到支持的 `board` 字段，如下：
 
--   **Product**
+```shell
+$ ls -l /sys/class/dmi/id/board_*
+-r--r--r-- 1 root root 4.0K 5月   8 08:45 /sys/class/dmi/id/board_asset_tag
+-r--r--r-- 1 root root 4.0K 5月   8 08:45 /sys/class/dmi/id/board_name
+-r-------- 1 root root 4.0K 5月   8 08:45 /sys/class/dmi/id/board_serial
+-r--r--r-- 1 root root 4.0K 5月   8 08:43 /sys/class/dmi/id/board_vendor
+-r--r--r-- 1 root root 4.0K 5月   8 08:45 /sys/class/dmi/id/board_version
+```
 
-    通过命令 `ls -l /sys/class/dmi/id/product_*` 可以看到支持的 `product` 字段，如下：
+直接读文件即可获取对应值，但有些文件需要 `root` 权限。
 
-    ```shell
-    $ ls -l /sys/class/dmi/id/product_*
-    -r--r--r-- 1 root root 4.0K 5月   8 08:45 /sys/class/dmi/id/product_family
-    -r--r--r-- 1 root root 4.0K 5月   8 08:43 /sys/class/dmi/id/product_name
-    -r-------- 1 root root 4.0K 5月   8 08:45 /sys/class/dmi/id/product_serial
-    -r--r--r-- 1 root root 4.0K 5月   8 17:12 /sys/class/dmi/id/product_sku
-    -r-------- 1 root root 4.0K 5月   8 08:45 /sys/class/dmi/id/product_uuid
-    -r--r--r-- 1 root root 4.0K 5月   8 08:45 /sys/class/dmi/id/product_version
-    ```
 
-    直接读文件即可获取对应值，但有些文件需要 `root` 权限。
+### **Product** {#product}
 
-    其中 `product_uuid` 可作为机器的唯一 `ID` 。
+通过命令 `ls -l /sys/class/dmi/id/product_*` 可以看到支持的 `product` 字段，如下：
+
+```shell
+$ ls -l /sys/class/dmi/id/product_*
+-r--r--r-- 1 root root 4.0K 5月   8 08:45 /sys/class/dmi/id/product_family
+-r--r--r-- 1 root root 4.0K 5月   8 08:43 /sys/class/dmi/id/product_name
+-r-------- 1 root root 4.0K 5月   8 08:45 /sys/class/dmi/id/product_serial
+-r--r--r-- 1 root root 4.0K 5月   8 17:12 /sys/class/dmi/id/product_sku
+-r-------- 1 root root 4.0K 5月   8 08:45 /sys/class/dmi/id/product_uuid
+-r--r--r-- 1 root root 4.0K 5月   8 08:45 /sys/class/dmi/id/product_version
+```
+
+直接读文件即可获取对应值，但有些文件需要 `root` 权限。
+
+其中 `product_uuid` 可作为机器的唯一 `ID` 。
 
 
 ## **CPU** {#cpu}
@@ -89,7 +92,7 @@ $ cat /proc/meminfo |grep MemTotal
 MemTotal:        7860064 kB
 ```
 
-**对于内存厂商等信息咱还未找到获取方法，待以后补全。**
+**对于内存厂商等信息还未找到获取方法，待以后补全。**
 
 
 ## **Disk** {#disk}
@@ -140,101 +143,105 @@ $ lsblk -J -bno NAME,SERIAL,TYPE,SIZE,VENDOR,MODEL,MOUNTPOINT
 
 接下来分别给出网卡信息获取的方法：
 
--   **Interface Name**
 
-    即是上面的目录下的子目录名
+### **Interface Name** {#interface-name}
 
--   **Mac Address**
+即是上面的目录下的子目录名
 
-    读取文件 `/sys/class/net/<iface name>/address` 可得到
 
--   **IP**
+### **Mac Address** {#mac-address}
 
-    通过调用 `ioctl` 来获取指定 `iface name` 的 `ip` ，代码大致如下：
+读取文件 `/sys/class/net/<iface name>/address` 可得到
+
+
+### **IP** {#ip}
+
+通过调用 `ioctl` 来获取指定 `iface name` 的 `ip` ，代码大致如下：
+
+```shell
+char* get_ip_for_iface(char *iface)
+{
+    int fd;
+    struct ifreq ifr;
+
+    fd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd == -1) {
+        fprintf(stderr, "open socket failed: %s", strerror(errno));
+        return;
+    }
+
+    // must init ifr
+    memset(&ifr, 0, sizeof(ifr));
+    ifr.ifr_addr.sa_family = AF_INET;
+    strncpy(ifr.ifr_name, name.c_str(), IFNAMSIZ - 1);
+    ioctl(fd, SIOCGIFADDR, &ifr);
+    close(fd);
+
+    char *c_addr = inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr);
+    char *ip = calloc(strlen(c_addr)+1, sizeof(char));
+    memcpy(ip, c_addr, strlen(c_addr));
+
+    return ip;
+}
+```
+
+`ipv6` 的暂未测试。
+
+
+### **Model** {#model}
+
+网卡一般在 `pci` 接口上，但也有些实在 `usb` 接口上，要分别获取。
+
+不过都要先读取文件 `/sys/class/net/enp0s25/device/uevent` ，然后分别处理。
+
+-   **pci**
+
+    `uevent` 内容如：
 
     ```shell
-    char* get_ip_for_iface(char *iface)
-    {
-        int fd;
-        struct ifreq ifr;
-
-        fd = socket(AF_INET, SOCK_DGRAM, 0);
-        if (fd == -1) {
-            fprintf(stderr, "open socket failed: %s", strerror(errno));
-            return;
-        }
-
-        // must init ifr
-        memset(&ifr, 0, sizeof(ifr));
-        ifr.ifr_addr.sa_family = AF_INET;
-        strncpy(ifr.ifr_name, name.c_str(), IFNAMSIZ - 1);
-        ioctl(fd, SIOCGIFADDR, &ifr);
-        close(fd);
-
-        char *c_addr = inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr);
-        char *ip = calloc(strlen(c_addr)+1, sizeof(char));
-        memcpy(ip, c_addr, strlen(c_addr));
-
-        return ip;
-    }
+    DRIVER=e1000e
+    PCI_CLASS=20000
+    PCI_ID=8086:1502
+    PCI_SUBSYS_ID=17AA:21F3
+    PCI_SLOT_NAME=0000:00:19.0
+    MODALIAS=pci:v00008086d00001502sv000017AAsd000021F3bc02sc00i00
     ```
 
-    `ipv6` 的暂未测试。
+    取到其中的 `PCI_SLOT_NAME` ，然后执行 `lspci -k -s <PCI_SLOT_NAME>` 来获取 `model` 信息，如：
 
--   **Model**
+    ```shell
+    $ lspci -k -s 0000:00:19.0
+    00:19.0 Ethernet controller: Intel Corporation 82579LM Gigabit Network Connection (Lewisville) (rev 04)
+            Subsystem: Lenovo 82579LM Gigabit Network Connection
+            Kernel driver in use: e1000e
+            Kernel modules: e1000e
+    ```
 
-    网卡一般在 `pci` 接口上，但也有些实在 `usb` 接口上，要分别获取。
+    其中 `Subsystem` 之后的即是 `model` 信息。
 
-    不过都要先读取文件 `/sys/class/net/enp0s25/device/uevent` ，然后分别处理。
+-   **usb**
 
-    -   **pci**
+    `uevent` 内容如：
 
-        `uevent` 内容如：
+    ```shell
+    DEVTYPE=usb_interface
+    DRIVER=ath9k_htc
+    PRODUCT=cf3/9271/108
+    TYPE=255/255/255
+    INTERFACE=255/0/0
+    MODALIAS=usb:v0CF3p9271d0108dcFFdscFFdpFFicFFisc00ip00in00
+    ```
 
-        ```shell
-        DRIVER=e1000e
-        PCI_CLASS=20000
-        PCI_ID=8086:1502
-        PCI_SUBSYS_ID=17AA:21F3
-        PCI_SLOT_NAME=0000:00:19.0
-        MODALIAS=pci:v00008086d00001502sv000017AAsd000021F3bc02sc00i00
-        ```
+    取到其中的 `PRODUCT` ，然后将 `/` 替换为 `:` ，
+    然后执行 `lsusb -d <product>` 来获取 `model` 信息，如：
 
-        取到其中的 `PCI_SLOT_NAME` ，然后执行 `lspci -k -s <PCI_SLOT_NAME>` 来获取 `model` 信息，如：
+    ```shell
+    # 可以不要最后的 '108'
+    $ lsusb -d cf3:9271:108
+    Bus 001 Device 007: ID 0cf3:9271 Atheros Communications, Inc. AR9271 802.11n
+    ```
 
-        ```shell
-        $ lspci -k -s 0000:00:19.0
-        00:19.0 Ethernet controller: Intel Corporation 82579LM Gigabit Network Connection (Lewisville) (rev 04)
-                Subsystem: Lenovo 82579LM Gigabit Network Connection
-                Kernel driver in use: e1000e
-                Kernel modules: e1000e
-        ```
-
-        其中 `Subsystem` 之后的即是 `model` 信息。
-
-    -   **usb**
-
-        `uevent` 内容如：
-
-        ```shell
-        DEVTYPE=usb_interface
-        DRIVER=ath9k_htc
-        PRODUCT=cf3/9271/108
-        TYPE=255/255/255
-        INTERFACE=255/0/0
-        MODALIAS=usb:v0CF3p9271d0108dcFFdscFFdpFFicFFisc00ip00in00
-        ```
-
-        取到其中的 `PRODUCT` ，然后将 `/` 替换为 `:` ，
-        然后执行 `lsusb -d <product>` 来获取 `model` 信息，如：
-
-        ```shell
-        # 可以不要最后的 '108'
-        $ lsusb -d cf3:9271:108
-        Bus 001 Device 007: ID 0cf3:9271 Atheros Communications, Inc. AR9271 802.11n
-        ```
-
-        其中 `Subsystem` 之后的即是 `model` 信息。
+    其中 `Subsystem` 之后的即是 `model` 信息。
 
 
 ## **Bluetooth** {#bluetooth}
@@ -292,41 +299,41 @@ $ lspci -k -s 0000:00:02.0
 
 若无 `device` 目录或是 `device/uevent` 中的内容既没有 `pci` 信息也没有 `usb` 信息，则过滤掉，有就如下所示获取：
 
--   **hwmon**
+**`hwmon`**
 
-    ```shell
-    $ cat /sys/class/hwmon/hwmon2/device/uevent
-    DRIVER=nouveau
-    PCI_CLASS=30000
-    PCI_ID=10DE:0A75
-    PCI_SUBSYS_ID=17AA:3957
-    PCI_SLOT_NAME=0000:02:00.0
-    MODALIAS=pci:v000010DEd00000A75sv000017AAsd00003957bc03sc00i00
+```shell
+$ cat /sys/class/hwmon/hwmon2/device/uevent
+DRIVER=nouveau
+PCI_CLASS=30000
+PCI_ID=10DE:0A75
+PCI_SUBSYS_ID=17AA:3957
+PCI_SLOT_NAME=0000:02:00.0
+MODALIAS=pci:v000010DEd00000A75sv000017AAsd00003957bc03sc00i00
 
-    $ lspci -k -s 0000:02:00.0
-    02:00.0 VGA compatible controller: NVIDIA Corporation GT218M [GeForce 310M] (rev a2)
-            Subsystem: Lenovo GT218M [GeForce 310M]
-            Kernel driver in use: nouveau
-            Kernel modules: nouveau
-    ```
+$ lspci -k -s 0000:02:00.0
+02:00.0 VGA compatible controller: NVIDIA Corporation GT218M [GeForce 310M] (rev a2)
+        Subsystem: Lenovo GT218M [GeForce 310M]
+        Kernel driver in use: nouveau
+        Kernel modules: nouveau
+```
 
--   **graphics**
+**`graphics`**
 
-    ```shell
-    $ cat /sys/class/graphics/fb0/device/uevent
-    DRIVER=i915
-    PCI_CLASS=30000
-    PCI_ID=8086:0166
-    PCI_SUBSYS_ID=17AA:21FA
-    PCI_SLOT_NAME=0000:00:02.0
-    MODALIAS=pci:v00008086d00000166sv000017AAsd000021FAbc03sc00i00
+```shell
+$ cat /sys/class/graphics/fb0/device/uevent
+DRIVER=i915
+PCI_CLASS=30000
+PCI_ID=8086:0166
+PCI_SUBSYS_ID=17AA:21FA
+PCI_SLOT_NAME=0000:00:02.0
+MODALIAS=pci:v00008086d00000166sv000017AAsd000021FAbc03sc00i00
 
-    $ lspci -k -s 0000:00:02.0
-    00:02.0 VGA compatible controller: Intel Corporation 3rd Gen Core processor Graphics Controller (rev 09)
-            Subsystem: Lenovo 3rd Gen Core processor Graphics Controller
-            Kernel driver in use: i915
-            Kernel modules: i915
-    ```
+$ lspci -k -s 0000:00:02.0
+00:02.0 VGA compatible controller: Intel Corporation 3rd Gen Core processor Graphics Controller (rev 09)
+        Subsystem: Lenovo 3rd Gen Core processor Graphics Controller
+        Kernel driver in use: i915
+        Kernel modules: i915
+```
 
 
 ### Display Monitor {#display-monitor}

@@ -21,7 +21,7 @@
 
 <!--more-->
 
-+ *Bios*
+*** *Bios*
 
   通过命令 =ls -l /sys/class/dmi/id/bios_*= 可以看到支持的 =bios= 字段，如下：
 
@@ -34,7 +34,7 @@
 
   直接读文件即可获取对应值。
 
-+ *Board*
+*** *Board*
 
   通过命令 =ls -l /sys/class/dmi/id/board_*= 可以看到支持的 =board= 字段，如下：
 
@@ -49,7 +49,7 @@
 
   直接读文件即可获取对应值，但有些文件需要 =root= 权限。
 
-+ *Product*
+*** *Product*
 
   通过命令 =ls -l /sys/class/dmi/id/product_*= 可以看到支持的 =product= 字段，如下：
 
@@ -91,7 +91,7 @@ $ cat /proc/meminfo |grep MemTotal
 MemTotal:        7860064 kB
 #+END_SRC
 
-*对于内存厂商等信息咱还未找到获取方法，待以后补全。*
+*对于内存厂商等信息还未找到获取方法，待以后补全。*
 
 
 ** *Disk*
@@ -142,15 +142,15 @@ $ lsblk -J -bno NAME,SERIAL,TYPE,SIZE,VENDOR,MODEL,MOUNTPOINT
 
 接下来分别给出网卡信息获取的方法：
 
-+ *Interface Name*
+*** *Interface Name*
 
   即是上面的目录下的子目录名
 
-+ *Mac Address*
+*** *Mac Address*
 
   读取文件 =/sys/class/net/<iface name>/address= 可得到
 
-+ *IP*
+*** *IP*
 
   通过调用 =ioctl= 来获取指定 =iface name= 的 =ip= ，代码大致如下：
 
@@ -183,7 +183,7 @@ $ lsblk -J -bno NAME,SERIAL,TYPE,SIZE,VENDOR,MODEL,MOUNTPOINT
 
   =ipv6= 的暂未测试。
 
-+ *Model*
+*** *Model*
 
   网卡一般在 =pci= 接口上，但也有些实在 =usb= 接口上，要分别获取。
 
@@ -294,41 +294,42 @@ $ lspci -k -s 0000:00:02.0
 
 若无 =device= 目录或是 =device/uevent= 中的内容既没有 =pci= 信息也没有 =usb= 信息，则过滤掉，有就如下所示获取：
 
-+ *hwmon*
+  *=hwmon=*
 
-  #+BEGIN_SRC shell
-  $ cat /sys/class/hwmon/hwmon2/device/uevent
-  DRIVER=nouveau
-  PCI_CLASS=30000
-  PCI_ID=10DE:0A75
-  PCI_SUBSYS_ID=17AA:3957
-  PCI_SLOT_NAME=0000:02:00.0
-  MODALIAS=pci:v000010DEd00000A75sv000017AAsd00003957bc03sc00i00
+    #+BEGIN_SRC shell
+    $ cat /sys/class/hwmon/hwmon2/device/uevent
+    DRIVER=nouveau
+    PCI_CLASS=30000
+    PCI_ID=10DE:0A75
+    PCI_SUBSYS_ID=17AA:3957
+    PCI_SLOT_NAME=0000:02:00.0
+    MODALIAS=pci:v000010DEd00000A75sv000017AAsd00003957bc03sc00i00
 
-  $ lspci -k -s 0000:02:00.0
-  02:00.0 VGA compatible controller: NVIDIA Corporation GT218M [GeForce 310M] (rev a2)
-          Subsystem: Lenovo GT218M [GeForce 310M]
-          Kernel driver in use: nouveau
-          Kernel modules: nouveau
-  #+END_SRC
+    $ lspci -k -s 0000:02:00.0
+    02:00.0 VGA compatible controller: NVIDIA Corporation GT218M [GeForce 310M] (rev a2)
+            Subsystem: Lenovo GT218M [GeForce 310M]
+            Kernel driver in use: nouveau
+            Kernel modules: nouveau
+    #+END_SRC
 
-+ *graphics*
 
-  #+BEGIN_SRC shell
-  $ cat /sys/class/graphics/fb0/device/uevent
-  DRIVER=i915
-  PCI_CLASS=30000
-  PCI_ID=8086:0166
-  PCI_SUBSYS_ID=17AA:21FA
-  PCI_SLOT_NAME=0000:00:02.0
-  MODALIAS=pci:v00008086d00000166sv000017AAsd000021FAbc03sc00i00
+  *=graphics=*
 
-  $ lspci -k -s 0000:00:02.0
-  00:02.0 VGA compatible controller: Intel Corporation 3rd Gen Core processor Graphics Controller (rev 09)
-          Subsystem: Lenovo 3rd Gen Core processor Graphics Controller
-          Kernel driver in use: i915
-          Kernel modules: i915
-  #+END_SRC
+    #+BEGIN_SRC shell
+    $ cat /sys/class/graphics/fb0/device/uevent
+    DRIVER=i915
+    PCI_CLASS=30000
+    PCI_ID=8086:0166
+    PCI_SUBSYS_ID=17AA:21FA
+    PCI_SLOT_NAME=0000:00:02.0
+    MODALIAS=pci:v00008086d00000166sv000017AAsd000021FAbc03sc00i00
+
+    $ lspci -k -s 0000:00:02.0
+    00:02.0 VGA compatible controller: Intel Corporation 3rd Gen Core processor Graphics Controller (rev 09)
+            Subsystem: Lenovo 3rd Gen Core processor Graphics Controller
+            Kernel driver in use: i915
+            Kernel modules: i915
+    #+END_SRC
 
 *** Display Monitor
 
