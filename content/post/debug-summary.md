@@ -1,8 +1,8 @@
 +++
 title = "Debug 小结"
 date = 2016-02-03T15:06:21+08:00
-lastmod = 2019-02-10T17:52:42+08:00
-tags = ["debug"]
+lastmod = 2019-05-12T22:22:49+08:00
+tags = ["debug", "perf", "pprof", "gdb", "sar", "performance"]
 categories = ["NOTE"]
 draft = false
 +++
@@ -10,20 +10,25 @@ draft = false
 调试 `bug` 的时候要有耐心, 要不断测试, 直到找到问题原因.
 
 
-## 确定 `bug` 出现的方式 {#确定-bug-出现的方式}
+## 基本思路 {#基本思路}
+
+
+### 确定 `bug` 出现的方式 {#确定-bug-出现的方式}
 
 -   一定要找到稳定重现的方式, 这样才能方便下面的调试
 -   如果找不到稳定重现的方法就只能根据上次出现的情形, 去查看相关的代码, 猜测可能出问题的地方, 然后针对那一块进行调试, 直到找到稳定重现方式
 
 
-## 定位出问题的代码 {#定位出问题的代码}
+### 定位出问题的代码 {#定位出问题的代码}
 
 -   再找到稳定重现方式后, 开始定位出问题的函数, 然后加入调试信息, 不断尝试, 直到找到有问题的代码
 -   找到有问题的代码后, 如果发现是第三方库里的函数,可以打印出每次调用的输入输出参数, 看看是否有迹可循, 可以单独写个小程序, 传入问题的参数, 进行不断测试, 来确定第三方库有没有问题
 -   如果自己程序的代码, 就一行一行的慢慢测试, 确定问题的原因, 原因找到了就可以开始思考解决方法了
 
+<!--more-->
 
-## 修复 `bug` {#修复-bug}
+
+### 修复 `bug` {#修复-bug}
 
 修复 `bug` 时一定要仔细检查新添加的代码, 看看会不会造成其它的 `bug`, 一定要不断测试, 把函数输入输出状态都打印出来, 以免出现界面是对的, 但函数的数据有误.
 
@@ -34,14 +39,18 @@ draft = false
 若知道问题的原因后(这个原因一定要是相关低层的, 不能说是由于 A 调了 B , B 出问题了, 就把问题原因归与 A 的头上, 一定要是相当精确的), 不知道怎么修改, 这时就可以向组内成员求助, 或者去了解这方面的知识.
 
 
-## 性能调试工具 {#性能调试工具}
+### 使用性能调试工具 {#使用性能调试工具}
 
-对于 `C/C++` 代码, 可以使用 `Google Proftools` 工具来调试. 它以程序调用的方式生成每次调用的性能消耗图, 方便定位占用资源多的函数.
+在代码中添加 `pprof` 支持，通过环境变量或指定参数等方法来启用。
+
+对于 `C/C++` 代码, 可以使用 `Google Proftools` 工具来调试，而 `go` 则内置了 `pprof` 的支持. `pprof` 以程序调用的方式生成每次调用的性能消耗图, 方便定位占用资源多的函数.
 
 文档见: [Google Proftools Documents](http://google-perftools.googlecode.com/svn/trunk/doc/) , 使用方法自行 `google` .
 
+`go` 中 `runtime/pprof` 和 `net/http/pprof` 均提供了 `pprof` 支持，后者启用后提供了 `http` 接口，文档分别参见： [runtime/pprof](https://godoc.org/runtime/pprof) 和 [net/http/pprof](https://godoc.org/net/http/pprof)
 
-## 网站推荐 {#网站推荐}
+
+### 查找资料 {#查找资料}
 
 还可以去一些开发者网站提问:
 
@@ -50,3 +59,52 @@ draft = false
 -   [SegmentFault](http://segmentfault.com/)
 
 或者到 [IBM Developer](http://www.ibm.com/developerworks/cn/) 看写相关的技术文章, 前端的话还可以去 [Mozilla Developer](https://developer.mozilla.org/) .
+
+
+## 调试方法 {#调试方法}
+
+这里分别列出笔者常用的几种调试方法，并给出用到的场景。
+
+(**注：在调试前安装好需要的 `dbg` 包**)
+
+
+### 添加打印信息 {#添加打印信息}
+
+使用这种方法的前提是拥有源码，并已经可以确定出现 `bug` 的范围，然后对产生 `bug` 的代码添加有意义的打印信息。
+
+
+### 使用 `gdb` {#使用-gdb}
+
+`gdb` 的适用范围就很广了，如程序异常终止，资源使用异常等。但使用之前需要学习如何使用，这里推荐： [gdb 调试入门，大牛写的高质量指南](http://blog.jobbole.com/107759/) 。
+
+另外建议启用 `coredump` ，这将会在程序崩溃时保留当时的调用栈信息，启用方法参见之前的文章： [Enable Coredump](http://jouyouyun.github.io/post/enable-coredump/) 。
+
+
+### 使用 `pprof` {#使用-pprof}
+
+`pprof` 上文中已经有过介绍，主要用于性能调优，通常在程序资源占用异常时使用，如 `cpu 100%` 或 =内存泄漏=。
+
+但使用时需要修改代码。
+
+
+### 使用 `perf` {#使用-perf}
+
+`perf` 与 `pprof` 类似，但它不需要修改代码。使用方法见：
+
+-   [使用 Perf 优化程序性能 ](https://docs-blog.wh-redirect.deepin.cn/?p=735)
+-   [Perf -- Linux下的系统性能调优工具](https://www.ibm.com/developerworks/cn/linux/l-cn-perf1/index.html)
+
+
+### 分析 `proc syscall` {#分析-proc-syscall}
+
+主要是通过分析进程及其线程的调用栈，找到出问题的线程，然后查看其内存数据来确定问题，参见：[记一次SPECjvm2008问题排查](https://docs-blog.wh-redirect.deepin.cn/?p=794#i-2)
+
+
+## 性能优化 {#性能优化}
+
+-   [Linux 性能观测工具](http://www.brendangregg.com/Perf/linux%5Fobservability%5Ftools.png)
+-   [Linux 性能测评工具](http://www.brendangregg.com/Perf/linux%5Fbenchmarking%5Ftools.png)
+-   [Linux 性能调优工具](http://www.brendangregg.com/Perf/linux%5Ftuning%5Ftools.png)
+-   [sar](http://www.brendangregg.com/Perf/linux%5Fobservability%5Fsar)
+
+更多工具参加：[Linux Performance](http://www.brendangregg.com/linuxperf.html) 。
