@@ -1,7 +1,7 @@
 +++
 title = "Jenkins API 使用"
 date = 2019-04-21T20:02:00+08:00
-lastmod = 2019-04-21T21:07:07+08:00
+lastmod = 2019-05-16T16:26:15+08:00
 tags = ["jenkins", "rest", "api"]
 categories = ["BLOG"]
 draft = false
@@ -149,6 +149,8 @@ draft = false
 -   构建状态
 
     **API:** `/<id>/api/json`
+
+    **进度说明:** 返回的信息中， `timestamp` 表示开始时间， `estimatedDuration` 表示预估的任务耗时，这两个时间再加上当前时间就可估算任务进度。另外 `duration` 任务实际的耗时，信息中时间的单位都是毫秒(`ms`)。
 
 -   最后一次构建
 
