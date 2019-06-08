@@ -1,7 +1,8 @@
 +++
 title = "系统安装二三事"
+author = "jouyouyun <jouyouwen717@gmail.com>"
 date = 2019-05-02T11:27:00+08:00
-lastmod = 2019-05-08T16:55:07+08:00
+lastmod = 2019-06-08T18:31:00+08:00
 tags = ["installation"]
 categories = ["NOTE"]
 draft = false
@@ -123,6 +124,22 @@ draft = false
     ```
 
     存储目录的设置参见: [更改 Docker 数据的存储目录](http://jouyouyun.github.io/post/docker-data-storage/)
+
+-   `hosts`
+
+    之前用到的设置，重装之前备份好。
+
+-   `sysctl.conf`
+
+    文件最大打开数目，=tcp= 相关的配置
+
+-   `coredump`
+
+    安装 `systemd-coredump` 并在 `/etc/sysctl.conf` 中添加 `coredump` 的配置。
+
+-   `/etc/systemd/`
+
+    此目录下的配置文件的修改需要记录，如 `logind.conf` 中 `lid` 相关动作的处理方法。
 
 -   其它
 

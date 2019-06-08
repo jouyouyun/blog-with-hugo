@@ -1,7 +1,8 @@
 +++
 title = "Docker 使用简介"
+author = "jouyouyun <jouyouwen717@gmail.com>"
 date = 2019-04-21T11:58:00+08:00
-lastmod = 2019-04-21T17:36:52+08:00
+lastmod = 2019-06-08T18:29:53+08:00
 tags = ["docker", "container", "image", "compose"]
 categories = ["BLOG"]
 draft = false
@@ -77,6 +78,12 @@ draft = false
     便可使用 `Docker` 在中国的镜像加速站。
 
     对于企业用户还可搭建自己的私有镜像仓库，方便管理内部镜像。
+
+-   登录
+
+    `docker` 在使用公共镜像时可直接 `pull` ，无需登录。但在使用私有镜像时则需要向登录，使用命令 `docker login <repository url>` 。
+
+    `repository url` 不指定则使用默认值，默认是 `hub.docker.com` 。
 
 
 ### 镜像 {#镜像}
@@ -159,13 +166,17 @@ CMD ["bash"]
 
 使用 `docker run` 命令运行镜像，可使用参数配置，下面给出一个例子：
 
-`docker run -it -d -p <local port>:<container port> -v <local path>:<container path> <image>`
+`docker run -it -d -p <local port>:<container port> -v <local path>:<container path> -e "TESST_ENV=1" --name "<conatiner name>" <image>`
 
 -   `-i` 是交互式操作
 -   `-t` 是终端
 -   `-p` 指定端口映射
 -   `-v` 指定 `volume` 映射
 -   `-d` 后台模式
+-   `-e` 指定环境变量
+-   `--name` 指定运行后的容器名称
+
+\*\*注意：\*\*这些参数必须在 `image` 之前指定，否则会被当作 `image` 启动命令的参数。
 
 
 #### 删除 {#删除}
