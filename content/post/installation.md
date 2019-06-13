@@ -1,8 +1,7 @@
 +++
 title = "系统安装二三事"
-author = "jouyouyun <jouyouwen717@gmail.com>"
 date = 2019-05-02T11:27:00+08:00
-lastmod = 2019-06-08T18:31:00+08:00
+lastmod = 2019-06-13T20:32:57+08:00
 tags = ["installation"]
 categories = ["NOTE"]
 draft = false
@@ -140,6 +139,24 @@ draft = false
 -   `/etc/systemd/`
 
     此目录下的配置文件的修改需要记录，如 `logind.conf` 中 `lid` 相关动作的处理方法。
+
+-   项目的配置文件
+
+    统一将各个项目的配置文件放在 `/Data/Projects/Configurations` 下面，重装前备份。
+
+-   `IO` 调度算法
+
+    系统一般所在的硬盘识别符为 `sda` ，双硬盘的可能是其它名称，使用 `df -h` 确定。
+    `SSD` 硬盘可以使用 `noop` 调度算法。
+
+    -   查看当前值： `cat /sys/block/sda/queue/scheduler`
+        -   `noop` : `FIFO` 队列类型，使用于 `IO` 无压力的硬盘，如 `SSD` ，闪存设备， `RAM` 等
+        -   `deadline` ：为每次请求都设置截至时间，读写分离在不同的队列中，使用于大吞吐量的场景，如数据库环境
+        -   `cfq` : 默认值，完全公平队列，为每个进程都创建队列，然后使用时间片轮转处理进程的队列。是前两种的折中方案，使用于多媒体应用，桌面系统等。
+
+    -   修改： `echo noop | sudo tee /sys/block/sda/queue/scheduler`
+
+    -   持久化： 添加 `elevator=noop` 到 `/etc/default/grub` 中的 `GRUB_CMDLINE_LINUX` 中，然后使用 `sudo grub-mkconfig -o /boot/grub/grub.cfg` 更新启动项。
 
 -   其它
 
