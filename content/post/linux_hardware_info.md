@@ -1,25 +1,23 @@
 +++
 title = "Linux 硬件信息获取"
 date = 2019-05-08T17:50:00+08:00
-lastmod = 2019-05-11T16:03:04+08:00
+lastmod = 2019-06-16T20:30:25+08:00
 tags = ["hardware", "cpu", "disk", "network", "wireless", "wired", "memory", "dmi", "bios", "board", "lsblk", "lspci", "lsusb", "lshw", "dmidecode"]
 categories = ["BLOG"]
 draft = false
 +++
 
-在 `linux` 上可以通过 `dmidecode` 或是 `lshw` 来获取硬件信息，能够方便的查看系统配置。
-但它们的输出信息过多，解析起来有些麻烦，另外 `lshw` 对 `usb` 接口的网卡支持不好，显示的信息不够，
-所以在此整理下通过读文件或是一些简单命令来获取硬件信息的方法。
+在 `linux` 上可以通过 `dmidecode` 或是 `lshw` 来获取硬件信息，能够方便的查看系统配置。但它们的输出信息过多，解析起来有些麻烦，另外 `lshw` 对 `usb` 接口的网卡支持不好，显示的信息不够，所以在此整理下通过读文件或是一些简单命令来获取硬件信息的方法。
 
 
-## **DMI** {#dmi}
+### **DMI** {#dmi}
 
 一般情况下内核默认加载了 `dmi sysfs` ，路径是 `/sys/class/dmi` 。里面包含了 `bios` ， `board` ， `product` 等信息。
 
 <!--more-->
 
 
-### **Bios** {#bios}
+#### **Bios** {#bios}
 
 通过命令 `ls -l /sys/class/dmi/id/bios_*` 可以看到支持的 `bios` 字段，如下：
 
@@ -33,7 +31,7 @@ $ ls -l /sys/class/dmi/id/bios_*
 直接读文件即可获取对应值。
 
 
-### **Board** {#board}
+#### **Board** {#board}
 
 通过命令 `ls -l /sys/class/dmi/id/board_*` 可以看到支持的 `board` 字段，如下：
 
@@ -49,7 +47,7 @@ $ ls -l /sys/class/dmi/id/board_*
 直接读文件即可获取对应值，但有些文件需要 `root` 权限。
 
 
-### **Product** {#product}
+#### **Product** {#product}
 
 通过命令 `ls -l /sys/class/dmi/id/product_*` 可以看到支持的 `product` 字段，如下：
 
@@ -68,7 +66,7 @@ $ ls -l /sys/class/dmi/id/product_*
 其中 `product_uuid` 可作为机器的唯一 `ID` 。
 
 
-## **CPU** {#cpu}
+### **CPU** {#cpu}
 
 通过读取文件 `/proc/cpuinfo` 可获取 `cpu` 的信息，一般 `model name` 字段为 `cpu` 名称，如：
 
@@ -83,7 +81,7 @@ model name      : Intel(R) Core(TM) i7-3520M CPU @ 2.90GHz
 **但在龙芯，申威上可能不是这个字段，需要根据文件内容确定。**
 
 
-## **Memory** {#memory}
+### **Memory** {#memory}
 
 通过读取文件 `/proc/meminfo` 可获取内存总大小，字段是 `MemTotal` ，如：
 
@@ -95,12 +93,12 @@ MemTotal:        7860064 kB
 **对于内存厂商等信息还未找到获取方法，待以后补全。**
 
 
-## **Disk** {#disk}
+### **Disk** {#disk}
 
 硬盘信息这里使用 `lsblk` 来获取，通过指定它的参数来获取，如：
 
 ```shell
-$ lsblk -J -bno NAME,SERIAL,TYPE,SIZE,VENDOR,MODEL,MOUNTPOINT
+$ lsblk -J -bno NAME,SERIAL,TYPE,SIZE,VENDOR,MODEL,MOUNTPOINT,UUID
 {
    "blockdevices": [
       {"name": "sda", "serial": "TF0500WE0GAV0V", "type": "disk", "size": "500107862016", "vendor": "ATA     ", "model": "HGST HTS725050A7", "mountpoint": null,
@@ -121,7 +119,7 @@ $ lsblk -J -bno NAME,SERIAL,TYPE,SIZE,VENDOR,MODEL,MOUNTPOINT
 **只有 `type` 为 `disk` 时才表示为一块硬盘，其它如 `loop` 则应该过滤掉。** 每块硬盘中的 `children` 表示它下面的分区，通过 `mountpoint` 可确定硬盘在此系统上的使用情况。
 
 
-## **Network** {#network}
+### **Network** {#network}
 
 这里是先获取系统上的网络接口，这包括了物理网卡和虚拟网卡(如 `docker` 创建的)。
 
@@ -144,17 +142,17 @@ $ lsblk -J -bno NAME,SERIAL,TYPE,SIZE,VENDOR,MODEL,MOUNTPOINT
 接下来分别给出网卡信息获取的方法：
 
 
-### **Interface Name** {#interface-name}
+#### **Interface Name** {#interface-name}
 
 即是上面的目录下的子目录名
 
 
-### **Mac Address** {#mac-address}
+#### **Mac Address** {#mac-address}
 
 读取文件 `/sys/class/net/<iface name>/address` 可得到
 
 
-### **IP** {#ip}
+#### **IP** {#ip}
 
 通过调用 `ioctl` 来获取指定 `iface name` 的 `ip` ，代码大致如下：
 
@@ -188,7 +186,7 @@ char* get_ip_for_iface(char *iface)
 `ipv6` 的暂未测试。
 
 
-### **Model** {#model}
+#### **Model** {#model}
 
 网卡一般在 `pci` 接口上，但也有些实在 `usb` 接口上，要分别获取。
 
@@ -232,8 +230,7 @@ char* get_ip_for_iface(char *iface)
     MODALIAS=usb:v0CF3p9271d0108dcFFdscFFdpFFicFFisc00ip00in00
     ```
 
-    取到其中的 `PRODUCT` ，然后将 `/` 替换为 `:` ，
-    然后执行 `lsusb -d <product>` 来获取 `model` 信息，如：
+    取到其中的 `PRODUCT` ，然后将 `/` 替换为 `:` ，然后执行 `lsusb -d <product>` 来获取 `model` 信息，如：
 
     ```shell
     # 可以不要最后的 '108'
@@ -244,7 +241,7 @@ char* get_ip_for_iface(char *iface)
     其中 `Subsystem` 之后的即是 `model` 信息。
 
 
-## **Bluetooth** {#bluetooth}
+### **Bluetooth** {#bluetooth}
 
 在 `/sys/class/bluetooth/` 下是蓝牙设备，与 **网卡** 一样，根据 `/sys/class/bluetooth/<hciX>/device/uevent` 的内容使用 `lspci` 或 `lsusb` 来获取 `model` 信息。
 
@@ -268,7 +265,7 @@ Bus 001 Device 003: ID 0a5c:21e6 Broadcom Corp. BCM20702 Bluetooth 4.0 [ThinkPad
 ```
 
 
-## **Graphic** {#graphic}
+### **Graphic** {#graphic}
 
 显卡信息在 `/sys/class/drm/` 下，里面还包含了显卡支持输出接口，但只有 `card+integer` 组成的目录才是显卡的，如本机的信息：
 
@@ -336,10 +333,9 @@ $ lspci -k -s 0000:00:02.0
 ```
 
 
-### Display Monitor {#display-monitor}
+#### Display Monitor {#display-monitor}
 
-显示器的信息目前是从 `edid` 中获取，先确定显示器连接的显卡端口，然后使用 `edid-decode` (需要安装)解析其的 `edid` 文件，就可得到详细信息。
-如本机是 `card0-LVDS-1` ：
+显示器的信息目前是从 `edid` 中获取，先确定显示器连接的显卡端口，然后使用 `edid-decode` (需要安装)解析其的 `edid` 文件，就可得到详细信息。如本机是 `card0-LVDS-1` ：
 
 ```shell
 $ cat /sys/class/drm/card0-LVDS-1/edid|edid-decode
@@ -385,7 +381,7 @@ EDID block does NOT conform to EDID 1.3!
 ```
 
 
-## Sound {#sound}
+### Sound {#sound}
 
 声卡设备在 `/sys/class/sound` 目录下，目录名一般是 `card+integer` 组成，如本机的信息：
 
@@ -413,7 +409,7 @@ $ lspci -k -s 0000:00:1b.0
 ```
 
 
-## **Input/Output Device** {#input-output-device}
+### **Input/Output Device** {#input-output-device}
 
 输入设备的信息可以从 `/proc/bus/input/devices` 文件中获取，如：
 
@@ -477,7 +473,7 @@ $ xinput
 使用 `xinput list-prop <device id>` 可以查看设备的属性。
 
 
-## **Battery** {#battery}
+### **Battery** {#battery}
 
 电池信息可以从 `/sys/class/power_supply/<name>/uevent` 文件中获取，电池的名称一般以 `BAT` 开头。如本机的信息：
 
@@ -502,10 +498,9 @@ POWER_SUPPLY_SERIAL_NUMBER=15921
 ```
 
 
-## Backlight {#backlight}
+### Backlight {#backlight}
 
-`/sys/class/backlight/` 目录下的是背光设备，如显示屏，背光键盘等，可以更改文件内容来调节这些设备的亮度。
-如：
+`/sys/class/backlight/` 目录下的是背光设备，如显示屏，背光键盘等，可以更改文件内容来调节这些设备的亮度。如：
 
 ```shell
 $ ls /sys/class/backlight/intel_backlight/
@@ -523,10 +518,9 @@ actual_brightness  bl_power  brightness  device@  max_brightness  power/  subsys
 另外背光设备 `device` 可能只想真实的显卡设备，一般是子目录中包含 `video` 的。
 
 
-## Camera {#camera}
+### Camera {#camera}
 
-`/sys/class/video4linux/` 下是摄像头设备，不同子目录中的设备可能是同一个，也是读取 `device/uevent` 文件来选择 `lspci` 或 `lsusb` 获取设备信息，
-如：
+`/sys/class/video4linux/` 下是摄像头设备，不同子目录中的设备可能是同一个，也是读取 `device/uevent` 文件来选择 `lspci` 或 `lsusb` 获取设备信息，如：
 
 ```shell
 $ cat /sys/class/video4linux/video0/device/uevent
@@ -542,12 +536,12 @@ Bus 001 Device 004: ID 5986:02d2 Acer, Inc
 ```
 
 
-## Printer {#printer}
+### Printer {#printer}
 
 打印机应该是在 `/sys/class/printer` 下，信息获取方法应该与上文一致，本人手中没有打印机就不给出示例了。
 
 
-## Fingerprint {#fingerprint}
+### Fingerprint {#fingerprint}
 
 指纹的功能目前是由 `libfprint` 项目提供，调用其提供的接口来获取。
 
@@ -559,3 +553,8 @@ $ qdbus --system --literal net.reactivated.Fprint /net/reactivated/Fprint/Manage
 ```
 
 输出可知本机没有指纹设备。
+
+
+## 实现 {#实现}
+
+这里用 `Go` 实现了 `hardware` ，见此： [hardware](https://github.com/jouyouyun/hardware)

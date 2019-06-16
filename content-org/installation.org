@@ -42,7 +42,7 @@
 + =Archlinux=
 
   #+BEGIN_SRC shell
-  yaourt -S fcitx fcitx-googlepinyin fcitx-frontend-gtk2 fcitx-frontend-gtk3 fcitx-frontend-qt4 fcitx-module-x11 fcitx-module-dbus fcitx-table fcitx-ui-classic
+  yaourt -S fcitx fcitx-googlepinyin fcitx-gtk2 fcitx-gtk3 fcitx-qt5 fcitx-ui-light
   #+END_SRC
 
 + =Deepin=
@@ -59,8 +59,8 @@
 + =Archlinux=
 
   #+BEGIN_SRC shell
-  yaourt -S zsh tmux gvim openssh most firefox albert parcellite the_silver_searcher wget xelatex wkhtmltopdf pandoc vlc zhcon terminator git emacs w3m curl \
-  dia inkscape wireshark wps-office aria2 mpv htop gpicview deepin-screenshot foxitreader python-pip
+  yaourt -S zsh tmux gvim openssh most firefox albert parcellite the_silver_searcher wget xelatex wkhtmltopdf pandoc vlc terminator git emacs w3m curl \
+  dia inkscape  wps-office aria2 mpv htop gpicview deepin-screenshot foxitreader python-pip
   #+END_SRC
 
 + =Deepin=
@@ -78,7 +78,7 @@
 + =Archlinux=
 
   #+BEGIN_SRC shell
-  yaourt -S valgrind ctags go hugo boost boost-libs nodejs d-feet devhelp cmake clang clang-format astyle
+  yaourt -S valgrind ctags go hugo boost boost-libs nodejs d-feet devhelp cmake clang astyle
   #+END_SRC
 
 + =Deepin=

@@ -99,7 +99,7 @@ MemTotal:        7860064 kB
 硬盘信息这里使用 =lsblk= 来获取，通过指定它的参数来获取，如：
 
 #+BEGIN_SRC shell
-$ lsblk -J -bno NAME,SERIAL,TYPE,SIZE,VENDOR,MODEL,MOUNTPOINT
+$ lsblk -J -bno NAME,SERIAL,TYPE,SIZE,VENDOR,MODEL,MOUNTPOINT,UUID
 {
    "blockdevices": [
       {"name": "sda", "serial": "TF0500WE0GAV0V", "type": "disk", "size": "500107862016", "vendor": "ATA     ", "model": "HGST HTS725050A7", "mountpoint": null,
@@ -549,3 +549,8 @@ $ qdbus --system --literal net.reactivated.Fprint /net/reactivated/Fprint/Manage
 #+END_SRC
 
 输出可知本机没有指纹设备。
+
+
+* 实现
+
+这里用 =Go= 实现了 =hardware= ，见此： [[https://github.com/jouyouyun/hardware][hardware]]

@@ -1,7 +1,7 @@
 +++
 title = "系统安装二三事"
 date = 2019-05-02T11:27:00+08:00
-lastmod = 2019-06-13T20:32:57+08:00
+lastmod = 2019-06-16T20:08:56+08:00
 tags = ["installation"]
 categories = ["NOTE"]
 draft = false
@@ -41,7 +41,7 @@ draft = false
 -   `Archlinux`
 
     ```shell
-    yaourt -S fcitx fcitx-googlepinyin fcitx-frontend-gtk2 fcitx-frontend-gtk3 fcitx-frontend-qt4 fcitx-module-x11 fcitx-module-dbus fcitx-table fcitx-ui-classic
+    yaourt -S fcitx fcitx-googlepinyin fcitx-gtk2 fcitx-gtk3 fcitx-qt5 fcitx-ui-light
     ```
 
 -   `Deepin`
@@ -58,8 +58,8 @@ draft = false
 -   `Archlinux`
 
     ```shell
-    yaourt -S zsh tmux gvim openssh most firefox albert parcellite the_silver_searcher wget xelatex wkhtmltopdf pandoc vlc zhcon terminator git emacs w3m curl \
-    dia inkscape wireshark wps-office aria2 mpv htop gpicview deepin-screenshot foxitreader python-pip
+    yaourt -S zsh tmux gvim openssh most firefox albert parcellite the_silver_searcher wget xelatex wkhtmltopdf pandoc vlc terminator git emacs w3m curl \
+    dia inkscape  wps-office aria2 mpv htop gpicview deepin-screenshot foxitreader python-pip
     ```
 
 -   `Deepin`
@@ -77,7 +77,7 @@ draft = false
 -   `Archlinux`
 
     ```shell
-    yaourt -S valgrind ctags go hugo boost boost-libs nodejs d-feet devhelp cmake clang clang-format astyle
+    yaourt -S valgrind ctags go hugo boost boost-libs nodejs d-feet devhelp cmake clang astyle
     ```
 
 -   `Deepin`
