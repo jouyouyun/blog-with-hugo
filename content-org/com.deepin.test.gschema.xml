@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <enum id="com.deepin.test.LogLevel">
+        <value nick="debug" value="1" />
+        <value nick="info" value="2" />
+        <value nick="fatal" value="3" />
+    </enum>
+
+    <schema path="/com/deepin/test/" id="com.deepin.test">
+        <key type="b"  name="enabled">
+            <default>true</default>
+            <summary>Enable this module.</summary>
+            <description>Whether enable this module.</description>
+        </key>
+        <key enum="com.deepin.test.LogLevel" name="loglevel">
+            <default>'info'</default>
+            <summary>Log level.</summary>
+            <description>Log level.</description>
+        </key>
+        <key type="i" name="interval">
+            <default>10</default>
+            <range min="0" max="60" />
+            <summary>Timer duration.</summary>
+            <description>Timer duration.</description>
+        </key>
+        <key type="(ii)" name="size">
+            <default>(800,600)</default>
+            <summary>The window size.</summary>
+            <description>The window size.</description>
+        </key>
+    </schema>
+</schemalist>

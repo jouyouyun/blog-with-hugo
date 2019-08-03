@@ -1,0 +1,212 @@
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: post
+#+SEQ_TODO: TODO NEXT DRAFT DONE
+#+FILETAGS: post
+#+OPTIONS: toc:nil num:nil timestamp:nil ^:{} <:{}
+#+HUGO_AUTO_SET_LASTMOD: t
+#+TITLE: GSettings
+#+DATE: 2019-08-03T19:30:21+08:00
+#+HUGO_TAGS: gsettings
+#+HUGO_CATEGORIES: BLOG
+#+HUGO_DRAFT: false
+
+=GSettings= 实际上是一套可使用多个 =storage backends= 的 =API= ，默认使用 =dconf= 作为 =backend= ，也可以使用 =keyfile= 作为 =backend= 。
+但由于 =gio= 提供了 =GKeyFile= 结构来处理 =keyfile= 文件，所以解析 =keyfile= 文件时很少通过 =GSettings API= ，在这里只介绍使用 =dconf= 作为 =backend= 的使用方法。
+
+<!--more-->
+
+--------
+
+** dconf
+
+=dconf= 是一个底层的配置管理系统，被设计用来作为 =GSettings= 的 =backend= ，并提供了图形化的配置管理工具 =dconf-editor= ，具有以下特点：
+
++ 检索快速
+
+  =dconf= 使用 =gvdb(GVariant Database file)= 格式的二进制文件存储数据，它是一个简单的数据库，以路径映射的方式存储 =key= ，检索高效。默认的文件路径为： =~/.config/dconf/user=
+
++ 支持改变通知
+
+  =dconf= 支持在 =key= 发生改变时发出通知
+
+--------
+
+
+** 配置文件
+
+=GSettings= 的配置文件是 =xml= 格式的，文件需以 =.gschema.xml= 结尾，文件名通常与 =id= 相同。
+配置文件安装在 =/usr/share/glib-2.0/schemas/= 目录下，手动添加进去的文件需要执行 =sudo glib-complie-schemas /usr/share/glib-2.0/schemas= 让其生效。
+
+文件内容简要格式如下：
+
+#+BEGIN_SRC xml
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <schema path="" id="">
+        <key type=""  name="">
+            <default></default>
+            <summary></summary>
+            <description></description>
+        </key>
+    </schema>
+</schemalist>
+#+END_SRC
+
+可以看到一个文件里可以包含多个 =schema= ，每个 =schema= 可由多个 =key= 组成。
+详细说明如下：
+
++ id
+
+  =schema= 中的 =id= 需要在整个配置系统中是唯一的，不然执行 =glib-compile-schemas= 时会忽略重复的 =id= ； =id= 的开头通常使用与应用相关的域名
+
++ path
+
+  =schema= 中的 =path= 必须是以 =/= 开头并且以 =/= 结尾，不能包含连续的 =/= , =path= 用于指定在 =storage= 中存储路径，可以与 =id= 不一致
+
++ name
+
+  =key= 的名称，需要在此 =schema= 中是唯一的， =name= 的值由小写字母、数字和 =-= 组成，并且开头必须是小写字母，不能以 =-= 结尾，也不能出现连续的 =-=
+
++ type
+
+  =key= 的类型，需要是 =GVariant= 支持的类型，除了可以使用基本的类型外，也可按照 =GVariant= 的方式组合类型
+
++ default
+
+  =key= 的默认值
+
++ summary
+
+  =key= 的简单描述
+
++ description
+
+  =key= 的详细描述
+
+--------
+
+下面给出一个例子：
+
+=schema= 文件：
+
+#+INCLUDE: "./com.deepin.test.gschema.xml" src xml
+
+程序代码如下：
+
+#+INCLUDE: "./gsettings_example.c" src c
+
+*注意：* 在使用接口调用时，需要确保 =schema= 和 =key= 存在，不然会触发 *段错误* 。
+
+--------
+
+
+*** =Relocatable Schema=
+
+通常一个 =id= 对应一个固定的 =path= ，但也可以没有，即不设置 =path= ，这样就是一个可重定位的 =schema= 。
+这个特性对于可变的配置很有用，如用户自定义的快捷键：快捷键的个数是不可知，这时可利用这个特性先声明一个快捷键 =schema= 作为模板，然后动态创建多个 =path= 来使用。
+示例如下：
+
+=schema= 文件如下：
+
+#+INCLUDE: "./com.deepin.test.keybind.gschema.xml" src xml
+
+程序代码如下：
+
+#+INCLUDE: "./gsettings_relocatable.c" src c
+
+--------
+
+*** override
+
+=gsettings= 支持 =override= 机制，可以更改默认值。
+
+通常 =key= 的默认值在文件中已经指定，但有时不同的版本上需要的默认值不同，这时 =override= 机制就很有用，可以在不修改配置文件的情况下更改默认值。
+
+=override= 文件以 *=数字_=* 开头，并以 *=.gschema.override=* 结尾，数字为两位整数，数值越大优先级越高。
+
+=override= 文件同样安装在 =/usr/share/glib-2.0/schemas= 目录下，并需要使用 =glib-compile-schemas= 编译。
+
+=override= 文件的格式如下：
+
+#+BEGIN_SRC ini
+[schema id]
+key=value
+#+END_SRC
+
+如更改 =com.deepin.test= 中 =interval= 的默认值为 =30= ，则内容如下：
+
+#+INCLUDE: "./90_com.deepin.test.gschema.override" src ini
+
+然后执行：
+
+#+BEGIN_SRC shell
+sudo cp ./90_com.deepin.test.gschema.override /usr/share/glib-2.0/schemas/
+sudo glib-compile-schemas /usr/share/glib-2.0/schemas
+#+END_SRC
+
+--------
+
+*** key 改变信号
+
+=GSettings= 提供了 =changed= 信号来发送 =key= 改变的事件，如有需要可监听此信号。
+
+--------
+
+** 工具
+
+*** glib-sompile-schemas
+
+编译 =schema= 文件的命令
+
+*** =dconf-editor=
+
+=dconf= 的图形工具，根据 =path= 检索，可管理 =key=
+
+*** devhelp
+
+一款 =API= 文档查看工具，安装了 =libglib2.0-docs= 后，可在 =devhelp= 中查看 =GSettings= 的 =API= 文档
+
+*** gsettings
+
+这是一个 =gsettings= 的配置管理工具，下面介绍一些常用的子命令，详细用法请查看 =man= 手册：
+
++ list-schemas
+
+  列出所有已安装并有固定 =path= 的 =schema=
+
++ list-relocatable-schemas
+
+  列出所有已安装却没有固定 =path= 的 =schema=
+
++ list-keys
+
+  列出指定 =schema= 中的所有 =key=
+
++ list-recursively
+
+  列出指定 =schema= 中的所有 =key= 及其 =value= ，若 =schema= 未指定，则列出所有 =schema= 的
+
++ get
+
+  获取指定 =schema= 中指定 =key= 的值
+
++ set
+
+  设置指定 =schema= 中指定 =key= 的值
+
++ reset
+
+  重置指定 =schema= 中指定 =key= 的值，即恢复默认值
+
++ monitor
+
+  监听指定 =schema= 中指定 =key= 的改变，不指定时监听所有的
+
+--------
+
+** 参考资料
+
+- [[https://en.wikipedia.org/wiki/Dconf][dconf]]
+- [[https://developer.gnome.org/GSettings/][GSettings]]
+- [[https://developer.gnome.org/gio/stable/GSettings.html][GSettings API]]
++ [[https://developer.gnome.org/glib/stable/gvariant-format-strings.html][GVariant Format Strings]]

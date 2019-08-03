@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <schema id="com.deepin.test.keybind">
+        <key type="s"  name="name">
+            <default>''</default>
+            <summary>Shortcut name.</summary>
+            <description>Shortcut name.</description>
+        </key>
+        <key type="as"  name="shortcuts">
+            <default>['']</default>
+            <summary>Shortcut keys.</summary>
+            <description>Shortcut keys.</description>
+        </key>
+        <key type="s"  name="action">
+            <default>''</default>
+            <summary>Shortcut action.</summary>
+            <description>Shortcut action.</description>
+        </key>
+        <key type="s"  name="description">
+            <default>''</default>
+            <summary>Shortcut description.</summary>
+            <description>Shortcut description.</description>
+        </key>
+    </schema>
+</schemalist>
