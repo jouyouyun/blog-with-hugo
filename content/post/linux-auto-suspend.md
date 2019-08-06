@@ -1,7 +1,7 @@
 +++
 title = "Linux 休眠自动唤醒"
 date = 2018-10-21T21:38:21+08:00
-lastmod = 2019-02-12T14:34:50+08:00
+lastmod = 2019-08-06T12:10:13+08:00
 tags = ["suspend", "wakeup", "rtc"]
 categories = ["BLOG"]
 draft = false
@@ -53,8 +53,65 @@ CONFIG_RTC_INTF_PROC=y
 2.  休眠系统
 3.  被 `wakealarm` 唤醒后，开始做一些期望的事情(如检查系统是否正常)，然后继续执行步骤 =1=，就这样一直循环，直至满足条件后终止
 
+如 `1` 分钟待机一次，唤醒后检查系统是否正常：
+
+```shell
+#!/bin/bash
+
+function os_check {
+    return 0
+}
+
+function do_suspend {
+    echo $(date +%s --date 'now + 1 minutes') | sudo tee /sys/class/rtc/rtc0/wakealarm
+    systemctl suspend
+}
+
+while true; do
+    do_suspend
+    # wait for joining suspend
+    sleep 5
+
+    ret=os_check
+    if [[ $ret == -1 ]] ; then
+        echo "OS check failure, exit..."
+        exit -1
+    fi
+done
+```
+
+
+### `/proc/driver/rtc` {#proc-driver-rtc}
+
+这个文件记录了 `rtc` 的详细信息，如下：
+
+```shell
+rtc_time        : 03:48:01
+rtc_date        : 2019-08-06
+alrm_time       : 03:03:11
+alrm_date       : 2019-08-06
+alarm_IRQ       : no
+alrm_pending    : no
+update IRQ enabled      : no
+periodic IRQ enabled    : no
+periodic IRQ frequency  : 1024
+max user IRQ frequency  : 64
+24hr            : yes
+periodic_IRQ    : no
+update_IRQ      : no
+HPET_emulated   : no
+BCD             : yes
+DST_enable      : no
+periodic_freq   : 1024
+batt_status     : okay
+```
+
 
 ## FAQ {#faq}
 
--   设置无效？
-    首先检查内涵是否开启了 `rtc` 支持，如果支持就检查时间标准是否是 `UTC=，=localtime` 时间标准时设置 `wakealarm` 是不生效的，内容一直是空的。通过 `timedatectl` 命令可以查询和设置时间标准。
+-   设置无效？首先检查内涵是否开启了 `rtc` 支持，如果支持就检查时间标准是否是 `UTC=，=localtime` 时间标准时设置 `wakealarm` 是不生效的，内容一直是空的。通过 `timedatectl` 命令可以查询和设置时间标准。
+
+
+## 参考文档 {#参考文档}
+
+-   [Kernel RTC Document](https://www.kernel.org/doc/Documentation/rtc.txt)
