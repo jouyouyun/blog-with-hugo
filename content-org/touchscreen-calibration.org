@@ -2,7 +2,7 @@
 #+HUGO_SECTION: post
 #+SEQ_TODO: TODO NEXT DRAFT DONE
 #+FILETAGS: post
-#+OPTIONS:   *:t <:nil timestamp:nil toc:nil ^:{}
+#+OPTIONS:   *:t <:nil timestamp:nil toc:nil ^:{} date:nil
 #+HUGO_AUTO_SET_LASTMOD: t
 #+TITLE: 触摸屏校正
 #+DATE: 2019-09-9T11:08:21+08:00
