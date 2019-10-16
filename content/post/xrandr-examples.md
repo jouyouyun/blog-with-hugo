@@ -1,7 +1,7 @@
 +++
 title = "XRandr Examples"
 date = 2016-06-06T16:52:30+08:00
-lastmod = 2019-02-12T14:36:53+08:00
+lastmod = 2019-10-16T15:00:46+08:00
 tags = ["xrandr"]
 categories = ["NOTE"]
 draft = false
@@ -14,6 +14,8 @@ draft = false
 ## 查询 {#查询}
 
 使用 `xrandr -q` 命令可以查询当前的显示器状态, 使用 `xrandr --verbose` 将会显示更详细的信息.
+
+<!--more-->
 
 
 ## 设置分辨率 {#设置分辨率}

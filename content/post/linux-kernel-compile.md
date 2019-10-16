@@ -1,7 +1,7 @@
 +++
 title = "Compile Kernel"
 date = 2019-08-06T21:38:21+08:00
-lastmod = 2019-09-09T15:09:33+08:00
+lastmod = 2019-10-16T15:00:11+08:00
 tags = ["kernel", "compile", "linux"]
 categories = ["BLOG"]
 draft = false
@@ -21,6 +21,8 @@ draft = false
     `sudo pacman -S gcc ncurses bison flex openssl libelf elfutils`
 
 若编译时有报错，请按照错误提示按照缺失的依赖。
+
+<!--more-->
 
 ---
 

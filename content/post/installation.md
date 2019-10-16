@@ -1,7 +1,7 @@
 +++
 title = "系统安装二三事"
 date = 2019-05-02T11:27:00+08:00
-lastmod = 2019-06-16T20:08:56+08:00
+lastmod = 2019-10-16T14:59:59+08:00
 tags = ["installation"]
 categories = ["NOTE"]
 draft = false
@@ -17,13 +17,15 @@ draft = false
 
 -   `Archlinux`
 
-    在 `/etc/pacman.d/mirrorlist` 只启用中国区的源, 另添加以下内容到 `/etc/pacman.conf` 中来启用 `yaourt aur` 源:
+<!--more-->
 
-    ```shell
-    [archlinuxcn]
-    SigLevel = Optional TrustAll
-    Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch~
-    ```
+在 `/etc/pacman.d/mirrorlist` 只启用中国区的源, 另添加以下内容到 `/etc/pacman.conf` 中来启用 `yaourt aur` 源:
+
+```shell
+[archlinuxcn]
+SigLevel = Optional TrustAll
+Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch~
+```
 
 -   `Deepin`
 
@@ -130,7 +132,7 @@ draft = false
 
 -   `sysctl.conf`
 
-    文件最大打开数目，=tcp= 相关的配置
+    文件最大打开数目， `tcp` 相关的配置
 
 -   `coredump`
 
@@ -157,6 +159,38 @@ draft = false
     -   修改： `echo noop | sudo tee /sys/block/sda/queue/scheduler`
 
     -   持久化： 添加 `elevator=noop` 到 `/etc/default/grub` 中的 `GRUB_CMDLINE_LINUX` 中，然后使用 `sudo grub-mkconfig -o /boot/grub/grub.cfg` 更新启动项。
+
+-   `virtualbox`
+
+    需要备份 `~/.config/VirtualBox` 和镜像文件
+
+-   `terminator`
+
+    需要备份 `~/.config/terminator/` 和镜像文件
+
+-   `HIDPI`
+
+    需要备份 `grub` 和 `console` 的 `HIDPI` 配置
+
+-   `nvidia prime`
+
+    需要备份相关的配置文件
+
+-   内核模块配置
+
+    需要备份 `/etc/modprobe.d/` 中的设置，如 `dell inspiron 7590` 的声卡就需要更改参数
+
+-   透明代理配置
+
+    `shadowsocks, ss-tproxy, v2ray` 的配置需要备份
+
+-   文档
+
+    备份 `zeal` 的文档
+
+-   开机启动
+
+    备份自定义的开机启动
 
 -   其它
 

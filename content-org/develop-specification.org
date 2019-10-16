@@ -24,6 +24,8 @@
 
   =API= 文档使用 =swagger= 展示，按照 =openapi= 的标准编写
 
+<!--more-->
+
 *** 前端
 
   使用 [[https://angular.cn/][Angular]] 构建界面，过于简单的也可使用 [[https://cn.vuejs.org/][Vue.js]]

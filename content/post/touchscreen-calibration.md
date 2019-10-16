@@ -1,6 +1,6 @@
 +++
 title = "触摸屏校正"
-lastmod = 2019-09-09T14:10:03+08:00
+lastmod = 2019-10-16T15:00:31+08:00
 tags = ["touchscreen", "calibration", "calibrator"]
 categories = ["BLOG"]
 draft = false
@@ -14,6 +14,8 @@ draft = false
 ## 准备 {#准备}
 
 安装需要用到的工具：
+
+<!--more-->
 
 -   xinput-calibrator : 触摸屏校正工具
 -   xinput : 屏幕映射工具，多屏时使用

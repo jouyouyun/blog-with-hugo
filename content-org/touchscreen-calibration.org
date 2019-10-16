@@ -18,6 +18,8 @@
 
 安装需要用到的工具：
 
+<!--more-->
+
 + xinput-calibrator : 触摸屏校正工具
 + xinput : 屏幕映射工具，多屏时使用
 

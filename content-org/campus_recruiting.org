@@ -22,6 +22,8 @@
 
 =print("Hi") if a<b else print("Bye")=
 
+<!--more-->
+
 **** Lambda
 
 =Lambda= 的使用

@@ -1,7 +1,7 @@
 +++
 title = "Auto Hidden Cursor"
 date = 2016-04-22T21:38:21+08:00
-lastmod = 2019-02-12T14:29:40+08:00
+lastmod = 2019-10-16T14:59:11+08:00
 tags = ["cursor"]
 categories = ["BLOG"]
 draft = false
@@ -13,6 +13,8 @@ draft = false
 ## 原理 {#原理}
 
 隐藏光标的原理就是把光标设置为一个 `x11 null cursor`, 不需要隐藏时再将它设为 `x11 left_ptr cursor`.
+
+<!--more-->
 
 
 ### 设置光标 {#设置光标}
