@@ -1,6 +1,6 @@
 +++
 title = "触摸屏校正"
-lastmod = 2019-10-16T15:00:31+08:00
+lastmod = 2019-10-25T13:55:59+08:00
 tags = ["touchscreen", "calibration", "calibrator"]
 categories = ["BLOG"]
 draft = false
@@ -241,6 +241,30 @@ EndSection
 ### 持久化 {#持久化}
 
 可添加 `90-touchscreen-map` 到 `/etc/X11/xinit/xinitrc.d` 目录，内容就是上面的命令。
+
+
+## 登录界面校正 {#登录界面校正}
+
+目前 `deepin` 使用 `lightdm` 做为登录管理器，所以需要修改 `lightdm` 的配置文件来设置校正数据。
+
+修改 `/etc/lightdm/lightdm.conf` 文件中 `[Seat:*]` 组的 `display-setup-script` 字段，值为指定的校正脚本路径(需要先取消注释)。
+
+脚本文件里只能使用命令，上面的校正过程中用到的正确的 `xinput` 命令要写入这个文件，包括设备映射的命令。
+
+如在华为上就只需映射设备，所以添加文件 `/etc/lightdm/display_setup.sh` ，内容如下：
+
+```shell
+#!/bin/bash
+
+xinput --map-output-to "SYNA2393:00 06CB:19AC" eDP-1
+```
+
+而 `/etc/lightdm/lightdm.conf` 则修改为(只给出修改的部分)：
+
+```shell
+[Seat:*]
+display-setup-script=/etc/lightdm/display_setup.sh
+```
 
 
 ## 参考文档 {#参考文档}
