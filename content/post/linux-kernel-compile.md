@@ -1,7 +1,7 @@
 +++
 title = "Compile Kernel"
 date = 2019-08-06T21:38:21+08:00
-lastmod = 2019-10-16T15:00:11+08:00
+lastmod = 2019-11-27T20:05:41+08:00
 tags = ["kernel", "compile", "linux"]
 categories = ["BLOG"]
 draft = false
@@ -64,6 +64,12 @@ draft = false
 
 其中 `EXTRAVERSION` 还可通过 `.config` 中 `CONFIG_LOCALVERSION` 指定(需要确保 `CONFIG_LOCALVERSION_AUTO` 不被设置)
 
+或者这样指定：
+
+```shell
+make KERNELRELEASE=4.19.34-2deepin-generic ARCH=arm64   KBUILD_BUILD_VERSION=20 KBUILD_SRC=
+```
+
 
 #### Avoid add '+' after kernel version {#avoid-add-plus-after-kernel-version}
 
@@ -78,17 +84,17 @@ draft = false
 
 ## Build {#build}
 
-The kernel version: 4.19.37, vermagic: 4.19.0-5-amd64
+The kernel version: **4.19.37** , vermagic: **4.19.0-5-amd64**
 
 
 ### Prepare {#prepare}
 
-`make VERSION=4 PATCHLEVEL=19 SUBLEVEL=0 EXTRAVERSION`'-5-amd64' scripts prepare modules\_prepare -j 24=
+`make VERSION=4 PATCHLEVEL=19 SUBLEVEL=0 EXTRAVERSION='-5-amd64' scripts prepare modules_prepare -j 24`
 
 
 ### Make {#make}
 
-`make VERSION=4 PATCHLEVEL=19 SUBLEVEL=0 EXTRAVERSION`'-5-amd64' -j 24=
+`make VERSION=4 PATCHLEVEL=19 SUBLEVEL=0 EXTRAVERSION='-5-amd64' -j 24`
 
 
 ### Build Special Module {#build-special-module}
@@ -96,14 +102,14 @@ The kernel version: 4.19.37, vermagic: 4.19.0-5-amd64
 
 #### Prepare {#prepare}
 
-`make VERSION=4 PATCHLEVEL=19 SUBLEVEL=0 EXTRAVERSION`'-5-amd64' scripts modules\_prepare -j 24=
+`make VERSION=4 PATCHLEVEL=19 SUBLEVEL=0 EXTRAVERSION='-5-amd64' scripts modules_prepare -j 24`
 
 
 #### Make {#make}
 
-`make VERSION=4 PATCHLEVEL=19 SUBLEVEL=0 EXTRAVERSION`'-5-amd64' -C . M=<module path>=
+`make VERSION=4 PATCHLEVEL=19 SUBLEVEL=0 EXTRAVERSION='-5-amd64' -C . M=<module path>`
 
-例如编译 `usbhid.ko` 则是： `make VERSION=4 PATCHLEVEL=19 SUBLEVEL=0 EXTRAVERSION`'-5-amd64' -C . M=drivers/hid/usbhid=
+例如编译 `usbhid.ko` 则是： `make VERSION=4 PATCHLEVEL=19 SUBLEVEL=0 EXTRAVERSION='-5-amd64' -C . M=drivers/hid/usbhid`
 
 ---
 

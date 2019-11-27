@@ -1,0 +1,463 @@
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: post
+#+SEQ_TODO: TODO NEXT DRAFT DONE
+#+FILETAGS: post
+#+OPTIONS:   *:t <:nil timestamp:nil toc:nil ^:{}
+#+HUGO_AUTO_SET_LASTMOD: t
+#+TITLE: VPS 服务迁移
+#+DATE: 2019-11-03 18:07:23+08:00
+#+HUGO_TAGS: vps service migrate
+#+HUGO_CATEGORIES: NOTE
+#+HUGO_DRAFT: true
+
+这里将记录 =VPS= 上的服务和家用服务器上的服务，每种服务分别记录，同时也会记录必用软件的配置。
+
+** 必用软件
+
+*** 包管理
+
+主要是更改源列表，使用服务器所在区域的源。
+
+*** ssh
+
+更改配置文件，设置 =port= ，另可添加公钥。
+
+*** vim
+
+配置基本的 =vim= 环境，可去掉代码补全的部分，只留最基本的编辑功能。
+
+*TODO:* 创建一个最小配置的 =vim= 仓库。
+
+*** tmux
+
+上传 =tmux= 的配置并应用。
+
+*** haveged
+
+随机数生成的程序。
+
+** 常用服务
+
+*** Shadowsocks
+
+安装 =shadowsocks-libev= 然后添加配置文件：
+
+- =server=
+
+  #+BEGIN_SRC json
+  {
+      "server":"0.0.0.0",
+      "server_port":10086,
+      "local_port":1080,
+      "password":"123456@qwer",
+      "timeout":300,
+      "fast_open": true,
+      "reuse_port": true,
+      "mode": "tcp_and_udp",
+      "method":"chacha20-ietf-poly1305"
+  }
+  #+END_SRC
+
+  然后执行 =sudo systemctl enable shadowsocks-libev-server@config.service= 让其开机启动。
+
+
+- =client=
+
+  #+BEGIN_SRC json
+  {
+      "server":"xxxxx.xxx",
+      "server_port":10086,
+      "local_port":1080,
+      "password":"12356@qwer",
+      "timeout":300,
+      "fast_open": true,
+      "reuse_port": true,
+      "mode": "tcp_and_udp",
+      "method":"chacha20-ietf-poly1305"
+  }
+  #+END_SRC
+
+  然后执行 =sudo systemctl enable shadowsocks-libev-redir@config.service= 让其开机启动。
+
+  这里配置的是透明代理，服务启动后还需设置 =iptables= 规则，这里写了一个脚本来设置：
+
+  #+BEGIN_SRC shell
+  #!/bin/bash
+
+  dnsOutputs=`nslookup xxxxx.xxx|grep 'Address: '`
+  serverIP=''
+  for line in ${dnsOutputs[@]}
+  do
+  	serverIP=${line}
+  done
+  echo "Server IP: ${serverIP}"
+  if [[ ${serverIP} == "" ]]; then
+  	echo "Failed to get server ip"
+  	exit -1
+  fi
+
+  function enable_transparent {
+  	iptables -t nat -N SHADOWSOCKS
+  	iptables -t nat -A SHADOWSOCKS -d ${serverIP} -j RETURN # vps server
+  	iptables -t nat -A SHADOWSOCKS -d 0.0.0.0/8 -j RETURN # local 网段
+  	iptables -t nat -A SHADOWSOCKS -d 127.0.0.0/8 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -d 172.16.0.0/16 -j RETURN # docker 网段
+  	iptables -t nat -A SHADOWSOCKS -d 172.17.0.0/16 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -d 172.18.0.0/16 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -d 172.19.0.0/16 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -d 172.20.0.0/16 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -d 172.21.0.0/16 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -d 172.22.0.0/16 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -d 172.22.0.0/16 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -d 172.23.0.0/16 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -d 172.24.0.0/16 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -d 172.25.0.0/16 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -d 172.26.0.0/16 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -d 172.27.0.0/16 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -d 172.28.0.0/16 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -d 172.29.0.0/16 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -d 172.30.0.0/16 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -d 172.31.0.0/16 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -d 10.0.0.0/8 -j RETURN # 局域网网段
+  	iptables -t nat -A SHADOWSOCKS -d 192.168.0.0/16 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -d 169.254.0.0/16 -j RETURN
+  	iptables -t nat -A SHADOWSOCKS -p tcp -j RETURN -m mark --mark 0xff # 直连 SO_MARK 为 0xff 的流量(0xff 是 16 进制数，数值上等同与上面配置的 255)，此规则目的是避免代理本机(网关)流量出现回环问题
+  	iptables -t nat -A SHADOWSOCKS -p tcp -j REDIRECT --to-ports 1080 # 其余流量转发到 1080 端口（即 shadowsocks）
+  	iptables -t nat -A PREROUTING -p tcp -j SHADOWSOCKS # 对局域网其他设备进行透明代理
+  	iptables -t nat -A OUTPUT -p tcp -j SHADOWSOCKS # 对本机进行透明代理
+
+  	# udp
+  	ip rule add fwmark 1 table 100
+  	ip route add local 0.0.0.0/0 dev lo table 100
+  	iptables -t mangle -N SHADOWSOCKS_MASK
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d ${serverIP} -j RETURN # vps server
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 0.0.0.0/8 -j RETURN # local 网段
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 127.0.0.0/8 -j RETURN
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 172.16.0.0/8 -j RETURN # docker 网段
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 172.17.0.0/8 -j RETURN
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 172.18.0.0/8 -j RETURN
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 172.19.0.0/8 -j RETURN
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 172.20.0.0/8 -j RETURN
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 172.21.0.0/8 -j RETURN
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 172.22.0.0/8 -j RETURN
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 172.23.0.0/8 -j RETURN
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 172.24.0.0/8 -j RETURN
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 172.25.0.0/8 -j RETURN
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 172.26.0.0/8 -j RETURN
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 172.27.0.0/8 -j RETURN
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 172.28.0.0/8 -j RETURN
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 172.29.0.0/8 -j RETURN
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 172.30.0.0/8 -j RETURN
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 172.31.0.0/8 -j RETURN
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 10.0.0.0/8 -j RETURN # 局域网网段
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 192.168.0.0/16 -j RETURN
+  	iptables -t mangle -A SHADOWSOCKS_MASK -d 169.254.0.0/16 -j RETURN
+  	iptables -t mangle -A SHADOWSOCKS_MASK -p udp -j TPROXY --on-port 1080 --tproxy-mark 1
+  	iptables -t mangle -A PREROUTING -p udp -j SHADOWSOCKS_MASK
+  }
+
+  function show_iptables {
+      echo -e "\e[36;1m==> mangle <==\e[0m"
+      iptables -t mangle -nvL --line-numbers
+      echo
+      echo -e "\e[36;1m==> nat <==\e[0m"
+      iptables -t nat -nvL --line-numbers
+      echo
+      echo -e "\e[36;1m==> route <==\e[0m"
+      ip route show
+  }
+
+  function flush_iptables {
+  	ip rule del fwmark 1 table 100
+  	ip route del local 0.0.0.0/0 dev lo table 100
+      iptables -t raw -F
+      iptables -t raw -X
+      iptables -t mangle -F
+      iptables -t mangle -X
+      iptables -t nat -F
+      iptables -t nat -X
+      iptables -t filter -F
+      iptables -t filter -X
+  }
+
+  case $1 in
+  	enable)
+  		echo "Enable transparent"
+  		enable_transparent
+  		;;
+  	disable)
+  		echo "Disable transparent"
+  		flush_iptables
+  		;;
+  	show)
+  		echo "Show transparent iptables rules"
+  		show_iptables
+  		;;
+  	*)
+  		echo "Avaliable action: enable, disable, show"
+  		;;
+  esac
+  #+END_SRC
+
+*** v2ray
+
+先到 [[https://github.com/v2ray/v2ray-core/releases][v2ray release]] 下载最新的版本，然后按照说明安装，服务端与客户端要使用相同的版本，不然可能会出现连接失败的问题。
+
+- =server=
+
+  添加配置文件，如下：
+
+  #+BEGIN_SRC json
+  {
+    "log":{"loglevel":"debug"},
+    "inbounds": [{
+      "port": 9000,
+      "protocol": "vmess",
+      "streamSettings":{},
+      "settings": {
+        "clients": [
+  	{
+            "id": "111111111-awwww-5d53-bd4c-asssdddddddd",
+            "alterId": 64
+  	}
+        ]
+      }
+    }],
+    "outbounds": [{
+      "protocol": "freedom",
+      "settings": {}
+    }]
+  }
+  #+END_SRC
+
+  =id= 是一随机值， =alterId= 含义见文档。
+
+  执行 =sudo systemctl enable v2ray.service= 启动。
+
+- =client=
+
+  配置如下：
+
+  #+BEGIN_SRC json
+  {
+      "routing": {
+          "rules": [
+              {
+                  "outboundTag": "direct",
+                  "domain": [
+                      "geosite:cn"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "outboundTag": "direct",
+                  "ip": [
+                      "geoip:cn",
+                      "geoip:private"
+                  ],
+                  "type": "field"
+              },
+              {
+                  "outboundTag": "proxy",
+                  "inboundTag": [
+                      "transparent"
+                  ],
+                  "type": "field"
+              }
+          ],
+          "domainStrategy": "IPOnDemand"
+      },
+      "outbounds": [
+          {
+              "streamSettings": {
+                  "sockopt": {
+                      "mark": 255
+                  }
+              },
+              "mux": {
+                  "enabled": true
+              },
+              "tag": "proxy",
+              "settings": {
+                  "vnext": [
+                      {
+                          "users": [
+                              {
+                                  "alterId": 64,
+                                  "id": "111111111-awwww-5d53-bd4c-asssdddddddd"
+                              }
+                          ],
+                          "port": 9000,
+                          "address": "xxxxx.xxx"
+                      }
+                  ]
+              },
+              "protocol": "vmess"
+          },
+          {
+              "streamSettings": {
+                  "sockopt": {
+                      "mark": 255
+                  }
+              },
+              "tag": "direct",
+              "settings": {
+              },
+              "protocol": "freedom"
+          }
+      ],
+      "inbounds": [
+          {
+              "sniffing": {
+                  "destOverride": [
+                      "http",
+                      "tls"
+                  ],
+                  "enabled": true
+              },
+              "settings": {
+                  "auth": "noauth"
+              },
+              "protocol": "vmess",
+              "tag": "socks-inbound",
+              "listen": "127.0.0.1",
+              "port": 9000
+          },
+          {
+              "tag": "transparent",
+              "sniffing": {
+                  "destOverride": [
+                      "http",
+                      "tls"
+                  ],
+                  "enabled": true
+              },
+              "settings": {
+                  "followRedirect": true,
+                  "network": "tcp,udp"
+              },
+              "protocol": "dokodemo-door",
+              "port": 9001
+          }
+      ],
+      "log": {
+          "loglevel": "warning"
+      }
+  }
+  #+END_SRC
+
+  执行 =sudo systemctl enable v2ray.service= 启动。
+
+  这也设置的是透明代理，通过以下脚本设置 =iptables= 规则：
+
+  #+BEGIN_SRC shell
+  #!/bin/bash
+
+  serverIP=11.11.11.11
+
+  function enable_transparent {
+  	iptables -t nat -N V2RAY
+  	iptables -t nat -A V2RAY -d ${serverIP} -j RETURN # vps server
+  	iptables -t nat -A V2RAY -d 0.0.0.0/8 -j RETURN # local 网段
+  	iptables -t nat -A V2RAY -d 127.0.0.0/8 -j RETURN
+  	iptables -t nat -A V2RAY -d 172.16.0.0/16 -j RETURN # docker 网段
+  	iptables -t nat -A V2RAY -d 172.17.0.0/16 -j RETURN
+  	iptables -t nat -A V2RAY -d 172.18.0.0/16 -j RETURN
+  	iptables -t nat -A V2RAY -d 172.19.0.0/16 -j RETURN
+  	iptables -t nat -A V2RAY -d 172.20.0.0/16 -j RETURN
+  	iptables -t nat -A V2RAY -d 172.21.0.0/16 -j RETURN
+  	iptables -t nat -A V2RAY -d 172.22.0.0/16 -j RETURN
+  	iptables -t nat -A V2RAY -d 172.22.0.0/16 -j RETURN
+  	iptables -t nat -A V2RAY -d 172.23.0.0/16 -j RETURN
+  	iptables -t nat -A V2RAY -d 172.24.0.0/16 -j RETURN
+  	iptables -t nat -A V2RAY -d 172.25.0.0/16 -j RETURN
+  	iptables -t nat -A V2RAY -d 172.26.0.0/16 -j RETURN
+  	iptables -t nat -A V2RAY -d 172.27.0.0/16 -j RETURN
+  	iptables -t nat -A V2RAY -d 172.28.0.0/16 -j RETURN
+  	iptables -t nat -A V2RAY -d 172.29.0.0/16 -j RETURN
+  	iptables -t nat -A V2RAY -d 172.30.0.0/16 -j RETURN
+  	iptables -t nat -A V2RAY -d 172.31.0.0/16 -j RETURN
+  	iptables -t nat -A V2RAY -d 10.0.0.0/8 -j RETURN # 局域网网段
+  	iptables -t nat -A V2RAY -d 192.168.0.0/16 -j RETURN
+  	iptables -t nat -A V2RAY -d 169.254.0.0/16 -j RETURN
+  	iptables -t nat -A V2RAY -p tcp -j RETURN -m mark --mark 0xff # 直连 SO_MARK 为 0xff 的流量(0xff 是 16 进制数，数值上等同与上面配置的 255)，此规则目的是避免代理本机(网关)流量出现回环问题
+  	iptables -t nat -A V2RAY -p tcp -j REDIRECT --to-ports 8581 # 其余流量转发到 8581 端口（即 V2Ray）
+  	iptables -t nat -A PREROUTING -p tcp -j V2RAY # 对局域网其他设备进行透明代理
+  	iptables -t nat -A OUTPUT -p tcp -j V2RAY # 对本机进行透明代理
+
+  	# udp
+  	ip rule add fwmark 1 table 100
+  	ip route add local 0.0.0.0/0 dev lo table 100
+  	iptables -t mangle -N V2RAY_MASK
+  	iptables -t mangle -A V2RAY_MASK -d ${serverIP} -j RETURN # vps server
+  	iptables -t mangle -A V2RAY_MASK -d 0.0.0.0/8 -j RETURN # local 网段
+  	iptables -t mangle -A V2RAY_MASK -d 127.0.0.0/8 -j RETURN
+  	iptables -t mangle -A V2RAY_MASK -d 172.16.0.0/8 -j RETURN # docker 网段
+  	iptables -t mangle -A V2RAY_MASK -d 172.17.0.0/8 -j RETURN
+  	iptables -t mangle -A V2RAY_MASK -d 172.18.0.0/8 -j RETURN
+  	iptables -t mangle -A V2RAY_MASK -d 172.19.0.0/8 -j RETURN
+  	iptables -t mangle -A V2RAY_MASK -d 172.20.0.0/8 -j RETURN
+  	iptables -t mangle -A V2RAY_MASK -d 172.21.0.0/8 -j RETURN
+  	iptables -t mangle -A V2RAY_MASK -d 172.22.0.0/8 -j RETURN
+  	iptables -t mangle -A V2RAY_MASK -d 172.23.0.0/8 -j RETURN
+  	iptables -t mangle -A V2RAY_MASK -d 172.24.0.0/8 -j RETURN
+  	iptables -t mangle -A V2RAY_MASK -d 172.25.0.0/8 -j RETURN
+  	iptables -t mangle -A V2RAY_MASK -d 172.26.0.0/8 -j RETURN
+  	iptables -t mangle -A V2RAY_MASK -d 172.27.0.0/8 -j RETURN
+  	iptables -t mangle -A V2RAY_MASK -d 172.28.0.0/8 -j RETURN
+  	iptables -t mangle -A V2RAY_MASK -d 172.29.0.0/8 -j RETURN
+  	iptables -t mangle -A V2RAY_MASK -d 172.30.0.0/8 -j RETURN
+  	iptables -t mangle -A V2RAY_MASK -d 172.31.0.0/8 -j RETURN
+  	iptables -t mangle -A V2RAY_MASK -d 10.0.0.0/8 -j RETURN # 局域网网段
+  	iptables -t mangle -A V2RAY_MASK -d 192.168.0.0/16 -j RETURN
+  	iptables -t mangle -A V2RAY_MASK -d 169.254.0.0/16 -j RETURN
+  	iptables -t mangle -A V2RAY_MASK -p udp -j TPROXY --on-port 8581 --tproxy-mark 1
+  	iptables -t mangle -A PREROUTING -p udp -j V2RAY_MASK
+  }
+
+  function show_iptables {
+      echo -e "\e[36;1m==> mangle <==\e[0m"
+      iptables -t mangle -nvL --line-numbers
+      echo
+      echo -e "\e[36;1m==> nat <==\e[0m"
+      iptables -t nat -nvL --line-numbers
+      echo
+      echo -e "\e[36;1m==> route <==\e[0m"
+      ip route show
+  }
+
+  function flush_iptables {
+  	ip rule del fwmark 1 table 100
+  	ip route del local 0.0.0.0/0 dev lo table 100
+      iptables -t raw -F
+      iptables -t raw -X
+      iptables -t mangle -F
+      iptables -t mangle -X
+      iptables -t nat -F
+      iptables -t nat -X
+      iptables -t filter -F
+      iptables -t filter -X
+  }
+
+  case $1 in
+  	enable)
+  		echo "Enable transparent"
+  		enable_transparent
+  		;;
+  	disable)
+  		echo "Disable transparent"
+  		flush_iptables
+  		;;
+  	show)
+  		echo "Show transparent iptables rules"
+  		show_iptables
+  		;;
+  	*)
+  		echo "Avaliable action: enable, disable, show"
+  		;;
+  esac
+  #+END_SRC
+
+--------
+
+最后还需到阿里云上更新域名解析。
