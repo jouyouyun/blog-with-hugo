@@ -1,7 +1,7 @@
 +++
-title = "Audit 简单使用"
+title = "audit 简单使用"
 date = 2021-04-25T06:20:21+08:00
-lastmod = 2021-04-25T15:46:23+08:00
+lastmod = 2021-04-25T16:29:42+08:00
 tags = ["audit", "file", "exec", "pid", "cmd", "program"]
 categories = ["BLOG"]
 draft = false
@@ -116,6 +116,19 @@ draft = false
 `auditctl -a exit,always -F arch=b64 -S setsockopt -S execve -k iptables_audit`
 
 查看日志、删除规则与上文相同。
+
+
+## 持久化 {#持久化}
+
+`audit` 的规则配置文件在 `/etc/audit/rules.d/` 目录，可将规则添加到此目录下，即可达到持久化的目的，如需立即生效，可重启 `auditd` 服务。
+
+如将上述示例的规则进行持久化，添加文件 `/etc/audit/rules.d/self.rules` ，内容如下：
+
+```shell
+-w /etc/systemd/system.conf -p w -k self_system_conf
+-a exit,always -F arch=b64 -S kill -k self_kill
+-a exit,always -F arch=b64 -S setsockopt -S execve -k self_iptables
+```
 
 
 ## 更多资料 {#更多资料}
